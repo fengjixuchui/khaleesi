@@ -13,10 +13,6 @@
 #include "../Shared/wow64ext.h"
 #endif 
 
-#pragma comment(lib,"Shlwapi.lib")
-#pragma comment(lib,"ImageHlp.lib")
-#pragma comment(lib,"wintrust.lib")
-
 //
 // flags
 //
