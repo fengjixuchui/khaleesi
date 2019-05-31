@@ -265,6 +265,27 @@
     <ClInclude Include="AntiDebug\NtGlobalFlag.h">
       <Filter>AntiDebug\Header</Filter>
     </ClInclude>
+    <ClInclude Include="AntiDebug\XAntiDebug.h">
+      <Filter>AntiDebug\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\wow64ext.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\CMemPtr.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\crc32.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\internal.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\ldasm.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="AntiDebug\XAD.h">
+      <Filter>AntiDebug\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -440,6 +461,21 @@
       <Filter>AntiDebug\Source</Filter>
     </ClCompile>
     <ClCompile Include="khaleesi.cpp" />
+    <ClCompile Include="AntiDebug\XAntiDebug.cpp">
+      <Filter>AntiDebug\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shared\wow64ext.cpp">
+      <Filter>Shared\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shared\crc32.cpp">
+      <Filter>Shared\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shared\ldasm.cpp">
+      <Filter>Shared\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AntiDebug\XAD.cpp">
+      <Filter>AntiDebug\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="AntiDebug\int2d_x86.asm">
