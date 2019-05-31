@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "al-khaser", "al-khaser\al-khaser.vcxproj", "{77AEFBC3-0ECE-46AD-A113-966AAAA838E1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "khaleesi", "khaleesi\khaleesi.vcxproj", "{77AEFBC3-0ECE-46AD-A113-966AAAA838E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

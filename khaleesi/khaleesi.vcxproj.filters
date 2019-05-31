@@ -267,7 +267,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="al-khaser.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="AntiDebug\CloseHandle_InvalidHandle.cpp">
       <Filter>AntiDebug\Source</Filter>
@@ -440,6 +439,7 @@
     <ClCompile Include="AntiDebug\BeingDebugged.cpp">
       <Filter>AntiDebug\Source</Filter>
     </ClCompile>
+    <ClCompile Include="khaleesi.cpp" />
   </ItemGroup>
   <ItemGroup>
     <MASM Include="AntiDebug\int2d_x86.asm">
@@ -451,7 +451,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="..\README.md" />
-    <None Include="..\CHANGELOG.md" />
   </ItemGroup>
 </Project>
