@@ -49,7 +49,7 @@ int main(void)
 	/* Debugger Detection */
 	if (ENABLE_DEBUG_CHECKS) {
 		print_category(TEXT("Debugger Detection"));
-		exec_check(&XAD, TEXT("Checking XAntiDebug "));
+		//exec_check(&XAD, TEXT("Checking XAntiDebug "));
 		exec_check(&IsDebuggerPresentAPI, TEXT("Checking IsDebuggerPresent API "));
 		exec_check(&IsDebuggerPresentPEB, TEXT("Checking PEB.BeingDebugged "));
 		exec_check(&CheckRemoteDebuggerPresentAPI, TEXT("Checking CheckRemoteDebuggerPresent API "));
