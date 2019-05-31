@@ -1,14 +1,14 @@
-//Author:Xjun
+ï»¿//Author:Xjun
 #include "pch.h"
 
 #include "XAntiDebug.h"
 
 /*
- *	½ûÖ¹Ä¿Â¼ÖØ¶¨Ïò
+ *	ç¦æ­¢ç›®å½•é‡å®šå‘
  */
-BOOL safeWow64DisableDirectory(PVOID &arg)
+BOOL safeWow64DisableDirectory(PVOID& arg)
 {
-	typedef BOOL WINAPI fntype_Wow64DisableWow64FsRedirection(PVOID *OldValue);
+	typedef BOOL WINAPI fntype_Wow64DisableWow64FsRedirection(PVOID * OldValue);
 	auto pfnWow64DisableWow64FsRedirection = (fntype_Wow64DisableWow64FsRedirection*)\
 		GetProcAddress(GetModuleHandleA("kernel32.dll"), "Wow64DisableWow64FsRedirection");
 
@@ -23,11 +23,11 @@ BOOL safeWow64DisableDirectory(PVOID &arg)
 }
 
 /*
- *	»Ö¸´Ä¿Â¼ÖØ¶¨Ïò
+ *	æ¢å¤ç›®å½•é‡å®šå‘
  */
-BOOL safeWow64ReverDirectory(PVOID &arg)
+BOOL safeWow64ReverDirectory(PVOID& arg)
 {
-	typedef BOOL WINAPI fntype_Wow64RevertWow64FsRedirection(PVOID *OldValue);
+	typedef BOOL WINAPI fntype_Wow64RevertWow64FsRedirection(PVOID * OldValue);
 	auto pfnWow64RevertWow64FsRedirection = (fntype_Wow64RevertWow64FsRedirection*) \
 		GetProcAddress(GetModuleHandleA("kernel32.dll"), "Wow64RevertWow64FsRedirection");
 
@@ -42,12 +42,12 @@ BOOL safeWow64ReverDirectory(PVOID &arg)
 }
 
 /*
- *	°²È«È¡µÃÏµÍ³ÕæÊµĞÅÏ¢
+ *	å®‰å…¨å–å¾—ç³»ç»ŸçœŸå®ä¿¡æ¯
  */
 VOID SafeGetNativeSystemInfo(__out LPSYSTEM_INFO lpSystemInfo)
 {
 	if (NULL == lpSystemInfo)    return;
-	typedef VOID(WINAPI *LPFN_GetNativeSystemInfo)(LPSYSTEM_INFO lpSystemInfo);
+	typedef VOID(WINAPI * LPFN_GetNativeSystemInfo)(LPSYSTEM_INFO lpSystemInfo);
 	LPFN_GetNativeSystemInfo fnGetNativeSystemInfo = \
 		(LPFN_GetNativeSystemInfo)GetProcAddress(GetModuleHandleA("kernel32"), "GetNativeSystemInfo");
 
@@ -63,7 +63,7 @@ VOID SafeGetNativeSystemInfo(__out LPSYSTEM_INFO lpSystemInfo)
 
 
 /*
- *	´¥·¢Òì³££¬ÓÃÓÚ¼ì²âÓ²¼ş¶Ïµã
+ *	è§¦å‘å¼‚å¸¸ï¼Œç”¨äºæ£€æµ‹ç¡¬ä»¶æ–­ç‚¹
  */
 volatile void __stdcall HardwareBreakpointRoutine(PVOID xAntiDbgClass)
 {
@@ -77,12 +77,12 @@ volatile void __stdcall HardwareBreakpointRoutine(PVOID xAntiDbgClass)
 LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 {
 	//
-	// ÃüÖĞÓ²¼ş¶Ïµã£¬ËµÃ÷ÊÇ
+	// å‘½ä¸­ç¡¬ä»¶æ–­ç‚¹ï¼Œè¯´æ˜æ˜¯
 	//
 	if (pExceptionInfo->ExceptionRecord->ExceptionCode == STATUS_BREAKPOINT)
 	{
 #ifdef _WIN64
-		XAntiDebug *antiDbg = (XAntiDebug*)pExceptionInfo->ContextRecord->Rcx;
+		XAntiDebug* antiDbg = (XAntiDebug*)pExceptionInfo->ContextRecord->Rcx;
 		if (pExceptionInfo->ContextRecord->Dr0 != 0 ||
 			pExceptionInfo->ContextRecord->Dr1 != 0 ||
 			pExceptionInfo->ContextRecord->Dr2 != 0 ||
@@ -91,7 +91,7 @@ LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 			antiDbg->_isSetHWBP = TRUE;
 
 			//
-			// Ë³±ã°ÑÄãµÄÓ²¼ş¶Ïµã¸øÇåÀíµô
+			// é¡ºä¾¿æŠŠä½ çš„ç¡¬ä»¶æ–­ç‚¹ç»™æ¸…ç†æ‰
 			//
 			pExceptionInfo->ContextRecord->Dr0 = 0;
 			pExceptionInfo->ContextRecord->Dr1 = 0;
@@ -100,11 +100,11 @@ LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 		}
 
 		//
-		// ¼ÌĞøÖ´ĞĞ int3 opcode len = 1
+		// ç»§ç»­æ‰§è¡Œ int3 opcode len = 1
 		//
 		pExceptionInfo->ContextRecord->Rip = pExceptionInfo->ContextRecord->Rip + 1;
 #else
-		XAntiDebug *antiDbg = (XAntiDebug *)(*(DWORD*)(pExceptionInfo->ContextRecord->Esp + 4));
+		XAntiDebug* antiDbg = (XAntiDebug*)(*(DWORD*)(pExceptionInfo->ContextRecord->Esp + 4));
 		if (pExceptionInfo->ContextRecord->Dr0 != 0 ||
 			pExceptionInfo->ContextRecord->Dr1 != 0 ||
 			pExceptionInfo->ContextRecord->Dr2 != 0 ||
@@ -113,7 +113,7 @@ LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 			antiDbg->_isSetHWBP = TRUE;
 
 			//
-			// Ë³±ã°ÑÄãµÄÓ²¼ş¶Ïµã¸øÇåÀíµô
+			// é¡ºä¾¿æŠŠä½ çš„ç¡¬ä»¶æ–­ç‚¹ç»™æ¸…ç†æ‰
 			//
 			pExceptionInfo->ContextRecord->Dr0 = 0;
 			pExceptionInfo->ContextRecord->Dr1 = 0;
@@ -122,7 +122,7 @@ LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 		}
 
 		//
-		// ¼ÌĞøÖ´ĞĞ int3 opcode len = 1
+		// ç»§ç»­æ‰§è¡Œ int3 opcode len = 1
 		//
 		pExceptionInfo->ContextRecord->Eip = pExceptionInfo->ContextRecord->Eip + 1;
 #endif
@@ -147,12 +147,12 @@ LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 #define XAD_MAXOPCODE            (0x64)
 
 /*
- *	¹¹Ôìº¯Êı
+ *	æ„é€ å‡½æ•°
  */
 XAntiDebug::XAntiDebug(HMODULE moduleHandle, DWORD flags)
 {
 	//
-	// ³õÊ¼»¯Ë½ÓĞ±äÁ¿
+	// åˆå§‹åŒ–ç§æœ‰å˜é‡
 	//
 	_initialized = FALSE;
 	_isArch64 = FALSE;
@@ -178,7 +178,7 @@ XAntiDebug::XAntiDebug(HMODULE moduleHandle, DWORD flags)
 		_isArch64 = TRUE;
 	}
 
-	typedef LONG(__stdcall *fnRtlGetVersion)(PRTL_OSVERSIONINFOW lpVersionInformation);
+	typedef LONG(__stdcall * fnRtlGetVersion)(PRTL_OSVERSIONINFOW lpVersionInformation);
 	fnRtlGetVersion pRtlGetVersion = (fnRtlGetVersion)GetProcAddress(GetModuleHandle(TEXT("ntdll")), "RtlGetVersion");
 
 	if (pRtlGetVersion)
@@ -201,7 +201,7 @@ XAntiDebug::XAntiDebug(HMODULE moduleHandle, DWORD flags)
 	//
 	// ThreadHideFromDebugger
 	//
-	typedef NTSTATUS(NTAPI* fnNtSetInformationThread)(
+	typedef NTSTATUS(NTAPI * fnNtSetInformationThread)(
 		_In_ HANDLE ThreadHandle,
 		_In_ DWORD_PTR ThreadInformationClass,
 		_In_ PVOID ThreadInformation,
@@ -218,7 +218,7 @@ XAntiDebug::XAntiDebug(HMODULE moduleHandle, DWORD flags)
 		pfnNtSetInformationThread((HANDLE)-2, 0x11, NULL, NULL);
 
 		//
-		// StrongOD Çı¶¯´¦Àí²»µ±
+		// StrongOD é©±åŠ¨å¤„ç†ä¸å½“
 		//
 		status = pfnNtSetInformationThread((HANDLE)-2, 0x11, (PVOID)sizeof(PVOID), sizeof(PVOID));
 		if (status == 0)
@@ -230,7 +230,7 @@ XAntiDebug::XAntiDebug(HMODULE moduleHandle, DWORD flags)
 }
 
 /*
- *	Îö¹¹º¯Êı
+ *	ææ„å‡½æ•°
  */
 XAntiDebug::~XAntiDebug()
 {
@@ -241,12 +241,12 @@ XAntiDebug::~XAntiDebug()
 }
 
 /*
- *	·´µ÷ÊÔ³õÊ¼»¯
+ *	åè°ƒè¯•åˆå§‹åŒ–
  */
 XAD_STATUS XAntiDebug::XAD_Initialize()
 {
 	//
-	// ·ÀÖ¹ÖØ¸´³õÊ¼»¯£¬Ôì³ÉÄÚ´æĞ¹Â©
+	// é˜²æ­¢é‡å¤åˆå§‹åŒ–ï¼Œé€ æˆå†…å­˜æ³„æ¼
 	//
 	if (_initialized)
 	{
@@ -256,10 +256,10 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 	if ((_flags & FLAG_CHECKSUM_NTOSKRNL) && _major >= 6 && _minor >= 1)
 	{
 		//
-		//¼ì²âÕıÔÚÔËĞĞµÄNTOSÎÄ¼şÂ·¾¶. ÒòNTº¯ÊıÃ¶¾Ù³öÀ´µÄÂ·¾¶ÊÇCHAR£¬ÕâÀï¶¼ÓÃCHAR
+		//æ£€æµ‹æ­£åœ¨è¿è¡Œçš„NTOSæ–‡ä»¶è·¯å¾„. å› NTå‡½æ•°æšä¸¾å‡ºæ¥çš„è·¯å¾„æ˜¯CHARï¼Œè¿™é‡Œéƒ½ç”¨CHAR
 		//
 
-		typedef LONG(WINAPI* fnZwQuerySystemInformation)(
+		typedef LONG(WINAPI * fnZwQuerySystemInformation)(
 			LONG_PTR SystemInformationClass,
 			PVOID SystemInformation,
 			ULONG SystemInformationLength,
@@ -297,10 +297,10 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		}
 
 		//
-		// ÕâÀïÊÇÏµÍ³Ä£¿éÁ´±í µÚÒ»¸ö¾ÍÊÇntosµÄÂ·¾¶£¬´ÓÕâÀïÈ¡µÃÎÄ¼şÃû
+		// è¿™é‡Œæ˜¯ç³»ç»Ÿæ¨¡å—é“¾è¡¨ ç¬¬ä¸€ä¸ªå°±æ˜¯ntosçš„è·¯å¾„ï¼Œä»è¿™é‡Œå–å¾—æ–‡ä»¶å
 		//
-		char *src = (char*)systemModuleBuf;
-		const char *match = "\\SystemRoot\\system32\\";
+		char* src = (char*)systemModuleBuf;
+		const char* match = "\\SystemRoot\\system32\\";
 		size_t	matchLen = strlen(match);
 		for (size_t i = 0; i < (systemModuleSize - matchLen); i++, src++)
 		{
@@ -344,7 +344,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 			for (size_t Index = 0; Index < ntHead->FileHeader.NumberOfSections; Index++)
 			{
 				//
-				//¿É¶Á¡¢²»¿ÉĞ´µÄÇø¶ÎÄ¬ÈÏÈ«²¿Ğ£Ñé
+				//å¯è¯»ã€ä¸å¯å†™çš„åŒºæ®µé»˜è®¤å…¨éƒ¨æ ¡éªŒ
 				//
 
 				if ((secHead->Characteristics & IMAGE_SCN_MEM_READ) &&
@@ -366,7 +366,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		if (_isArch64)
 		{
 			//
-			// Ê×ÏÈ»ñÈ¡ ZwQueryInformationProcessº¯ÊıµØÖ·
+			// é¦–å…ˆè·å– ZwQueryInformationProcesså‡½æ•°åœ°å€
 			//
 #ifndef _WIN64
 			InitWow64Ext();
@@ -393,7 +393,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		}
 
 		//
-		//´Ó ntdll ĞéÄâµØÖ·×ª»»µ½Êµ¼ÊÎÄ¼şÆ«ÒÆÊı¾İ
+		//ä» ntdll è™šæ‹Ÿåœ°å€è½¬æ¢åˆ°å®é™…æ–‡ä»¶åç§»æ•°æ®
 		//
 		DWORD	fileOffset = 0;
 		if (_isArch64)
@@ -452,7 +452,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		}
 
 		//
-		// ¶ÁntdllÎÄ¼ş£¬Ê¹ÓÃldasm·´»ã±àº¯ÊıÍ·²¿£¬µÃ³öSSDT Index
+		// è¯»ntdllæ–‡ä»¶ï¼Œä½¿ç”¨ldasmåæ±‡ç¼–å‡½æ•°å¤´éƒ¨ï¼Œå¾—å‡ºSSDT Index
 		//
 #ifndef _WIN64
 		PVOID _wow64FsReDirectory;
@@ -479,7 +479,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		CloseHandle(hFile);
 
 		ldasm_data ld;
-		unsigned char *pEip = opcode;
+		unsigned char* pEip = opcode;
 		size_t len;
 		while (TRUE)
 		{
@@ -498,7 +498,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 #endif 
 
 		//
-		// ÉêÇëÄÚ´æ£¬×éºÏshellcode£¬Ö±½Óµ÷ÓÃsyscall
+		// ç”³è¯·å†…å­˜ï¼Œç»„åˆshellcodeï¼Œç›´æ¥è°ƒç”¨syscall
 		//
 		unsigned char shellSysCall32[] = {
 			0xB8, 0x0, 0x0, 0x0, 0x0,   // mov eax,NtQueryInformationProcess
@@ -526,14 +526,14 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		ULONG_PTR pSysCall;
 
 		srand(GetTickCount());
-		unsigned char *pRandChar = (unsigned char *)_pagePtr;
+		unsigned char* pRandChar = (unsigned char*)_pagePtr;
 		for (size_t i = 0; i < _pageSize; i++)
 		{
 			pRandChar[i] = LOBYTE(rand());
 		}
 
 		//
-		// °Ñ´úÂëËæ»ú¿½±´ÔÚÒ³ÄÚ´æµ±ÖĞ£¬Òª¼ì²éÄÚ´æÒ³±ß½ç£¬·ÀÖ¹±ÀÀ£
+		// æŠŠä»£ç éšæœºæ‹·è´åœ¨é¡µå†…å­˜å½“ä¸­ï¼Œè¦æ£€æŸ¥å†…å­˜é¡µè¾¹ç•Œï¼Œé˜²æ­¢å´©æºƒ
 		//
 		random = rand() % (_pageSize - (sizeof(shellSysCall32) + sizeof(shellSysCall64)));
 
@@ -557,7 +557,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 
 	if (_flags & FLAG_DETECT_HARDWAREBREAKPOINT)
 	{
-		// ²»ĞèÒª³õÊ¼»¯
+		// ä¸éœ€è¦åˆå§‹åŒ–
 		;
 	}
 
@@ -565,7 +565,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 }
 
 /*
- *	Ö´ĞĞ¼ì²â
+ *	æ‰§è¡Œæ£€æµ‹
  */
 BOOL XAntiDebug::XAD_ExecuteDetect()
 {
@@ -591,17 +591,14 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 		/*
 		WVTPolicyGUID specifies the policy to apply on the file
 		WINTRUST_ACTION_GENERIC_VERIFY_V2 policy checks:
-
 		1) The certificate used to sign the file chains up to a root
 		certificate located in the trusted root certificate store. This
 		implies that the identity of the publisher has been verified by
 		a certification authority.
-
 		2) In cases where user interface is displayed (which this example
 		does not do), WinVerifyTrust will check for whether the
 		end entity certificate is stored in the trusted publisher store,
 		implying that the user trusts content from this publisher.
-
 		3) The end entity certificate has sufficient permission to sign
 		code, as indicated by the presence of a code signing EKU or no
 		EKU.
@@ -690,10 +687,10 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 		}
 
 		//////////////////////////////////////////////////////////////////////////
-		__try{
+		__try {
 			CloseHandle(ULongToHandle(0xDEADC0DE));
 		}
-		__except (EXCEPTION_EXECUTE_HANDLER){
+		__except (EXCEPTION_EXECUTE_HANDLER) {
 			return TRUE;
 		}
 
@@ -714,9 +711,9 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 		{
 			BOOLEAN Inherit;
 			BOOLEAN ProtectFromClose;
-		} MYOBJECT_HANDLE_FLAG_INFORMATION, *PMYOBJECT_HANDLE_FLAG_INFORMATION;
+		} MYOBJECT_HANDLE_FLAG_INFORMATION, * PMYOBJECT_HANDLE_FLAG_INFORMATION;
 
-		typedef NTSTATUS(WINAPI *fnNtSetInformationObject)(
+		typedef NTSTATUS(WINAPI * fnNtSetInformationObject)(
 			_In_ HANDLE Handle,
 			_In_ MYOBJECT_INFORMATION_CLASS ObjectInformationClass,
 			_In_ PVOID ObjectInformation,
@@ -730,14 +727,14 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 		objInfo.Inherit = false;
 		objInfo.ProtectFromClose = true;
 
-		__try{
+		__try {
 			processHandle1 = GetCurrentProcess();
 			DuplicateHandle(processHandle1, processHandle1, processHandle1, &processHandle2, 0, FALSE, 0);
 			pfnNtSetInformationObject(processHandle2, ObjectHandleFlagInformation, &objInfo, sizeof(objInfo));
 			DuplicateHandle(processHandle1, processHandle2, processHandle1, &processHandle2, 0, FALSE, DUPLICATE_CLOSE_SOURCE);
 
 		}
-		__except (EXCEPTION_EXECUTE_HANDLER){
+		__except (EXCEPTION_EXECUTE_HANDLER) {
 			return TRUE;
 		}
 
@@ -760,16 +757,16 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 				5,
 				(DWORD64)-1,
 				(DWORD64)0x1E,
-				(DWORD64)&processInformation,
+				(DWORD64)& processInformation,
 				(DWORD64)8,
-				(DWORD64)&returnLength);
+				(DWORD64)& returnLength);
 #else
 			status = _pfnSyscall64(
 				(DWORD64)-1,
 				(DWORD64)0x1E,
-				(PDWORD64)&processInformation,
+				(PDWORD64)& processInformation,
 				(DWORD64)8,
-				(PDWORD64)&returnLength);
+				(PDWORD64)& returnLength);
 #endif
 
 			if (status != 0xC0000353) //STATUS_PORT_NOT_SET 
@@ -782,7 +779,7 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 			}
 
 			//
-			// ÀûÓÃÄÚºË¶ş´Î¸²¸ÇµÄBUGÀ´¼ì²â·´µ÷ÊÔ£¬ÔÚÀûÓÃÕâ¸öÂ©¶´Ö®Ç°¼ÆËãÒ»±éÒ³ÃæCRC
+			// åˆ©ç”¨å†…æ ¸äºŒæ¬¡è¦†ç›–çš„BUGæ¥æ£€æµ‹åè°ƒè¯•ï¼Œåœ¨åˆ©ç”¨è¿™ä¸ªæ¼æ´ä¹‹å‰è®¡ç®—ä¸€éé¡µé¢CRC
 			//
 			if (crc32(_pagePtr, _pageSize) != _pageCrc32)
 			{
@@ -796,16 +793,16 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 				5,
 				(DWORD64)-1,
 				(DWORD64)0x1E,
-				(DWORD64)&bugCheck,
+				(DWORD64)& bugCheck,
 				(DWORD64)8,
-				(DWORD64)&bugCheck);
+				(DWORD64)& bugCheck);
 #else
 			status = _pfnSyscall64(
 				(DWORD64)-1,
 				(DWORD64)0x1E,
-				(PDWORD64)&bugCheck,
+				(PDWORD64)& bugCheck,
 				(DWORD64)8,
-				(PDWORD64)&bugCheck);
+				(PDWORD64)& bugCheck);
 #endif 
 			if (status == 0xC0000353 && bugCheck != 8)
 			{
@@ -835,7 +832,7 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 			}
 
 			//
-			// ÀûÓÃÄÚºË¶ş´Î¸²¸ÇµÄBUGÀ´¼ì²â·´µ÷ÊÔ£¬ÔÚÀûÓÃÕâ¸öÂ©¶´Ö®Ç°¼ÆËãÒ»±éÒ³ÃæCRC
+			// åˆ©ç”¨å†…æ ¸äºŒæ¬¡è¦†ç›–çš„BUGæ¥æ£€æµ‹åè°ƒè¯•ï¼Œåœ¨åˆ©ç”¨è¿™ä¸ªæ¼æ´ä¹‹å‰è®¡ç®—ä¸€éé¡µé¢CRC
 			//
 			if (crc32(_pagePtr, _pageSize) != _pageCrc32)
 			{
@@ -859,7 +856,7 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 	if (_flags & FLAG_DETECT_HARDWAREBREAKPOINT)
 	{
 		//
-		// ·½·¨1
+		// æ–¹æ³•1
 		//
 		CONTEXT	ctx = { 0 };
 		ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
@@ -872,12 +869,12 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 		}
 
 		//
-		// ·½·¨2
+		// æ–¹æ³•2
 		//
 
 		AddVectoredExceptionHandler(0, VectoredExceptionHandler);
 
-		typedef void(__stdcall *fnMakeException)(PVOID lparam);
+		typedef void(__stdcall * fnMakeException)(PVOID lparam);
 		fnMakeException pfnMakeException = (fnMakeException)HardwareBreakpointRoutine;
 		pfnMakeException(this);
 

@@ -87,8 +87,8 @@ DWORD64 __cdecl X64Call(DWORD64 func, int argC, ...)
     reg64 _argC = { (DWORD64)argC };
     DWORD back_esp = 0;
 	WORD back_fs = 0;
-#pragma warning(push)
-#pragma warning(2:4235)
+//#pragma warning(push)
+//#pragma warning(2:4235)
 	__asm
     {
         ;// reset FS segment, to properly handle RFG
@@ -169,7 +169,7 @@ _ls_e:                                                  ;//
         mov    ax, back_fs
         mov    fs, ax
     }
-#pragma warning(pop)
+//#pragma warning(pop)
     return _rax.v;
 }
 #pragma warning(pop)
@@ -333,7 +333,7 @@ DWORD64 getNTDLL64()
     if (0 != ntdll64)
         return ntdll64;
 
-	ntdll64 = GetModuleHandle64((wchar_t*)("ntdll.dll"));
+	ntdll64 = GetModuleHandle64((wchar_t*)(L"ntdll.dll"));
     return ntdll64;
 }
 
