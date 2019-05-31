@@ -3,15 +3,6 @@
 #ifndef _XANTIDEBUG_H
 #define _XANTIDEBUG_H
 
-
-#include <vector>
-#include <windows.h>
-#include <ImageHlp.h>
-#include <Shlwapi.h>
-#include <Softpub.h>
-#include <wintrust.h>
-#include <tchar.h>
-
 #include "../Shared/ldasm.h"
 #include "../Shared/crc32.h"
 
