@@ -87,8 +87,7 @@ DWORD64 __cdecl X64Call(DWORD64 func, int argC, ...)
     reg64 _argC = { (DWORD64)argC };
     DWORD back_esp = 0;
 	WORD back_fs = 0;
-//#pragma warning(push)
-//#pragma warning(2:4235)
+
 	__asm
     {
         ;// reset FS segment, to properly handle RFG
@@ -169,7 +168,6 @@ _ls_e:                                                  ;//
         mov    ax, back_fs
         mov    fs, ax
     }
-//#pragma warning(pop)
     return _rax.v;
 }
 #pragma warning(pop)
@@ -378,10 +376,9 @@ DWORD64 getLdrGetProcedureAddress()
     // lazy search, there is no need to use binsearch for just one function
     for (DWORD i = 0; i < ied.NumberOfFunctions; i++)
     {
-		// TODO: fix LdrGetProcedureAddress
-      /*  if (!cmpMem64("LdrGetProcedureAddress", modBase + nameTable[i], sizeof("LdrGetProcedureAddress")))
+		if (!cmpMem64((void*)"LdrGetProcedureAddress", modBase + nameTable[i], sizeof("LdrGetProcedureAddress")))
             continue;
-        else*/
+        else
             return modBase + rvaTable[ordTable[i]];
     }
     return 0;
