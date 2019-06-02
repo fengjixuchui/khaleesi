@@ -24,7 +24,7 @@ int main(void)
 	BOOL	ENABLE_ANALYSIS_TOOLS_CHECK = FALSE;
 
 	API::Init();
-	API::PrintAvailabilityReport();
+	//API::PrintAvailabilityReport();
 
 	if (ENABLE_DEBUG_CHECKS) PageExceptionInitialEnum();
 

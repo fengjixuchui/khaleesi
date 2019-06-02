@@ -94,18 +94,6 @@ VOID exec_check(int(*callback)(), const TCHAR* szMsg)
 		_print_check_result(result, szMsg);
 }
 
-VOID resize_console_window()
-{
-	// Change the window title:
-	SetConsoleTitle(_T("Al-Khaser - by Lord Noteworthy"));
-
-	// Get console window handle
-	HWND wh = GetConsoleWindow();
-
-	// Move window to required position
-	MoveWindow(wh, 100, 100, 900, 900, TRUE);
-}
-
 VOID print_last_error(LPCTSTR lpszFunction)
 {
 	// Retrieve the system error message for the last-error code
