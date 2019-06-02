@@ -310,9 +310,9 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 			}
 		}
 		src = PathFindFileNameA(src);
-		strcpy(_ntosPath, sysDir);
-		strcat(_ntosPath, "\\");
-		strcat(_ntosPath, src);
+		strcpy_s(_ntosPath, sysDir);
+		strcat_s(_ntosPath, "\\");
+		strcat_s(_ntosPath, src);
 		free(systemModuleBuf);
 	}
 
@@ -462,7 +462,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		TCHAR sysDir[MAX_PATH] = { 0 };
 		HANDLE hFile;
 		GetSystemDirectory(sysDir, MAX_PATH);
-		_tcscat(sysDir, _T("\\ntdll.dll"));
+		_tcscat_s(sysDir, _T("\\ntdll.dll"));
 
 #ifndef _WIN64
 		if (_isWow64FsReDriectory)
