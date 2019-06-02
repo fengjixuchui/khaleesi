@@ -87,7 +87,9 @@ DWORD64 __cdecl X64Call(DWORD64 func, int argC, ...)
     reg64 _argC = { (DWORD64)argC };
     DWORD back_esp = 0;
 	WORD back_fs = 0;
-
+//#pragma warning(push)
+//#pragma warning(2:4235)
+#ifndef _WIN64
 	__asm
     {
         ;// reset FS segment, to properly handle RFG
@@ -168,6 +170,8 @@ _ls_e:                                                  ;//
         mov    ax, back_fs
         mov    fs, ax
     }
+#endif
+	//#pragma warning(pop)
     return _rax.v;
 }
 #pragma warning(pop)
@@ -178,7 +182,7 @@ void getMem64(void* dstMem, DWORD64 srcMem, size_t sz)
         return;
 
     reg64 _src = { srcMem };
-
+#ifndef _WIN64
     __asm
     {
         X64_Start();
@@ -218,6 +222,7 @@ _move_0:                            ;//
 
         X64_End();
     }
+#endif
 }
 
 bool cmpMem64(void* dstMem, DWORD64 srcMem, size_t sz)
@@ -227,6 +232,7 @@ bool cmpMem64(void* dstMem, DWORD64 srcMem, size_t sz)
 
     bool result = false;
     reg64 _src = { srcMem };
+#ifndef _WIN64
     __asm
     {
         X64_Start();
@@ -272,6 +278,7 @@ _ret_false:                         ;//
 
         X64_End();
     }
+#endif
 
     return result;
 }
@@ -280,14 +287,14 @@ DWORD64 getTEB64()
 {
     reg64 reg;
     reg.v = 0;
-    
+#ifndef _WIN64
     X64_Start();
     // R12 register should always contain pointer to TEB64 in WoW64 processes
     X64_Push(_R12);
     // below pop will pop QWORD from stack, as we're in x64 mode now
     __asm pop reg.dw[0]
     X64_End();
-
+#endif
     return reg.v;
 }
 
