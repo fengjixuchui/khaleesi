@@ -106,17 +106,6 @@ VOID resize_console_window()
 	MoveWindow(wh, 100, 100, 900, 900, TRUE);
 }
 
-
-VOID print_os()
-{
-	TCHAR szOS[MAX_PATH] = _T("");
-	if (GetOSDisplayString(szOS))
-	{
-		//_tcscpy_s(szOS, MAX_PATH, szOS);
-		_tprintf(_T("\n[*] You are running: %s\n"), szOS);
-	}
-}
-
 VOID print_last_error(LPCTSTR lpszFunction)
 {
 	// Retrieve the system error message for the last-error code

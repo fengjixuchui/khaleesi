@@ -7,34 +7,27 @@
 int main(void)
 {
 	/* enable functions */
-	BOOL	ENABLE_TLS_CHECKS = TRUE;
-	BOOL	ENABLE_DEBUG_CHECKS = TRUE;
-	BOOL	ENABLE_INJECTION_CHECKS = TRUE;
-	BOOL	ENABLE_GEN_SANDBOX_CHECKS = TRUE;
-	BOOL	ENABLE_VBOX_CHECKS = TRUE;
-	BOOL	ENABLE_VMWARE_CHECKS = TRUE;
-	BOOL	ENABLE_VPC_CHECKS = TRUE;
-	BOOL	ENABLE_QEMU_CHECKS = TRUE;
-	BOOL	ENABLE_XEN_CHECKS = TRUE;
-	BOOL	ENABLE_WINE_CHECKS = TRUE;
-	BOOL	ENABLE_PARALLELS_CHECKS = TRUE;
+	BOOL	ENABLE_TLS_CHECKS = FALSE;
+	BOOL	ENABLE_DEBUG_CHECKS = FALSE;
+	BOOL	ENABLE_INJECTION_CHECKS = FALSE;
+	BOOL	ENABLE_GEN_SANDBOX_CHECKS = FALSE;
+	BOOL	ENABLE_VBOX_CHECKS = FALSE;
+	BOOL	ENABLE_VMWARE_CHECKS = FALSE;
+	BOOL	ENABLE_VPC_CHECKS = FALSE;
+	BOOL	ENABLE_QEMU_CHECKS = FALSE;
+	BOOL	ENABLE_XEN_CHECKS = FALSE;
+	BOOL	ENABLE_WINE_CHECKS = FALSE;
+	BOOL	ENABLE_PARALLELS_CHECKS = FALSE;
 	BOOL	ENABLE_CODE_INJECTIONS = FALSE;
 	BOOL	ENABLE_TIMING_ATTACKS = TRUE;
-	BOOL	ENABLE_DUMPING_CHECK = TRUE;
-	BOOL	ENABLE_ANALYSIS_TOOLS_CHECK = TRUE;
-
-	/* Resize the console window for better visibility */
-	resize_console_window();
-
-	/* Display general informations */
-	_tprintf(_T("[al-khaser version 0.77]"));
+	BOOL	ENABLE_DUMPING_CHECK = FALSE;
+	BOOL	ENABLE_ANALYSIS_TOOLS_CHECK = FALSE;
 
 	if (IsWoW64())
 		_tprintf(_T("Process is running under WOW64\n\n"));
 
 	print_category(TEXT("Initialisation"));
 	API::Init();
-	print_os();
 	API::PrintAvailabilityReport();
 
 	if (ENABLE_DEBUG_CHECKS) PageExceptionInitialEnum();
@@ -76,7 +69,7 @@ int main(void)
 		exec_check(&NtQueryObject_ObjectTypeInformation, TEXT("Checking NtQueryObject with ObjectTypeInformation "));
 		exec_check(&NtQueryObject_ObjectAllTypesInformation, TEXT("Checking NtQueryObject with ObjectAllTypesInformation "));
 		exec_check(&NtYieldExecutionAPI, TEXT("Checking NtYieldExecution "));
-		exec_check(&SetHandleInformatiom_ProtectedHandle, TEXT("Checking CloseHandle protected handle trick  "));
+		exec_check(&SetHandleInformation_ProtectedHandle, TEXT("Checking CloseHandle protected handle trick  "));
 		exec_check(&NtQuerySystemInformation_SystemKernelDebuggerInformation, TEXT("Checking NtQuerySystemInformation with SystemKernelDebuggerInformation  "));
 		exec_check(&SharedUserData_KernelDebugger, TEXT("Checking SharedUserData->KdDebuggerEnabled  "));
 		exec_check(&ProcessJob, TEXT("Checking if process is in a job  "));
@@ -234,7 +227,7 @@ int main(void)
 	/* Timing Attacks */
 	if (ENABLE_TIMING_ATTACKS) {
 		print_category(TEXT("Timing-attacks"));
-		UINT delayInSeconds = 600U;
+		UINT delayInSeconds = 2; // 2 sec
 		UINT delayInMillis = delayInSeconds * 1000U;
 		printf("\n[*] Delay value is set to %u minutes ...\n", delayInSeconds / 60);
 

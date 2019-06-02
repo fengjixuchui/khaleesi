@@ -8,7 +8,6 @@ BOOL is_FileExists(TCHAR* szPath);
 BOOL is_DirectoryExists(TCHAR* szPath);
 BOOL check_mac_addr(const TCHAR* szMac);
 BOOL check_adapter_name(const TCHAR* szName);
-BOOL GetOSDisplayString(LPTSTR pszOS);
 DWORD GetProccessIDByName(TCHAR* szProcessNameTarget);
 DWORD GetProcessIdFromName(LPCTSTR ProcessName);
 BOOL SetPrivilege(HANDLE, LPCTSTR, BOOL);

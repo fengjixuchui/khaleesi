@@ -49,7 +49,7 @@ void log_print(const TCHAR* filename, const TCHAR *fmt, ...)
 	FILE *fp = NULL;
 	errno_t error;
 
-	TCHAR *pszTime;
+	//TCHAR *pszTime;
 
 	if (SESSION_TRACKER > 0)
 		error = _tfopen_s(&fp, _T("log.txt"), _T("a+"));
