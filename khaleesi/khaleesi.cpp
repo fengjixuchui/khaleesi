@@ -23,10 +23,6 @@ int main(void)
 	BOOL	ENABLE_DUMPING_CHECK = FALSE;
 	BOOL	ENABLE_ANALYSIS_TOOLS_CHECK = FALSE;
 
-	if (IsWoW64())
-		_tprintf(_T("Process is running under WOW64\n\n"));
-
-	print_category(TEXT("Initialisation"));
 	API::Init();
 	API::PrintAvailabilityReport();
 
@@ -257,9 +253,6 @@ int main(void)
 		SizeOfImage();
 	}
 
-	_tprintf(_T("\n\nAnalysis done, I hope you didn't get red flags :)"));
-
-	getchar();
 	return 0;
 }
 
