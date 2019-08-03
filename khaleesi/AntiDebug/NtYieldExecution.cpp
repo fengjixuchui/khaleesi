@@ -9,7 +9,7 @@ not allow a switch to occur), then the ntdll NtYieldExecution() function returns
 STATUS_NO_YIELD_PERFORMED (0x40000024) status, which causes the kernel32 SwitchToThread() function to
 return a zero. When an application is being debugged, the act of single-stepping through the
 code causes debug events and often results in no yield being allowed. However, this is a hopelessly
-unreliable method for detecting a debugger because it will also detect the presence of a thread that is running with high priority. 
+unreliable method for detecting a debugger because it will also detect the presence of a thread that is running with high priority.
 */
 
 
@@ -33,6 +33,6 @@ BOOL NtYieldExecutionAPI()
 		return FALSE;
 	else
 		return TRUE;
-	
+
 
 }

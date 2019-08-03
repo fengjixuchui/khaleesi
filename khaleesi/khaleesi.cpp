@@ -8,7 +8,7 @@ int main(void)
 {
 	/* enable functions */
 	BOOL	ENABLE_TLS_CHECKS = FALSE;
-	BOOL	ENABLE_DEBUG_CHECKS = FALSE;
+	BOOL	ENABLE_DEBUG_CHECKS = TRUE;
 	BOOL	ENABLE_INJECTION_CHECKS = FALSE;
 	BOOL	ENABLE_GEN_SANDBOX_CHECKS = FALSE;
 	BOOL	ENABLE_VBOX_CHECKS = FALSE;
@@ -19,7 +19,7 @@ int main(void)
 	BOOL	ENABLE_WINE_CHECKS = FALSE;
 	BOOL	ENABLE_PARALLELS_CHECKS = FALSE;
 	BOOL	ENABLE_CODE_INJECTIONS = FALSE;
-	BOOL	ENABLE_TIMING_ATTACKS = TRUE;
+	BOOL	ENABLE_TIMING_ATTACKS = FALSE;
 	BOOL	ENABLE_DUMPING_CHECK = FALSE;
 	BOOL	ENABLE_ANALYSIS_TOOLS_CHECK = FALSE;
 
@@ -56,15 +56,15 @@ int main(void)
 		exec_check(&UnhandledExcepFilterTest, TEXT("Checking UnhandledExcepFilterTest "));
 		exec_check(&OutputDebugStringAPI, TEXT("Checking OutputDebugString "));
 		exec_check(&HardwareBreakpoints, TEXT("Checking Hardware Breakpoints "));
-		exec_check(&SoftwareBreakpoints, TEXT("Checking Software Breakpoints "));
+		//exec_check(&SoftwareBreakpoints, TEXT("Checking Software Breakpoints ")); false positive
 		exec_check(&Interrupt_0x2d, TEXT("Checking Interupt 0x2d "));
 		exec_check(&Interrupt_3, TEXT("Checking Interupt 1 "));
 		exec_check(&MemoryBreakpoints_PageGuard, TEXT("Checking Memory Breakpoints PAGE GUARD "));
 		exec_check(&IsParentExplorerExe, TEXT("Checking If Parent Process is explorer.exe "));
 		exec_check(&CanOpenCsrss, TEXT("Checking SeDebugPrivilege "));
 		exec_check(&NtQueryObject_ObjectTypeInformation, TEXT("Checking NtQueryObject with ObjectTypeInformation "));
-		exec_check(&NtQueryObject_ObjectAllTypesInformation, TEXT("Checking NtQueryObject with ObjectAllTypesInformation "));
-		exec_check(&NtYieldExecutionAPI, TEXT("Checking NtYieldExecution "));
+		//exec_check(&NtQueryObject_ObjectAllTypesInformation, TEXT("Checking NtQueryObject with ObjectAllTypesInformation "));
+		//exec_check(&NtYieldExecutionAPI, TEXT("Checking NtYieldExecution "));
 		exec_check(&SetHandleInformation_ProtectedHandle, TEXT("Checking CloseHandle protected handle trick  "));
 		exec_check(&NtQuerySystemInformation_SystemKernelDebuggerInformation, TEXT("Checking NtQuerySystemInformation with SystemKernelDebuggerInformation  "));
 		exec_check(&SharedUserData_KernelDebugger, TEXT("Checking SharedUserData->KdDebuggerEnabled  "));
@@ -252,6 +252,9 @@ int main(void)
 		ErasePEHeaderFromMemory();
 		SizeOfImage();
 	}
+	print_category(TEXT("END"));
+
+	getchar();
 
 	return 0;
 }
