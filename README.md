@@ -7,10 +7,10 @@ Anti-debug library based on al-khaser with ScyllaHide detection.
 
 ## Screenshots
 
-Detection
+SCYLLAHIDE DETECTOR OFF
 
 ![SCYLLAHIDE_DETECTOR_OFF](SCYLLAHIDE_DETECTOR_OFF.png)
 
-How it work
+SCYLLAHIDE DETECTOR ON
 
 ![SCYLLAHIDE_DETECTOR_ON](SCYLLAHIDE_DETECTOR_ON.png)
