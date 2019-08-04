@@ -286,6 +286,21 @@
     <ClInclude Include="AntiDebug\XAD.h">
       <Filter>AntiDebug\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Shared\Hash.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\Helpers.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\Native.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\XorStr.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\ScyllaHideDetector.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -475,6 +490,9 @@
     </ClCompile>
     <ClCompile Include="AntiDebug\XAD.cpp">
       <Filter>AntiDebug\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shared\ScyllaHideDetector.cpp">
+      <Filter>Shared\Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

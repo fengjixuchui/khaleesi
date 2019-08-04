@@ -112,11 +112,12 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp14</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>ntdll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -231,15 +232,20 @@
     <ClInclude Include="Shared\CMemPtr.h" />
     <ClInclude Include="Shared\Common.h" />
     <ClInclude Include="Shared\crc32.h" />
+    <ClInclude Include="Shared\Hash.h" />
+    <ClInclude Include="Shared\Helpers.h" />
     <ClInclude Include="Shared\internal.h" />
     <ClInclude Include="Shared\ldasm.h" />
     <ClInclude Include="Shared\log.h" />
+    <ClInclude Include="Shared\Native.h" />
     <ClInclude Include="Shared\pch.h" />
+    <ClInclude Include="Shared\ScyllaHideDetector.h" />
     <ClInclude Include="Shared\Utils.h" />
     <ClInclude Include="Shared\VersionHelpers.h" />
     <ClInclude Include="Shared\winapifamily.h" />
     <ClInclude Include="Shared\WinStructs.h" />
     <ClInclude Include="Shared\wow64ext.h" />
+    <ClInclude Include="Shared\XorStr.h" />
     <ClInclude Include="TimingAttacks\pch.h" />
     <ClInclude Include="TimingAttacks\timing.h" />
   </ItemGroup>
@@ -310,6 +316,7 @@
     <ClCompile Include="Shared\crc32.cpp" />
     <ClCompile Include="Shared\ldasm.cpp" />
     <ClCompile Include="Shared\log.cpp" />
+    <ClCompile Include="Shared\ScyllaHideDetector.cpp" />
     <ClCompile Include="Shared\Utils.cpp" />
     <ClCompile Include="Shared\wow64ext.cpp" />
     <ClCompile Include="TimingAttacks\timing.cpp" />

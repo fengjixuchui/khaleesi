@@ -4,9 +4,10 @@
 #include "pch.h"
 
 
-int main(void)
+int main()
 {
 	/* enable functions */
+	BOOL	ENABLE_SCYLLAHIDE_DETECTOR = TRUE;
 	BOOL	ENABLE_TLS_CHECKS = FALSE;
 	BOOL	ENABLE_DEBUG_CHECKS = TRUE;
 	BOOL	ENABLE_INJECTION_CHECKS = FALSE;
@@ -25,6 +26,13 @@ int main(void)
 
 	API::Init();
 	//API::PrintAvailabilityReport();
+
+	if (ENABLE_SCYLLAHIDE_DETECTOR) {
+		/*ntdll*/
+		ntdll_unhooking();
+		/*kernel32 / kernelbase*/
+		kernelbase_unhooking();
+	}
 
 	if (ENABLE_DEBUG_CHECKS) PageExceptionInitialEnum();
 
@@ -53,7 +61,7 @@ int main(void)
 		exec_check(&WUDF_IsUserDebuggerPresent, TEXT("Checking WudfIsUserDebuggerPresent API "));
 		exec_check(&NtSetInformationThread_ThreadHideFromDebugger, TEXT("Checking NtSetInformationThread with ThreadHideFromDebugger "));
 		exec_check(&CloseHandle_InvalideHandle, TEXT("Checking CloseHandle with an invalide handle "));
-		exec_check(&UnhandledExcepFilterTest, TEXT("Checking UnhandledExcepFilterTest "));
+		//exec_check(&UnhandledExcepFilterTest, TEXT("Checking UnhandledExcepFilterTest ")); works
 		exec_check(&OutputDebugStringAPI, TEXT("Checking OutputDebugString "));
 		exec_check(&HardwareBreakpoints, TEXT("Checking Hardware Breakpoints "));
 		//exec_check(&SoftwareBreakpoints, TEXT("Checking Software Breakpoints ")); false positive
