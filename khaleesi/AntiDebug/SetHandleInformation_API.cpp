@@ -3,7 +3,7 @@
 #include "SetHandleInformation_API.h"
 
 
-BOOL SetHandleInformatiom_ProtectedHandle()
+BOOL SetHandleInformation_ProtectedHandle()
 {
 	/* some vars */
 	HANDLE hMutex;
@@ -27,7 +27,5 @@ BOOL SetHandleInformatiom_ProtectedHandle()
 		}
 
 	}
-
 	return FALSE;
-
 }

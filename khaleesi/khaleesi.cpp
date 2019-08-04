@@ -4,38 +4,35 @@
 #include "pch.h"
 
 
-int main(void)
+int main()
 {
 	/* enable functions */
-	BOOL	ENABLE_TLS_CHECKS = TRUE;
+	BOOL	ENABLE_SCYLLAHIDE_DETECTOR = TRUE;
+	BOOL	ENABLE_TLS_CHECKS = FALSE;
 	BOOL	ENABLE_DEBUG_CHECKS = TRUE;
-	BOOL	ENABLE_INJECTION_CHECKS = TRUE;
-	BOOL	ENABLE_GEN_SANDBOX_CHECKS = TRUE;
-	BOOL	ENABLE_VBOX_CHECKS = TRUE;
-	BOOL	ENABLE_VMWARE_CHECKS = TRUE;
-	BOOL	ENABLE_VPC_CHECKS = TRUE;
-	BOOL	ENABLE_QEMU_CHECKS = TRUE;
-	BOOL	ENABLE_XEN_CHECKS = TRUE;
-	BOOL	ENABLE_WINE_CHECKS = TRUE;
-	BOOL	ENABLE_PARALLELS_CHECKS = TRUE;
+	BOOL	ENABLE_INJECTION_CHECKS = FALSE;
+	BOOL	ENABLE_GEN_SANDBOX_CHECKS = FALSE;
+	BOOL	ENABLE_VBOX_CHECKS = FALSE;
+	BOOL	ENABLE_VMWARE_CHECKS = FALSE;
+	BOOL	ENABLE_VPC_CHECKS = FALSE;
+	BOOL	ENABLE_QEMU_CHECKS = FALSE;
+	BOOL	ENABLE_XEN_CHECKS = FALSE;
+	BOOL	ENABLE_WINE_CHECKS = FALSE;
+	BOOL	ENABLE_PARALLELS_CHECKS = FALSE;
 	BOOL	ENABLE_CODE_INJECTIONS = FALSE;
-	BOOL	ENABLE_TIMING_ATTACKS = TRUE;
-	BOOL	ENABLE_DUMPING_CHECK = TRUE;
-	BOOL	ENABLE_ANALYSIS_TOOLS_CHECK = TRUE;
+	BOOL	ENABLE_TIMING_ATTACKS = FALSE;
+	BOOL	ENABLE_DUMPING_CHECK = FALSE;
+	BOOL	ENABLE_ANALYSIS_TOOLS_CHECK = FALSE;
 
-	/* Resize the console window for better visibility */
-	resize_console_window();
-
-	/* Display general informations */
-	_tprintf(_T("[al-khaser version 0.77]"));
-
-	if (IsWoW64())
-		_tprintf(_T("Process is running under WOW64\n\n"));
-
-	print_category(TEXT("Initialisation"));
 	API::Init();
-	print_os();
-	API::PrintAvailabilityReport();
+	//API::PrintAvailabilityReport();
+
+	if (ENABLE_SCYLLAHIDE_DETECTOR) {
+		/*ntdll*/
+		ntdll_unhooking();
+		/*kernel32 / kernelbase*/
+		kernelbase_unhooking();
+	}
 
 	if (ENABLE_DEBUG_CHECKS) PageExceptionInitialEnum();
 
@@ -49,6 +46,7 @@ int main(void)
 	/* Debugger Detection */
 	if (ENABLE_DEBUG_CHECKS) {
 		print_category(TEXT("Debugger Detection"));
+		exec_check(&XAD, TEXT("Checking XAntiDebug "));
 		exec_check(&IsDebuggerPresentAPI, TEXT("Checking IsDebuggerPresent API "));
 		exec_check(&IsDebuggerPresentPEB, TEXT("Checking PEB.BeingDebugged "));
 		exec_check(&CheckRemoteDebuggerPresentAPI, TEXT("Checking CheckRemoteDebuggerPresent API "));
@@ -63,19 +61,19 @@ int main(void)
 		exec_check(&WUDF_IsUserDebuggerPresent, TEXT("Checking WudfIsUserDebuggerPresent API "));
 		exec_check(&NtSetInformationThread_ThreadHideFromDebugger, TEXT("Checking NtSetInformationThread with ThreadHideFromDebugger "));
 		exec_check(&CloseHandle_InvalideHandle, TEXT("Checking CloseHandle with an invalide handle "));
-		exec_check(&UnhandledExcepFilterTest, TEXT("Checking UnhandledExcepFilterTest "));
+		//exec_check(&UnhandledExcepFilterTest, TEXT("Checking UnhandledExcepFilterTest ")); works
 		exec_check(&OutputDebugStringAPI, TEXT("Checking OutputDebugString "));
 		exec_check(&HardwareBreakpoints, TEXT("Checking Hardware Breakpoints "));
-		exec_check(&SoftwareBreakpoints, TEXT("Checking Software Breakpoints "));
+		//exec_check(&SoftwareBreakpoints, TEXT("Checking Software Breakpoints ")); false positive
 		exec_check(&Interrupt_0x2d, TEXT("Checking Interupt 0x2d "));
 		exec_check(&Interrupt_3, TEXT("Checking Interupt 1 "));
 		exec_check(&MemoryBreakpoints_PageGuard, TEXT("Checking Memory Breakpoints PAGE GUARD "));
 		exec_check(&IsParentExplorerExe, TEXT("Checking If Parent Process is explorer.exe "));
 		exec_check(&CanOpenCsrss, TEXT("Checking SeDebugPrivilege "));
 		exec_check(&NtQueryObject_ObjectTypeInformation, TEXT("Checking NtQueryObject with ObjectTypeInformation "));
-		exec_check(&NtQueryObject_ObjectAllTypesInformation, TEXT("Checking NtQueryObject with ObjectAllTypesInformation "));
-		exec_check(&NtYieldExecutionAPI, TEXT("Checking NtYieldExecution "));
-		exec_check(&SetHandleInformatiom_ProtectedHandle, TEXT("Checking CloseHandle protected handle trick  "));
+		//exec_check(&NtQueryObject_ObjectAllTypesInformation, TEXT("Checking NtQueryObject with ObjectAllTypesInformation "));
+		//exec_check(&NtYieldExecutionAPI, TEXT("Checking NtYieldExecution "));
+		exec_check(&SetHandleInformation_ProtectedHandle, TEXT("Checking CloseHandle protected handle trick  "));
 		exec_check(&NtQuerySystemInformation_SystemKernelDebuggerInformation, TEXT("Checking NtQuerySystemInformation with SystemKernelDebuggerInformation  "));
 		exec_check(&SharedUserData_KernelDebugger, TEXT("Checking SharedUserData->KdDebuggerEnabled  "));
 		exec_check(&ProcessJob, TEXT("Checking if process is in a job  "));
@@ -233,7 +231,7 @@ int main(void)
 	/* Timing Attacks */
 	if (ENABLE_TIMING_ATTACKS) {
 		print_category(TEXT("Timing-attacks"));
-		UINT delayInSeconds = 600U;
+		UINT delayInSeconds = 2; // 2 sec
 		UINT delayInMillis = delayInSeconds * 1000U;
 		printf("\n[*] Delay value is set to %u minutes ...\n", delayInSeconds / 60);
 
@@ -262,10 +260,10 @@ int main(void)
 		ErasePEHeaderFromMemory();
 		SizeOfImage();
 	}
-
-	_tprintf(_T("\n\nAnalysis done, I hope you didn't get red flags :)"));
+	print_category(TEXT("END"));
 
 	getchar();
+
 	return 0;
 }
 

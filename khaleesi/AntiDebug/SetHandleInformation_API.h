@@ -1,3 +1,3 @@
 #pragma once
 
-BOOL SetHandleInformatiom_ProtectedHandle();
+BOOL SetHandleInformation_ProtectedHandle();

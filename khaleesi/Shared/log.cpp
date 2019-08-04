@@ -49,7 +49,7 @@ void log_print(const TCHAR* filename, const TCHAR *fmt, ...)
 	FILE *fp = NULL;
 	errno_t error;
 
-	TCHAR *pszTime;
+	//TCHAR *pszTime;
 
 	if (SESSION_TRACKER > 0)
 		error = _tfopen_s(&fp, _T("log.txt"), _T("a+"));
@@ -60,11 +60,11 @@ void log_print(const TCHAR* filename, const TCHAR *fmt, ...)
 	if ((error != 0) || (fp == NULL))
 		return;
 
-	pszTime = print_time();
+	/*pszTime = print_time();
 	if (pszTime) {
 		_ftprintf(fp, _T("%s "), pszTime);
 		free(pszTime);
-	}
+	}*/
 	va_start(list, fmt);
 
 	for (p = fmt; *p; ++p)

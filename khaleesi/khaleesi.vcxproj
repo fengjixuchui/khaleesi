@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -109,13 +109,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>ntdll.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>
@@ -130,7 +132,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -148,7 +150,7 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -202,6 +204,8 @@
     <ClInclude Include="AntiDebug\UnhandledExceptionFilter_Handler.h" />
     <ClInclude Include="AntiDebug\WriteWatch.h" />
     <ClInclude Include="AntiDebug\WUDF_IsDebuggerPresent.h" />
+    <ClInclude Include="AntiDebug\XAD.h" />
+    <ClInclude Include="AntiDebug\XAntiDebug.h" />
     <ClInclude Include="AntiDump\ErasePEHeaderFromMemory.h" />
     <ClInclude Include="AntiDump\pch.h" />
     <ClInclude Include="AntiDump\SizeOfImage.h" />
@@ -225,17 +229,29 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Shared\APIs.h" />
     <ClInclude Include="Shared\ApiTypeDefs.h" />
+    <ClInclude Include="Shared\CMemPtr.h" />
     <ClInclude Include="Shared\Common.h" />
+    <ClInclude Include="Shared\crc32.h" />
+    <ClInclude Include="Shared\Hash.h" />
+    <ClInclude Include="Shared\Helpers.h" />
+    <ClInclude Include="Shared\internal.h" />
+    <ClInclude Include="Shared\ldasm.h" />
     <ClInclude Include="Shared\log.h" />
+    <ClInclude Include="Shared\Native.h" />
     <ClInclude Include="Shared\pch.h" />
+    <ClInclude Include="Shared\ScyllaHideDetector.h" />
     <ClInclude Include="Shared\Utils.h" />
     <ClInclude Include="Shared\VersionHelpers.h" />
     <ClInclude Include="Shared\winapifamily.h" />
     <ClInclude Include="Shared\WinStructs.h" />
+    <ClInclude Include="Shared\wow64ext.h" />
+    <ClInclude Include="Shared\XorStr.h" />
     <ClInclude Include="TimingAttacks\pch.h" />
     <ClInclude Include="TimingAttacks\timing.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AntiDebug\XAD.cpp" />
+    <ClCompile Include="AntiDebug\XAntiDebug.cpp" />
     <ClCompile Include="khaleesi.cpp" />
     <ClCompile Include="AntiAnalysis\process.cpp" />
     <ClCompile Include="AntiDebug\BeingDebugged.cpp" />
@@ -297,8 +313,12 @@
     <ClCompile Include="Shared\APIs.cpp" />
     <ClCompile Include="Shared\ApiTypeDefs.cpp" />
     <ClCompile Include="Shared\Common.cpp" />
+    <ClCompile Include="Shared\crc32.cpp" />
+    <ClCompile Include="Shared\ldasm.cpp" />
     <ClCompile Include="Shared\log.cpp" />
+    <ClCompile Include="Shared\ScyllaHideDetector.cpp" />
     <ClCompile Include="Shared\Utils.cpp" />
+    <ClCompile Include="Shared\wow64ext.cpp" />
     <ClCompile Include="TimingAttacks\timing.cpp" />
   </ItemGroup>
   <ItemGroup>
