@@ -6,7 +6,6 @@ Anti-debug library based on al-khaser with ScyllaHide detection.
 - [ ] virtualization 
 
 ## Screenshots
-![Normal](screen.png)
 
 Detection
 
