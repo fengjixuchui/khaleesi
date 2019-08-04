@@ -32,6 +32,14 @@ int main()
 		ntdll_unhooking();
 		/*kernel32 / kernelbase*/
 		kernelbase_unhooking();
+
+		// TitanHide detection
+		if (TitanHideCheck()) {
+			print_category(TEXT("[TitanHide] Your are under testsign or debug mode."));
+		}  else {
+			// if not find TitanHide
+		}
+
 	}
 
 	if (ENABLE_DEBUG_CHECKS) PageExceptionInitialEnum();
