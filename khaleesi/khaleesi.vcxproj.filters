@@ -301,6 +301,9 @@
     <ClInclude Include="Shared\ScyllaHideDetector.h">
       <Filter>Shared\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Shared\TitanHideDetect.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -494,6 +497,7 @@
     <ClCompile Include="Shared\ScyllaHideDetector.cpp">
       <Filter>Shared\Source</Filter>
     </ClCompile>
+    <ClCompile Include="Shared\TitanHideDetect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <MASM Include="AntiDebug\int2d_x86.asm">

@@ -242,6 +242,7 @@
     <ClInclude Include="Shared\Native.h" />
     <ClInclude Include="Shared\pch.h" />
     <ClInclude Include="Shared\ScyllaHideDetector.h" />
+    <ClInclude Include="Shared\TitanHideDetect.h" />
     <ClInclude Include="Shared\Utils.h" />
     <ClInclude Include="Shared\VersionHelpers.h" />
     <ClInclude Include="Shared\winapifamily.h" />
@@ -319,6 +320,7 @@
     <ClCompile Include="Shared\ldasm.cpp" />
     <ClCompile Include="Shared\log.cpp" />
     <ClCompile Include="Shared\ScyllaHideDetector.cpp" />
+    <ClCompile Include="Shared\TitanHideDetect.cpp" />
     <ClCompile Include="Shared\Utils.cpp" />
     <ClCompile Include="Shared\wow64ext.cpp" />
     <ClCompile Include="TimingAttacks\timing.cpp" />
