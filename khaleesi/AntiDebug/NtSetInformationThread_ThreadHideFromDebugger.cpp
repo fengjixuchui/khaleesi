@@ -32,23 +32,24 @@ BOOL NtSetInformationThread_ThreadHideFromDebugger()
 	BOOL isThreadHidden = FALSE;
 
 	// First issue a bogus call with an incorrect length parameter. If it succeeds, we know NtSetInformationThread was hooked.
-	Status = NtSetInformationThread(GetCurrentThread(), ThreadHideFromDebugger, &isThreadHidden, 12345);
+	//IN HANDLE ThreadHandle, IN THREAD_INFORMATION_CLASS ThreadInformationClass, IN PVOID ThreadInformation, IN ULONG ThreadInformationLength
+	Status = ScSetInformationThread(GetCurrentThread(), ThreadHideFromDebugger, &isThreadHidden, 12345);
 	if (Status == 0)
 		return TRUE;
 
 	// Next try again but give it a bogus thread handle. If it succeeds, again we know NtSetInformationThread was hooked.
-	Status = NtSetInformationThread((HANDLE)0xFFFF, ThreadHideFromDebugger, NULL, 0);
+	Status = ScSetInformationThread((HANDLE)0xFFFF, ThreadHideFromDebugger, NULL, 0);
 	if (Status == 0)
 		return TRUE;
 	
 	// Now try a legitimate call.
-	Status = NtSetInformationThread(GetCurrentThread(), ThreadHideFromDebugger, NULL, 0);
+	Status = ScSetInformationThread(GetCurrentThread(), ThreadHideFromDebugger, NULL, 0);
 
 	if (Status == 0)
 	{
 		if (doQITcheck)
 		{
-			Status = NtQueryInformationThread(GetCurrentThread(), ThreadHideFromDebugger, &isThreadHidden, sizeof(BOOL), NULL);
+			Status = ScQueryInformationThread(GetCurrentThread(), ThreadHideFromDebugger, &isThreadHidden, sizeof(BOOL), NULL);
 			if (Status == 0)
 			{
 				// if the thread isn't hidden we know the ThreadHideFromDebugger call didn't do what it told us it did
