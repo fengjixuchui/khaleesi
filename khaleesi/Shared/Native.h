@@ -9,6 +9,7 @@
 #define GetProcedureAddress(ModuleBaseAddress, FunctionName) _GetProcAddress<hashstr(FunctionName)>(ModuleBaseAddress)
 #define NtFunctionCall(FunctionName)  reinterpret_cast<nt::fn::_##FunctionName>(GetProcedureAddress(GetModuleBaseAddress("ntdll.dll"),  #FunctionName))
 #define WinFunctionCall(FunctionName) reinterpret_cast<nt::fn::_##FunctionName>(GetProcedureAddress(GetModuleBaseAddress("win32u.dll"), #FunctionName))
+#define KernelFunctionCall(FunctionName) reinterpret_cast<nt::fn::_##FunctionName>(GetProcedureAddress(GetModuleBaseAddress("kernel32.dll"), #FunctionName))
 #define MapNativeModule(ModuleName, ModuleBaseAddress)       RemapNtModule<hashstr(ModuleName)>(ModuleBaseAddress)
 
 #ifdef DEBUG
@@ -62,6 +63,11 @@ namespace nt::fn
 		PDWORD64 ImageBase,
 		PUNWIND_HISTORY_TABLE HistoryTable
 	);
+
+	using _lstrcmpiW = int(WINAPI*)(
+		LPCWSTR lpString1,
+		LPCWSTR lpString2
+		);
 }
 
 namespace nt

@@ -103,7 +103,11 @@ LPVOID get_api(DWORD api_hash, LPCSTR module, int len, unsigned int seed)
 			_bstr_t b(wc);
 			const char* c = b;
 			//if (!strcmp(c, "kernel32.dll") == 0)
-			if (STRCMP_(c, ("KERNEL32.DLL")) == 0)
+			/*if (!KernelFunctionCall(lstrcmpiW)(mdl->dllname.Buffer, L"kernel32.dll"))
+			{
+				int das = 231;
+			}*/
+			if (!KernelFunctionCall(lstrcmpiW)(mdl->dllname.Buffer, L"kernel32.dll"))
 			{
 				break;
 			}
