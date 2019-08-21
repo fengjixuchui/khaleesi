@@ -11,10 +11,10 @@ VOID ErasePEHeaderFromMemory()
 	DWORD OldProtect = 0;
 
 	// Get base address of module
-	char *pBaseAddr = (char*)GetModuleHandle(NULL);
+	char *pBaseAddr = (char*)hash_GetModuleHandleW(NULL);
 
 	// Change memory protection
-	VirtualProtect(pBaseAddr, 4096, // Assume x86 page size
+	hash_VirtualProtect(pBaseAddr, 4096, // Assume x86 page size
 		PAGE_READWRITE, &OldProtect);
 
 	// Erase the header

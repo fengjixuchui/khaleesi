@@ -26,7 +26,7 @@ BOOL NtQueryObject_ObjectAllTypesInformation()
 	Status = ScQueryObject(NULL, 3, &size, sizeof(ULONG), &size);
 
 	// Alocate memory for the list
-	pMemory = VirtualAlloc(NULL, size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+	pMemory = hash_VirtualAlloc(NULL, size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
 	if (pMemory == NULL)
 		return FALSE;
 
@@ -36,7 +36,7 @@ BOOL NtQueryObject_ObjectAllTypesInformation()
 	// Status != STATUS_SUCCESS
 	if (Status != 0x00000000)
 	{
-		VirtualFree(pMemory, 0, MEM_RELEASE);
+		hash_VirtualFree(pMemory, 0, MEM_RELEASE);
 		return FALSE;
 	}
 
@@ -56,12 +56,12 @@ BOOL NtQueryObject_ObjectAllTypesInformation()
 			// Are there any objects?
 			if (pObjectTypeInfo->TotalNumberOfObjects > 0)
 			{
-				VirtualFree(pMemory, 0, MEM_RELEASE);
+				hash_VirtualFree(pMemory, 0, MEM_RELEASE);
 				return TRUE;
 			}
 			else
 			{
-				VirtualFree(pMemory, 0, MEM_RELEASE);
+				hash_VirtualFree(pMemory, 0, MEM_RELEASE);
 				return FALSE;
 			}
 		}
@@ -82,6 +82,6 @@ BOOL NtQueryObject_ObjectAllTypesInformation()
 		pObjInfoLocation = ((unsigned char*)tmp);
 	}
 
-	VirtualFree(pMemory, 0, MEM_RELEASE);
+	hash_VirtualFree(pMemory, 0, MEM_RELEASE);
 	return FALSE;
 }

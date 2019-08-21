@@ -18,10 +18,10 @@ BOOL MemoryBreakpoints_PageGuard()
 	PVOID pAllocation = NULL; // Get the page size for the system 
 
 	// Retrieves information about the current system.
-	GetSystemInfo(&SystemInfo);
+	hash_GetSystemInfo(&SystemInfo);
 
 	// Allocate memory 
-	pAllocation = VirtualAlloc(NULL, SystemInfo.dwPageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+	pAllocation = hash_VirtualAlloc(NULL, SystemInfo.dwPageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 	if (pAllocation == NULL)
 		return FALSE;
 
@@ -29,7 +29,7 @@ BOOL MemoryBreakpoints_PageGuard()
 	RtlFillMemory(pAllocation, 1, 0xC3);
 
 	// Make the page a guard page         
-	if (VirtualProtect(pAllocation, SystemInfo.dwPageSize, PAGE_EXECUTE_READWRITE | PAGE_GUARD, &OldProtect) == 0)
+	if (hash_VirtualProtect(pAllocation, SystemInfo.dwPageSize, PAGE_EXECUTE_READWRITE | PAGE_GUARD, &OldProtect) == 0)
 		return FALSE;
 
 	__try
@@ -38,10 +38,10 @@ BOOL MemoryBreakpoints_PageGuard()
 	}
 	__except (GetExceptionCode() == STATUS_GUARD_PAGE_VIOLATION ? EXCEPTION_EXECUTE_HANDLER : EXCEPTION_CONTINUE_SEARCH)
 	{
-		VirtualFree(pAllocation, 0, MEM_RELEASE);
+		hash_VirtualFree(pAllocation, 0, MEM_RELEASE);
 		return FALSE;
 	}
 
-	VirtualFree(pAllocation, 0, MEM_RELEASE);
+	hash_VirtualFree(pAllocation, 0, MEM_RELEASE);
 	return TRUE;
 }

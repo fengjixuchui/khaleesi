@@ -160,7 +160,7 @@ BOOL hash_GetModuleHandleExW(DWORD dwFlags,
 DWORD hash_GetModuleFileNameW(HMODULE hModule,
                               LPWSTR lpFilename,
                               DWORD nSize)
-{
+{	
 	const auto lenSeed = 19;
 	const auto _hash = MurmurHash2A("GetModuleFileNameW", lenSeed, lenSeed);
 
@@ -1333,3 +1333,48 @@ ULONG hash_RemoveVectoredExceptionHandler(PVOID Handle)
 
 	return temp_RemoveVectoredExceptionHandler(Handle);
 }
+//
+//int hash_lstrcmpiW(LPCWSTR lpString1, LPCWSTR lpString2)
+//{
+//	const auto lenSeed = 10;
+//	const auto _hash = MurmurHash2A("lstrcmpiW", lenSeed, lenSeed);
+//
+//	temp_lstrcmpiW = static_cast<int(WINAPI*)(LPCWSTR,
+//		LPCWSTR)>(get_api(
+//		_hash, "kernel32.dll", lenSeed, lenSeed));
+//
+//	return temp_lstrcmpiW(lpString1,
+//		lpString2);
+//}
+
+//int hash_WideCharToMultiByte(UINT                               CodePage,
+//	DWORD                              dwFlags,
+//	_In_NLS_string_(cchWideChar)LPCWCH lpWideCharStr,
+//	int                                cchWideChar,
+//	LPSTR                              lpMultiByteStr,
+//	int                                cbMultiByte,
+//	LPCCH                              lpDefaultChar,
+//	LPBOOL                             lpUsedDefaultChar)
+//{
+//	const auto lenSeed = 20;
+//	const auto _hash = MurmurHash2A("WideCharToMultiByte", lenSeed, lenSeed);
+//
+//	temp_WideCharToMultiByte = static_cast<int(WINAPI*)(UINT                              ,
+//		DWORD                              ,
+//		_In_NLS_string_(cchWideChar)LPCWCH ,
+//		int                                ,
+//		LPSTR                              ,
+//		int                                ,
+//		LPCCH                              ,
+//		LPBOOL                             )>(get_api(
+//		_hash, "kernel32.dll", lenSeed, lenSeed));
+//
+//	return temp_WideCharToMultiByte(                               CodePage,
+//		                              dwFlags,
+//		 lpWideCharStr,
+//		                                cchWideChar,
+//		                              lpMultiByteStr,
+//		                                cbMultiByte,
+//		                              lpDefaultChar,
+//		                             lpUsedDefaultChar);
+//}

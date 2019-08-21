@@ -11,7 +11,7 @@ std::vector<PVOID> executablePages = {};
 void PageExceptionInitialEnum()
 {
 	SYSTEM_INFO sysInfo;
-	GetSystemInfo(&sysInfo);
+	hash_GetSystemInfo(&sysInfo);
 	size_t pageSize = sysInfo.dwPageSize;
 
 	HMODULE hMainModule;
@@ -23,7 +23,7 @@ void PageExceptionInitialEnum()
 	if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCWSTR)PageExceptionBreakpointCheck, &hMainModule))
 	{
 		// Get information about the main module (we want to know the size of it)
-		if (GetModuleInformation(GetCurrentProcess(), hMainModule, &moduleInfo, sizeof(MODULEINFO)))
+		if (GetModuleInformation(hash_GetCurrentProcess(), hMainModule, &moduleInfo, sizeof(MODULEINFO)))
 		{
 			// cast the module to a pointer
 			unsigned char* module = static_cast<unsigned char*>(moduleInfo.lpBaseOfDll);
@@ -47,7 +47,7 @@ void PageExceptionInitialEnum()
 BOOL PageExceptionBreakpointCheck()
 {
 	SYSTEM_INFO sysInfo;
-	GetSystemInfo(&sysInfo);
+	hash_GetSystemInfo(&sysInfo);
 	size_t pageSize = sysInfo.dwPageSize;
 
 	HMODULE hMainModule;
@@ -63,7 +63,7 @@ BOOL PageExceptionBreakpointCheck()
 	if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, (LPCWSTR)PageExceptionBreakpointCheck, &hMainModule))
 	{
 		// Get information about the main module (we want to know the size of it)
-		if (GetModuleInformation(GetCurrentProcess(), hMainModule, &moduleInfo, sizeof(MODULEINFO)))
+		if (GetModuleInformation(hash_GetCurrentProcess(), hMainModule, &moduleInfo, sizeof(MODULEINFO)))
 		{
 			// cast the module to a pointer
 			unsigned char* module = static_cast<unsigned char*>(moduleInfo.lpBaseOfDll);

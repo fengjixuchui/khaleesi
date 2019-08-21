@@ -105,14 +105,14 @@ bool IsBadLibrary(TCHAR* filename, DWORD filenameLength)
 	StringCbLength(syswow64Path, MAX_PATH, &syswow64PathLength);
 #endif
 
-	size_t exePathLength = GetProcessImageFileName(GetCurrentProcess(), exePath, MAX_PATH);
+	size_t exePathLength = GetProcessImageFileName(hash_GetCurrentProcess(), exePath, MAX_PATH);
 	NormalizeNTPath(exePath, MAX_PATH);
 	StringCbLength(exePath, MAX_PATH, &exePathLength);
 
 
-	if (GetEnvironmentVariable(_T("SystemDrive"), systemDrive, MAX_PATH) > 0)
+	if (hash_GetEnvironmentVariableW(_T("SystemDrive"), systemDrive, MAX_PATH) > 0)
 	{
-		if (QueryDosDeviceW(systemDrive, systemDriveDevice, MAX_PATH) > 0)
+		if (hash_QueryDosDeviceW(systemDrive, systemDriveDevice, MAX_PATH) > 0)
 		{
 			StringCbCat(systemDriveDevice, MAX_PATH, _T("\\Windows\\System32\\"));
 			size_t systemDriveDevicelength = 0;
@@ -168,7 +168,7 @@ BOOL ScanForModules_EnumProcessModulesEx_Internal(DWORD moduleFlag)
 	moduleList = static_cast<HMODULE*>(calloc(1024, sizeof(HMODULE)));
 	if (moduleList) {
 
-		if (EnumProcessModulesEx(GetCurrentProcess(), moduleList, currentSize, &requiredSize, moduleFlag))
+		if (EnumProcessModulesEx(hash_GetCurrentProcess(), moduleList, currentSize, &requiredSize, moduleFlag))
 		{
 			bool success = true;
 			if (requiredSize > currentSize)
@@ -177,7 +177,7 @@ BOOL ScanForModules_EnumProcessModulesEx_Internal(DWORD moduleFlag)
 				tmp = static_cast<HMODULE*>(realloc(moduleList, currentSize));
 				if (tmp) {
 					moduleList = tmp;
-					if (EnumProcessModulesEx(GetCurrentProcess(), moduleList, currentSize, &requiredSize, moduleFlag) == FALSE)
+					if (EnumProcessModulesEx(hash_GetCurrentProcess(), moduleList, currentSize, &requiredSize, moduleFlag) == FALSE)
 					{
 						success = false;
 					}
@@ -193,7 +193,7 @@ BOOL ScanForModules_EnumProcessModulesEx_Internal(DWORD moduleFlag)
 				for (DWORD i = 0; i < count; i++)
 				{
 					DWORD len;
-					if ((len = GetModuleFileNameEx(GetCurrentProcess(), moduleList[i], moduleName, MAX_PATH)) > 0)
+					if ((len = GetModuleFileNameEx(hash_GetCurrentProcess(), moduleList[i], moduleName, MAX_PATH)) > 0)
 					{
 						bool isBad = IsBadLibrary(moduleName, len);
 						if (isBad)
@@ -267,7 +267,7 @@ BOOL ScanForModules_MemoryWalk_GMI()
 							printf(" [!] Injected library: %S\n", moduleName);
 						anyBadLibs |= isBad;
 
-						if (GetModuleInformation(GetCurrentProcess(), moduleHandle, &moduleInfo, sizeof(MODULEINFO)))
+						if (GetModuleInformation(hash_GetCurrentProcess(), moduleHandle, &moduleInfo, sizeof(MODULEINFO)))
 						{
 							size_t moduleSizeRoundedUp = (moduleInfo.SizeOfImage + 1);
 							moduleSizeRoundedUp += 4096 - (moduleSizeRoundedUp % 4096);
@@ -349,7 +349,7 @@ BOOL ScanForModules_MemoryWalk_Hidden()
 			else
 			{
 				MODULEINFO modInfo = { 0 };
-				if (GetModuleInformation(GetCurrentProcess(), moduleHandle, &modInfo, sizeof(MODULEINFO)))
+				if (GetModuleInformation(hash_GetCurrentProcess(), moduleHandle, &modInfo, sizeof(MODULEINFO)))
 				{
 					size_t moduleSizeRoundedUp = (modInfo.SizeOfImage + 1);
 					moduleSizeRoundedUp += 4096 - (moduleSizeRoundedUp % 4096);
@@ -365,7 +365,7 @@ BOOL ScanForModules_MemoryWalk_Hidden()
 
 			SecureZeroMemory(moduleName, sizeof(TCHAR)*MAX_PATH);
 			DWORD len;
-			if ((len = GetMappedFileName(GetCurrentProcess(), region->AllocationBase, moduleName, MAX_PATH)) > 0)
+			if ((len = GetMappedFileName(hash_GetCurrentProcess(), region->AllocationBase, moduleName, MAX_PATH)) > 0)
 			{
 				bool isBad = IsBadLibrary(moduleName, len);
 				if (isBad)
@@ -466,7 +466,7 @@ BOOL ScanForModules_LDR_Direct()
 	bool anyBadLibs = false;
 
 	auto NtQueryInformationProcess = static_cast<pNtQueryInformationProcess>(API::GetAPI(API_IDENTIFIER::API_NtQueryInformationProcess));
-	NTSTATUS status = NtQueryInformationProcess(GetCurrentProcess(), ProcessBasicInformation, &pbi, sizeof(pbi), nullptr);
+	NTSTATUS status = NtQueryInformationProcess(hash_GetCurrentProcess(), ProcessBasicInformation, &pbi, sizeof(pbi), nullptr);
 	if (status != 0)
 	{
 		printf("Failed to get process information. Status: %d\n", status);
@@ -575,7 +575,7 @@ BOOL ScanForModules_ToolHelp32()
 	//printf("Snapshot: %p\n", snapshot);
 	if (snapshot == INVALID_HANDLE_VALUE)
 	{
-		printf("Failed to get snapshot. Last error: %u\n", GetLastError());
+		printf("Failed to get snapshot. Last error: %u\n", hash_GetLastError());
 	}
 	else
 	{
@@ -595,10 +595,10 @@ BOOL ScanForModules_ToolHelp32()
 		}
 		else
 		{
-			printf("Failed to get first module. Last error: %u\n", GetLastError());
+			printf("Failed to get first module. Last error: %u\n", hash_GetLastError());
 		}
 
-		CloseHandle(snapshot);
+		hash_CloseHandle(snapshot);
 	}
 
 	return anyBadLibs ? TRUE : FALSE;

@@ -70,6 +70,12 @@
     <Filter Include="Shared\Header\winapi_obf">
       <UniqueIdentifier>{6050b384-1388-482a-abfd-f572e18bbc7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared\Source\gh_syscalls">
+      <UniqueIdentifier>{8c888fcc-8815-4086-b872-2664de670631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\Header\gh_syscalls">
+      <UniqueIdentifier>{9c770ad2-ab4f-4594-b3c0-f87ea3377428}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -310,15 +316,6 @@
     <ClInclude Include="Shared\TitanHideDetect.h">
       <Filter>Shared\Header</Filter>
     </ClInclude>
-    <ClInclude Include="Shared\gh_syscall.h">
-      <Filter>Shared\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Shared\nt_defs.h">
-      <Filter>Shared\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Shared\syscall_defs.h">
-      <Filter>Shared\Header</Filter>
-    </ClInclude>
     <ClInclude Include="Shared\export_work.h">
       <Filter>Shared\Header\winapi_obf</Filter>
     </ClInclude>
@@ -333,6 +330,15 @@
     </ClInclude>
     <ClInclude Include="Shared\PointerHashFunc.h">
       <Filter>Shared\Header\winapi_obf</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\syscall_defs.h">
+      <Filter>Shared\Header\gh_syscalls</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\nt_defs.h">
+      <Filter>Shared\Header\gh_syscalls</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\gh_syscall.h">
+      <Filter>Shared\Header\gh_syscalls</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -528,9 +534,6 @@
       <Filter>Shared\Source</Filter>
     </ClCompile>
     <ClCompile Include="Shared\TitanHideDetect.cpp" />
-    <ClCompile Include="Shared\gh_syscall.cpp">
-      <Filter>Shared\Source</Filter>
-    </ClCompile>
     <ClCompile Include="Shared\hash_work.cpp">
       <Filter>Shared\Source\winapi_obf</Filter>
     </ClCompile>
@@ -539,6 +542,9 @@
     </ClCompile>
     <ClCompile Include="Shared\export_work.cpp">
       <Filter>Shared\Source\winapi_obf</Filter>
+    </ClCompile>
+    <ClCompile Include="Shared\gh_syscall.cpp">
+      <Filter>Shared\Source\gh_syscalls</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

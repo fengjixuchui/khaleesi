@@ -133,7 +133,7 @@ BOOL timing_sleep_loop (UINT delayInMillis)
 	/* Example: we want to sleep 300 seeconds, then we can sleep
 	0.3s for 1000 times which is like: 300 seconds = 5 minues */
 	for (int i = 0; i < 1000; i++) {
-		Sleep(delayInMillis_divided);
+		hash_Sleep(delayInMillis_divided);
 	}
 
 	// Malicious code goes here
@@ -166,7 +166,7 @@ BOOL rdtsc_diff_locky()
 		tsc2 = __rdtsc();
 
 		// Waste some cycles - slightly longer than GetProcessHeap() on bare metal
-		CloseHandle(0);
+		hash_CloseHandle(0);
 
 		tsc3 = __rdtsc();
 
@@ -228,7 +228,7 @@ BOOL timing_IcmpSendEcho(UINT delayInMillis)
 	hIcmpFile = IcmpCreateFile();
 	if (hIcmpFile == INVALID_HANDLE_VALUE) {
 		printf("\tUnable to open handle.\n");
-		printf("IcmpCreatefile returned error: %u\n", GetLastError());
+		printf("IcmpCreatefile returned error: %u\n", hash_GetLastError());
 		return TRUE;
 	}
 
@@ -281,7 +281,7 @@ BOOL timing_CreateWaitableTimer(UINT delayInMillis)
 	}
 
 	CancelWaitableTimer(hTimer);
-	CloseHandle(hTimer);
+	hash_CloseHandle(hTimer);
 	return bResult;
 }
 
@@ -331,7 +331,7 @@ BOOL timing_CreateTimerQueueTimer(UINT delayInMillis)
 	// Delete all timers in the timer queue.
 	DeleteTimerQueueEx(hTimerQueue, NULL);
 
-	CloseHandle(g_hEventCTQT);
+	hash_CloseHandle(g_hEventCTQT);
 
 	return bResult;
 }

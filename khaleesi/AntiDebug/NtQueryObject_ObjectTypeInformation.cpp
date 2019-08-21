@@ -32,7 +32,7 @@ BOOL NtQueryObject_ObjectTypeInformation()
 		Status = ScQueryObject(DebugObjectHandle, ObjectTypeInformation, ObjectInformation, sizeof(memory), 0);
 
 		// Make sure to not screw up later checks
-		CloseHandle(DebugObjectHandle);
+		hash_CloseHandle(DebugObjectHandle);
 
 
 		if (Status >= 0)

@@ -20,16 +20,16 @@ BOOL VirtualAlloc_WriteWatch_BufferOnly()
 	DWORD granularity;
 	BOOL result = FALSE;
 
-	PVOID* addresses = static_cast<PVOID*>(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
+	PVOID* addresses = static_cast<PVOID*>(hash_VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
 	if (addresses == NULL) {
-		printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+		printf("VirtualAlloc failed. Last error: %u\n", hash_GetLastError());
 		return result;
 	}
 
-	int* buffer = static_cast<int*>(VirtualAlloc(NULL, 4096 * 4096, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
+	int* buffer = static_cast<int*>(hash_VirtualAlloc(NULL, 4096 * 4096, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
 	if (buffer == NULL) {
-		VirtualFree(addresses, 0, MEM_RELEASE);
-		printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+		hash_VirtualFree(addresses, 0, MEM_RELEASE);
+		printf("VirtualAlloc failed. Last error: %u\n", hash_GetLastError());
 		return result;
 	}
 
@@ -39,7 +39,7 @@ BOOL VirtualAlloc_WriteWatch_BufferOnly()
 	hitCount = 4096;
 	if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
 	{
-		printf("GetWriteWatch failed. Last error: %u\n", GetLastError());
+		printf("GetWriteWatch failed. Last error: %u\n", hash_GetLastError());
 		result = FALSE;
 	}
 	else
@@ -48,8 +48,8 @@ BOOL VirtualAlloc_WriteWatch_BufferOnly()
 		result = hitCount != 1;
 	}
 
-	VirtualFree(addresses, 0, MEM_RELEASE);
-	VirtualFree(buffer, 0, MEM_RELEASE);
+	hash_VirtualFree(addresses, 0, MEM_RELEASE);
+	hash_VirtualFree(buffer, 0, MEM_RELEASE);
 
 	return result;
 }
@@ -60,16 +60,16 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 	DWORD granularity;
 	BOOL result = FALSE, error = FALSE;
 
-	PVOID* addresses = static_cast<PVOID*>(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
+	PVOID* addresses = static_cast<PVOID*>(hash_VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
 	if (addresses == NULL) {
-		printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+		printf("VirtualAlloc failed. Last error: %u\n", hash_GetLastError());
 		return result;
 	}
 
-	int* buffer = static_cast<int*>(VirtualAlloc(NULL, 4096 * 4096, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
+	int* buffer = static_cast<int*>(hash_VirtualAlloc(NULL, 4096 * 4096, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
 	if (buffer == NULL) {
-		VirtualFree(addresses, 0, MEM_RELEASE);
-		printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+		hash_VirtualFree(addresses, 0, MEM_RELEASE);
+		printf("VirtualAlloc failed. Last error: %u\n", hash_GetLastError());
 		return result;
 	}
 
@@ -82,7 +82,7 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 		result = FALSE;
 		error = TRUE;
 	}
-	if (GetEnvironmentVariable(L"%ThisIsAnInvalidEnvironmentVariableName?[]<>@\\;*!-{}#:/~%", (LPWSTR)buffer, 4096*4096) != FALSE)
+	if (hash_GetEnvironmentVariableW(L"%ThisIsAnInvalidEnvironmentVariableName?[]<>@\\;*!-{}#:/~%", (LPWSTR)buffer, 4096*4096) != FALSE)
 	{
 		printf("GetEnvironmentVariable succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
@@ -100,13 +100,13 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 		result = FALSE;
 		error = TRUE;
 	}
-	if (ReadProcessMemory(INVALID_HANDLE_VALUE, (LPCVOID)0x69696969, buffer, 4096, NULL) != FALSE)
+	if (hash_ReadProcessQMemory(INVALID_HANDLE_VALUE, (LPCVOID)0x69696969, buffer, 4096, NULL) != FALSE)
 	{
 		printf("ReadProcessMemory succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
 		error = TRUE;
 	}
-	if (GetThreadContext(INVALID_HANDLE_VALUE, (LPCONTEXT)buffer) != FALSE)
+	if (hash_GetThreadContext(INVALID_HANDLE_VALUE, (LPCONTEXT)buffer) != FALSE)
 	{
 		printf("GetThreadContext succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
@@ -126,7 +126,7 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 		hitCount = 4096;
 		if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
 		{
-			printf("GetWriteWatch failed. Last error: %u\n", GetLastError());
+			printf("GetWriteWatch failed. Last error: %u\n", hash_GetLastError());
 			result = FALSE;
 		}
 		else
@@ -141,8 +141,8 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 		printf("Write watch API check skipped, ignore the result as it is inconclusive.\n");
 	}
 
-	VirtualFree(addresses, 0, MEM_RELEASE);
-	VirtualFree(buffer, 0, MEM_RELEASE);
+	hash_VirtualFree(addresses, 0, MEM_RELEASE);
+	hash_VirtualFree(buffer, 0, MEM_RELEASE);
 
 	return result;
 }
@@ -153,16 +153,16 @@ BOOL VirtualAlloc_WriteWatch_IsDebuggerPresent()
 	DWORD granularity;
 	BOOL result = FALSE;
 
-	PVOID* addresses = static_cast<PVOID*>(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
+	PVOID* addresses = static_cast<PVOID*>(hash_VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
 	if (addresses == NULL) {
-		printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+		printf("VirtualAlloc failed. Last error: %u\n", hash_GetLastError());
 		return result;
 	}
 
-	int* buffer = static_cast<int*>(VirtualAlloc(NULL, 4096 * 4096, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
+	int* buffer = static_cast<int*>(hash_VirtualAlloc(NULL, 4096 * 4096, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_READWRITE));
 	if (buffer == NULL) {
-		VirtualFree(addresses, 0, MEM_RELEASE);
-		printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+		hash_VirtualFree(addresses, 0, MEM_RELEASE);
+		printf("VirtualAlloc failed. Last error: %u\n", hash_GetLastError());
 		return result;
 	}
 
@@ -171,7 +171,7 @@ BOOL VirtualAlloc_WriteWatch_IsDebuggerPresent()
 	hitCount = 4096;
 	if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
 	{
-		printf("GetWriteWatch failed. Last error: %u\n", GetLastError());
+		printf("GetWriteWatch failed. Last error: %u\n", hash_GetLastError());
 		result = FALSE;
 	}
 	else
@@ -180,8 +180,8 @@ BOOL VirtualAlloc_WriteWatch_IsDebuggerPresent()
 		result = (hitCount != 1) | (buffer[0] == TRUE);
 	}
 
-	VirtualFree(addresses, 0, MEM_RELEASE);
-	VirtualFree(buffer, 0, MEM_RELEASE);
+	hash_VirtualFree(addresses, 0, MEM_RELEASE);
+	hash_VirtualFree(buffer, 0, MEM_RELEASE);
 
 	return result;
 }
@@ -192,16 +192,16 @@ BOOL VirtualAlloc_WriteWatch_CodeWrite()
 	DWORD granularity;
 	BOOL result = FALSE;
 
-	PVOID* addresses = static_cast<PVOID*>(VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
+	PVOID* addresses = static_cast<PVOID*>(hash_VirtualAlloc(NULL, 4096 * sizeof(PVOID), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE));
 	if (addresses == NULL) {
-		printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+		printf("VirtualAlloc failed. Last error: %u\n", hash_GetLastError());
 		return result;
 	}
 
-	byte* buffer = static_cast<byte*>(VirtualAlloc(NULL, 4096 * 4096, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_EXECUTE_READWRITE));
+	byte* buffer = static_cast<byte*>(hash_VirtualAlloc(NULL, 4096 * 4096, MEM_RESERVE | MEM_COMMIT | MEM_WRITE_WATCH, PAGE_EXECUTE_READWRITE));
 	if (buffer == NULL) {
-		VirtualFree(addresses, 0, MEM_RELEASE);
-		printf("VirtualAlloc failed. Last error: %u\n", GetLastError());
+		hash_VirtualFree(addresses, 0, MEM_RELEASE);
+		printf("VirtualAlloc failed. Last error: %u\n", hash_GetLastError());
 		return result;
 	}
 	
@@ -280,7 +280,7 @@ BOOL VirtualAlloc_WriteWatch_CodeWrite()
 		hitCount = 4096;
 		if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
 		{
-			printf("GetWriteWatch failed. Last error: %u\n", GetLastError());
+			printf("GetWriteWatch failed. Last error: %u\n", hash_GetLastError());
 			result = FALSE;
 		}
 		else
@@ -289,8 +289,8 @@ BOOL VirtualAlloc_WriteWatch_CodeWrite()
 		}
 	}
 
-	VirtualFree(addresses, 0, MEM_RELEASE);
-	VirtualFree(buffer, 0, MEM_RELEASE);
+	hash_VirtualFree(addresses, 0, MEM_RELEASE);
+	hash_VirtualFree(buffer, 0, MEM_RELEASE);
 
 	return result;
 }

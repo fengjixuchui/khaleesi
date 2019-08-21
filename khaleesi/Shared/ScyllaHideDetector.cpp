@@ -23,14 +23,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtYieldExecution\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -61,14 +61,14 @@ void ntdll_unhooking()
 			log(xorstr_("[DETECTED] NtSetInformationThread\r\n"));
 
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -98,14 +98,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtSetInformationProcess\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -135,14 +135,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtQuerySystemInformation\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -172,14 +172,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtQueryInformationProcess\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -209,14 +209,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtQueryObject\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -246,14 +246,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtCreateThreadEx\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -283,14 +283,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtSetDebugFilterState\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -320,14 +320,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtClose\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -357,14 +357,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtQueryPerformanceCounter\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -394,14 +394,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtGetContextThread\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -431,14 +431,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtSetContextThread\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -479,14 +479,14 @@ void ntdll_unhooking()
 		{
 			log(xorstr_("[DETECTED] NtQuerySystemTime\r\n"));
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
 			result = RtlCompareMemory(hooked_func, original_func, func_size);
 			if (result == func_size)
 			{
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -522,7 +522,7 @@ void kernelbase_unhooking()
 		if (static_cast<int>(result) != func_size)
 		{
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
@@ -531,7 +531,7 @@ void kernelbase_unhooking()
 			{
 				log(xorstr_("[DETECTED] GetTickCount\r\n"));
 
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -560,7 +560,7 @@ void kernelbase_unhooking()
 		if (static_cast<int>(result) != func_size)
 		{
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
@@ -569,7 +569,7 @@ void kernelbase_unhooking()
 			{
 				log(xorstr_("[DETECTED] GetTickCount64\r\n"));
 
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -598,7 +598,7 @@ void kernelbase_unhooking()
 		if (static_cast<int>(result) != func_size)
 		{
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
@@ -607,7 +607,7 @@ void kernelbase_unhooking()
 			{
 				log(xorstr_("[DETECTED] OutputDebugStringA\r\n"));
 
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -636,7 +636,7 @@ void kernelbase_unhooking()
 		if (static_cast<int>(result) != func_size)
 		{
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
@@ -645,7 +645,7 @@ void kernelbase_unhooking()
 			{
 				log(xorstr_("[DETECTED] GetLocalTime\r\n"));
 
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else
@@ -674,7 +674,7 @@ void kernelbase_unhooking()
 		if (static_cast<int>(result) != func_size)
 		{
 			DWORD oldprotect = 0;
-			VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
+			hash_VirtualProtect(hooked_func, func_size, PAGE_EXECUTE_READWRITE, &oldprotect);
 
 			RtlCopyMemory(hooked_func, original_func, func_size);
 
@@ -683,7 +683,7 @@ void kernelbase_unhooking()
 			{
 				log(xorstr_("[DETECTED] GetSystemTime\r\n"));
 
-				VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
+				hash_VirtualProtect(hooked_func, func_size, oldprotect, &oldprotect);
 			}
 		}
 		else

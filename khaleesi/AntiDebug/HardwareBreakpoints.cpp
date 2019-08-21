@@ -15,7 +15,7 @@ BOOL HardwareBreakpoints()
 
 	// This structure is key to the function and is the 
 	// medium for detection and removal
-	PCONTEXT ctx = PCONTEXT(VirtualAlloc(NULL, sizeof(CONTEXT), MEM_COMMIT, PAGE_READWRITE));
+	PCONTEXT ctx = PCONTEXT(hash_VirtualAlloc(NULL, sizeof(CONTEXT), MEM_COMMIT, PAGE_READWRITE));
 
 	if (ctx) {
 
@@ -26,7 +26,7 @@ BOOL HardwareBreakpoints()
 		ctx->ContextFlags = CONTEXT_DEBUG_REGISTERS;
 
 		// Get the registers
-		if (GetThreadContext(GetCurrentThread(), ctx)) {
+		if (hash_GetThreadContext(GetCurrentThread(), ctx)) {
 
 			// Now we can check for hardware breakpoints, its not 
 			// necessary to check Dr6 and Dr7, however feel free to
@@ -34,7 +34,7 @@ BOOL HardwareBreakpoints()
 				bResult = TRUE;
 		}
 
-		VirtualFree(ctx, 0, MEM_RELEASE);
+		hash_VirtualFree(ctx, 0, MEM_RELEASE);
 	}
 
 	return bResult;

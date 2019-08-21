@@ -36,7 +36,7 @@ BOOL SetWindowsHooksEx_Injection()
 	
 	/* Get 'MyProc' address */
 	_tprintf(_T("\t[+] Looking for 'MyProc' in our dll\n"));
-	 myFunctionAddress = (HOOKPROC)GetProcAddress(hOurDll, "MyProc");
+	 myFunctionAddress = (HOOKPROC)hash_GetProcAddress(hOurDll, "MyProc");
 	if (myFunctionAddress == NULL) {
 		print_last_error(_T("GetProcAddress"));
 		return FALSE;

@@ -86,7 +86,7 @@ BOOL get_services(_In_ SC_HANDLE hServiceManager, _In_ DWORD serviceType, _Out_ 
 			return TRUE;
 		}
 
-		DWORD lastError = GetLastError();
+		DWORD lastError = hash_GetLastError();
 		if (lastError == ERROR_MORE_DATA)
 		{
 			// we didn't get all the services, so we'll just re-enumerate all to make things easy

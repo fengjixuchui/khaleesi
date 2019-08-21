@@ -42,7 +42,7 @@ BOOL ProcessJob()
 				{
 
 					// find the process name for this job process
-					HANDLE hJobProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, (DWORD)processId);
+					HANDLE hJobProcess = hash_OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, (DWORD)processId);
 					if (hJobProcess != NULL)
 					{
 						const int processNameBufferSize = 4096;
@@ -63,7 +63,7 @@ BOOL ProcessJob()
 
 							free(processName);
 						}
-						CloseHandle(hJobProcess);
+						hash_CloseHandle(hJobProcess);
 					}
 				}
 			}

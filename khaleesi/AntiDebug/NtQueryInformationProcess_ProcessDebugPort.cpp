@@ -26,7 +26,7 @@ BOOL NtQueryInformationProcess_ProcessDebugPort ()
 	DWORD32 IsRemotePresent = 0;
 #endif
 
-	Status = NtQueryInfoProcess(GetCurrentProcess(), ProcessDbgPort, &IsRemotePresent, dProcessInformationLength, NULL);
+	Status = NtQueryInfoProcess(hash_GetCurrentProcess(), ProcessDbgPort, &IsRemotePresent, dProcessInformationLength, NULL);
 	if(Status == 0x00000000 && IsRemotePresent != 0)
 		return TRUE;
 	else 

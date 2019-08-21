@@ -34,24 +34,24 @@ BOOL RtlCreateUserThread_Injection()
 	_tprintf(_T("\t[+] Getting proc id: %u\n"), dwProcessId);
 
 	/* Obtain a handle the process */
-	hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwProcessId);
+	hProcess = hash_OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwProcessId);
 	if (hProcess == NULL) {
 		print_last_error(_T("OpenProcess"));
 		return FALSE;
 	}
 
 	/* Get module handle of ntdll */
-	hNtdll = GetModuleHandle(_T("ntdll.dll"));
+	hNtdll = hash_GetModuleHandleW(_T("ntdll.dll"));
 	if (hNtdll == NULL) {
 		print_last_error(_T("GetModuleHandle"));
 		goto Cleanup;
 	}
 
 	/* Get routine pointer, failure is not critical */
-	RtlNtStatusToDosErrorPtr = (pRtlNtStatusToDosError)GetProcAddress(hNtdll, "RtlNtStatusToDosError");
+	RtlNtStatusToDosErrorPtr = (pRtlNtStatusToDosError)hash_GetProcAddress(hNtdll, "RtlNtStatusToDosError");
 
 	/* Obtain a handle to kernel32 */
-	hKernel32 = GetModuleHandle(_T("kernel32.dll"));
+	hKernel32 = hash_GetModuleHandleW(_T("kernel32.dll"));
 	if (hKernel32 == NULL) {
 		print_last_error(_T("GetModuleHandle"));
 		goto Cleanup;
@@ -59,7 +59,7 @@ BOOL RtlCreateUserThread_Injection()
 
 	// Get the address RtlCreateUserThread
 	_tprintf(_T("\t[+] Looking for RtlCreateUserThread in ntdll\n"));
-	RtlCreateUserThread = (pRtlCreateUserThread)GetProcAddress(hNtdll, "RtlCreateUserThread");
+	RtlCreateUserThread = (pRtlCreateUserThread)hash_GetProcAddress(hNtdll, "RtlCreateUserThread");
 	if (RtlCreateUserThread == NULL) {
 		print_last_error(_T("GetProcAddress"));
 		goto Cleanup;
@@ -68,7 +68,7 @@ BOOL RtlCreateUserThread_Injection()
 
 	/* Get LoadLibrary address */
 	_tprintf(_T("\t[+] Looking for LoadLibrary in kernel32\n"));
-	LoadLibraryAddress = GetProcAddress(hKernel32, "LoadLibraryW");
+	LoadLibraryAddress = hash_GetProcAddress(hKernel32, "LoadLibraryW");
 	if (LoadLibraryAddress == NULL) {
 		print_last_error(_T("GetProcAddress"));
 		goto Cleanup;
@@ -84,7 +84,7 @@ BOOL RtlCreateUserThread_Injection()
 
 	/* Allocate memory into the remote process */
 	_tprintf(_T("\t[+] Allocating space for the path of the DLL\n"));
-	lpBaseAddress = VirtualAllocEx(hProcess, NULL, dwSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	lpBaseAddress = hash_VirtualAllocEx(hProcess, NULL, dwSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	if (lpBaseAddress == NULL) {
 		print_last_error(_T("VirtualAllocEx"));
 		goto Cleanup;
@@ -101,17 +101,17 @@ BOOL RtlCreateUserThread_Injection()
 	Status = RtlCreateUserThread(hProcess, NULL, 0, 0, 0, 0, LoadLibraryAddress, lpBaseAddress, &hRemoteThread, NULL);
 	if (!NT_SUCCESS(Status)) {
 		if (RtlNtStatusToDosErrorPtr) {
-			SetLastError(RtlNtStatusToDosErrorPtr(Status));
+			hash_SetLastError(RtlNtStatusToDosErrorPtr(Status));
 		}
 		else {
-			SetLastError(ERROR_INTERNAL_ERROR);
+			hash_SetLastError(ERROR_INTERNAL_ERROR);
 		}
 		print_last_error(_T("RtlCreateUserThread"));
 	}
 	else {
 		_tprintf(_T("Remote thread has been created successfully ...\n"));
 		WaitForSingleObject(hRemoteThread, INFINITE);
-		CloseHandle(hRemoteThread);
+		hash_CloseHandle(hRemoteThread);
 
 		/* assign function success return result */
 		bStatus = TRUE;
@@ -119,9 +119,9 @@ BOOL RtlCreateUserThread_Injection()
 Cleanup:
 	/* hProcess is always initialized here. */
 	if (lpBaseAddress) {
-		VirtualFreeEx(hProcess, lpBaseAddress, 0, MEM_RELEASE);
+		hash_VirtualFreeEx(hProcess, lpBaseAddress, 0, MEM_RELEASE);
 	}
-	CloseHandle(hProcess);
+	hash_CloseHandle(hProcess);
 
 	return bStatus;
 }

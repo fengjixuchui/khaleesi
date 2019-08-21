@@ -23,7 +23,7 @@ BOOL NtYieldExecutionAPI()
 
 	for (int i = 0; i < 0x20; i++)
 	{
-		Sleep(0xf);
+		hash_Sleep(0xf);
 
 		if (ScYieldExecution() != STATUS_NO_YIELD_PERFORMED)
 			iDebugged++;

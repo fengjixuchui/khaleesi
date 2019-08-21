@@ -60,7 +60,7 @@ BOOL g_isWow64;
 BOOL InitWow64Ext()
 {
 
-	IsWow64Process(GetCurrentProcess(), &g_isWow64);
+	IsWow64Process(hash_GetCurrentProcess(), &g_isWow64);
 	g_heap = GetProcessHeap();
 
 	return TRUE;
@@ -401,9 +401,9 @@ VOID __cdecl SetLastErrorFromX64Call(DWORD64 status)
 
 	if ((nullptr == RtlNtStatusToDosError) || (nullptr == RtlSetLastWin32Error))
 	{
-		HMODULE ntdll = GetModuleHandleW(L"ntdll.dll");
-		RtlNtStatusToDosError = (RtlNtStatusToDosError_t)GetProcAddress(ntdll, "RtlNtStatusToDosError");
-		RtlSetLastWin32Error = (RtlSetLastWin32Error_t)GetProcAddress(ntdll, "RtlSetLastWin32Error");
+		HMODULE ntdll = hash_GetModuleHandleW(L"ntdll.dll");
+		RtlNtStatusToDosError = (RtlNtStatusToDosError_t)hash_GetProcAddress(ntdll, "RtlNtStatusToDosError");
+		RtlSetLastWin32Error = (RtlSetLastWin32Error_t)hash_GetProcAddress(ntdll, "RtlSetLastWin32Error");
 	}
 	
 	if ((nullptr != RtlNtStatusToDosError) && (nullptr != RtlSetLastWin32Error))

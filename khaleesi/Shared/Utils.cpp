@@ -8,7 +8,7 @@ BOOL IsWoW64()
 	if (API::IsAvailable(API_IDENTIFIER::API_IsWow64Process))
 	{
 		auto fnIsWow64Process = static_cast<pIsWow64Process>(API::GetAPI(API_IDENTIFIER::API_IsWow64Process));
-		if (!fnIsWow64Process(GetCurrentProcess(), &bIsWow64))
+		if (!fnIsWow64Process(hash_GetCurrentProcess(), &bIsWow64))
 		{
 			// handle error
 		}
@@ -26,7 +26,7 @@ PVOID64 GetPeb64()
 		PROCESS_BASIC_INFORMATION_WOW64 pbi64 = {};
 
 		auto NtWow64QueryInformationProcess64 = static_cast<pNtWow64QueryInformationProcess64>(API::GetAPI(API_IDENTIFIER::API_NtWow64QueryInformationProcess64));
-		NTSTATUS status = NtWow64QueryInformationProcess64(GetCurrentProcess(), ProcessBasicInformation, &pbi64, sizeof(pbi64), nullptr);
+		NTSTATUS status = NtWow64QueryInformationProcess64(hash_GetCurrentProcess(), ProcessBasicInformation, &pbi64, sizeof(pbi64), nullptr);
 		if ( NT_SUCCESS ( status ) )
 			peb64 = pbi64.PebBaseAddress;
 	}
@@ -218,7 +218,7 @@ DWORD GetProccessIDByName(TCHAR* szProcessNameTarget)
 	for (int i = 0; i < cProcesses; i++)
 	{
 		// Get a handle to the process.
-		HANDLE hProcess = OpenProcess(PROCESS_VM_READ | PROCESS_QUERY_INFORMATION, FALSE, processIds[i]);
+		HANDLE hProcess = hash_OpenProcess(PROCESS_VM_READ | PROCESS_QUERY_INFORMATION, FALSE, processIds[i]);
 
 		// Get the process name.
 		if (hProcess != NULL)
@@ -226,7 +226,7 @@ DWORD GetProccessIDByName(TCHAR* szProcessNameTarget)
 			EnumProcessModules(hProcess, &hMod, sizeof(hMod), &cbNeeded);
 			GetModuleBaseName(hProcess, hMod, szProcessName, sizeof(szProcessName) / sizeof(TCHAR));
 
-			CloseHandle(hProcess);
+			hash_CloseHandle(hProcess);
 
 			// Make the comparaison
 			if (StrCmpI(szProcessName, szProcessNameTarget) == 0)
@@ -268,7 +268,7 @@ BOOL SetPrivilege(
 		&cbPrevious
 	);
 
-	if (GetLastError() != ERROR_SUCCESS) return FALSE;
+	if (hash_GetLastError() != ERROR_SUCCESS) return FALSE;
 
 	// 
 	// second pass.  set privilege based on previous setting
@@ -286,7 +286,7 @@ BOOL SetPrivilege(
 
 	AdjustTokenPrivileges(hToken, FALSE, &tpPrevious, cbPrevious, NULL, NULL);
 
-	if (GetLastError() != ERROR_SUCCESS) return FALSE;
+	if (hash_GetLastError() != ERROR_SUCCESS) return FALSE;
 
 	return TRUE;
 }
@@ -297,7 +297,7 @@ BOOL SetDebugPrivileges(VOID) {
 	HANDLE hToken = NULL;
 	BOOL bResult = FALSE;
 
-	if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken)) {
+	if (!OpenProcessToken(hash_GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken)) {
 		print_last_error(_T("OpenProcessToken"));
 		return bResult;
 	}
@@ -316,7 +316,7 @@ BOOL SetDebugPrivileges(VOID) {
 		print_last_error(_T("LookupPrivilegeValue"));
 	}
 
-	CloseHandle(hToken);
+	hash_CloseHandle(hToken);
 	return bResult;
 }
 
@@ -345,7 +345,7 @@ DWORD GetProcessIdFromName(LPCTSTR szProcessName)
 	{
 		// Cleanup the mess
 		print_last_error(_T("Process32First"));
-		CloseHandle(hSnapshot);
+		hash_CloseHandle(hSnapshot);
 		return 0;
 	}
 
@@ -353,7 +353,7 @@ DWORD GetProcessIdFromName(LPCTSTR szProcessName)
 	if (StrCmpI(pe32.szExeFile, szProcessName) == 0)
 	{
 		// Cleanup the mess
-		CloseHandle(hSnapshot);
+		hash_CloseHandle(hSnapshot);
 		return pe32.th32ProcessID;
 	}
 
@@ -365,7 +365,7 @@ DWORD GetProcessIdFromName(LPCTSTR szProcessName)
 		if (StrCmpI(pe32.szExeFile, szProcessName) == 0)
 		{
 			// Cleanup the mess
-			CloseHandle(hSnapshot);
+			hash_CloseHandle(hSnapshot);
 			return pe32.th32ProcessID;
 		}
 	}
@@ -373,7 +373,7 @@ DWORD GetProcessIdFromName(LPCTSTR szProcessName)
 	// If we made it this far there wasn't a match, so we'll return 0
 	// _tprintf(_T("\n-> Process %s is not running on this system ..."), szProcessName);
 
-	CloseHandle(hSnapshot);
+	hash_CloseHandle(hSnapshot);
 	return 0;
 }
 
@@ -394,8 +394,8 @@ DWORD GetMainThreadId(DWORD pid)
 						if (!hThread)
 							print_last_error(_T("OpenThread"));
 						else {
-							CloseHandle(hThread);
-							CloseHandle(h);
+							hash_CloseHandle(hThread);
+							hash_CloseHandle(h);
 							return te.th32ThreadID;
 						}
 					}
@@ -403,7 +403,7 @@ DWORD GetMainThreadId(DWORD pid)
 
 			} while (Thread32Next(h, &te));
 		}
-		CloseHandle(h);
+		hash_CloseHandle(h);
 	}
 
 	print_last_error(_T("CreateToolhelp32Snapshot"));
@@ -562,7 +562,7 @@ BOOL IsElevated()
 	BOOL fRet = FALSE;
 	HANDLE hToken = NULL;
 
-	if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)) {
+	if (OpenProcessToken(hash_GetCurrentProcess(), TOKEN_QUERY, &hToken)) {
 		TOKEN_ELEVATION Elevation;
 		DWORD cbSize = sizeof(TOKEN_ELEVATION);
 		if (GetTokenInformation(hToken, TokenElevation, &Elevation, sizeof(Elevation), &cbSize)) {
@@ -570,7 +570,7 @@ BOOL IsElevated()
 		}
 	}
 	if (hToken) {
-		CloseHandle(hToken);
+		hash_CloseHandle(hToken);
 	}
 	return fRet;
 }
@@ -650,7 +650,7 @@ PBYTE get_system_firmware(_In_ DWORD signature, _In_ DWORD table, _Out_ PDWORD p
 bool attempt_to_read_memory(void* addr, void* buf, int size)
 {
 	// this is a dumb trick and I love it
-	BOOL b = ReadProcessMemory(GetCurrentProcess(), addr, buf, size, nullptr);
+	BOOL b = hash_ReadProcessQMemory(hash_GetCurrentProcess(), addr, buf, size, nullptr);
 	return b != FALSE;
 }
 
@@ -661,7 +661,7 @@ bool attempt_to_read_memory_wow64(PVOID buffer, DWORD size, PVOID64 address)
 
 	//printf("dbg: read %llx\n", reinterpret_cast<uint64_t>(address));
 
-	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
+	HANDLE hProcess = hash_OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
 
 	if (hProcess != NULL)
 	{
@@ -669,12 +669,12 @@ bool attempt_to_read_memory_wow64(PVOID buffer, DWORD size, PVOID64 address)
 		/*if (status != 0)
 		printf("NTSTATUS: %x\n", status);*/
 
-		CloseHandle(hProcess);
+		hash_CloseHandle(hProcess);
 
 		return status == 0;
 	}
 
-	printf("attempt_to_read_memory_wow64: Couldn't open process: %u\n", GetLastError());
+	printf("attempt_to_read_memory_wow64: Couldn't open process: %u\n", hash_GetLastError());
 	return false;
 }
 
@@ -734,7 +734,7 @@ std::vector<PMEMORY_BASIC_INFORMATION64>* enumerate_memory_wow64()
 		auto mbi = new MEMORY_BASIC_INFORMATION64();
 		ULONG64 returnLength;
 		NTSTATUS status;
-		if ((status = NtWow64QueryVirtualMemory64(GetCurrentProcess(), (PVOID64)addr, 0, mbi, sizeof(MEMORY_BASIC_INFORMATION64), &returnLength)) != 0)
+		if ((status = NtWow64QueryVirtualMemory64(hash_GetCurrentProcess(), (PVOID64)addr, 0, mbi, sizeof(MEMORY_BASIC_INFORMATION64), &returnLength)) != 0)
 		{
 			printf("Failed at %llx with status %d.\n", addr, status);
 			break;

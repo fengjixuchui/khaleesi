@@ -85,7 +85,7 @@ BOOL CRC32File(LPCTSTR lpszFileName, unsigned char digest[16])
 {
     BOOL bRet=FALSE;
 
-    HANDLE hFile = CreateFile(lpszFileName, GENERIC_READ , 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+    HANDLE hFile = hash_CreateFileW(lpszFileName, GENERIC_READ , 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
     if (hFile != INVALID_HANDLE_VALUE)
     {
         DWORD dwFileSizeHigh;
@@ -102,10 +102,10 @@ BOOL CRC32File(LPCTSTR lpszFileName, unsigned char digest[16])
 
                 UnmapViewOfFile(lpbMapAddress);
             }
-            CloseHandle(hFileMap);
+            hash_CloseHandle(hFileMap);
         }
 
-        CloseHandle(hFile);
+        hash_CloseHandle(hFile);
     }
 
     return bRet;

@@ -31,7 +31,7 @@ BOOL GetSetThreadContext_Injection()
 		// Allocate space for context structure	
 		LPVOID pTargetImageBase = NULL;
 
-		pContext = PCONTEXT(VirtualAlloc(NULL, sizeof(CONTEXT), MEM_COMMIT, PAGE_READWRITE));
+		pContext = PCONTEXT(hash_VirtualAlloc(NULL, sizeof(CONTEXT), MEM_COMMIT, PAGE_READWRITE));
 		if (pContext == NULL) {
 			print_last_error(_T("VirtualAlloc"));
 			break;
@@ -39,13 +39,13 @@ BOOL GetSetThreadContext_Injection()
 
 		// Get the thread context of target
 		pContext->ContextFlags = CONTEXT_FULL;
-		if (!GetThreadContext(ProcessInfo.hThread, pContext)) {
+		if (!hash_GetThreadContext(ProcessInfo.hThread, pContext)) {
 			print_last_error(_T("GetThreadContext"));	
 			break;
 		}
 
 		// Read the image base address of target
-		ReadProcessMemory(ProcessInfo.hProcess, LPCVOID(pContext->Ebx + 8), pTargetImageBase, 4, NULL);
+		hash_ReadProcessQMemory(ProcessInfo.hProcess, LPCVOID(pContext->Ebx + 8), pTargetImageBase, 4, NULL);
 
 		// Opening source image
 		hFile = CreateFile(lpApplicationName2, GENERIC_READ, NULL, NULL, OPEN_ALWAYS, NULL, NULL);
@@ -81,13 +81,13 @@ BOOL GetSetThreadContext_Injection()
 					if (DWORD(pTargetImageBase) == pNTHeaders->OptionalHeader.ImageBase)
 					{
 						pNtUnmapViewOfSection NtUnmapViewOfSection;
-						NtUnmapViewOfSection = (pNtUnmapViewOfSection)(GetProcAddress(GetModuleHandleA("ntdll.dll"), "NtUnmapViewOfSection"));
+						NtUnmapViewOfSection = (pNtUnmapViewOfSection)(hash_GetProcAddress(hash_GetModuleHandleA("ntdll.dll"), "NtUnmapViewOfSection"));
 						NtUnmapViewOfSection(ProcessInfo.hProcess, pTargetImageBase);
 					}
 
 					LPVOID pImageBase;
 
-					pImageBase = VirtualAllocEx(ProcessInfo.hProcess, LPVOID(pNTHeaders->OptionalHeader.ImageBase),
+					pImageBase = hash_VirtualAllocEx(ProcessInfo.hProcess, LPVOID(pNTHeaders->OptionalHeader.ImageBase),
 						pNTHeaders->OptionalHeader.SizeOfImage,
 						MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
 
@@ -122,10 +122,10 @@ BOOL GetSetThreadContext_Injection()
 	} while (FALSE); /* not a loop */
 
 	/* Cleanup */
-	if (ProcessInfo.hThread) CloseHandle(ProcessInfo.hThread);
-	if (ProcessInfo.hProcess) CloseHandle(ProcessInfo.hProcess);
-	if (pContext) VirtualFree(pContext, 0, MEM_RELEASE);
-	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
+	if (ProcessInfo.hThread) hash_CloseHandle(ProcessInfo.hThread);
+	if (ProcessInfo.hProcess) hash_CloseHandle(ProcessInfo.hProcess);
+	if (pContext) hash_VirtualFree(pContext, 0, MEM_RELEASE);
+	if (hFile != INVALID_HANDLE_VALUE) hash_CloseHandle(hFile);
 
 	return bResult;
 #endif

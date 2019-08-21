@@ -19,7 +19,7 @@ BOOL SetHandleInformation_ProtectedHandle()
 
 		__try {
 			/* Then, let's try close it */
-			CloseHandle(hMutex);
+			hash_CloseHandle(hMutex);
 		}
 
 		__except (EXCEPTION_EXECUTE_HANDLER) {

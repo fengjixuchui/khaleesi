@@ -54,7 +54,7 @@ int main()
 	/* Debugger Detection */
 	if (ENABLE_DEBUG_CHECKS) {
 		print_category(TEXT("Debugger Detection"));
-		exec_check(&XAD, TEXT("Checking XAntiDebug "));
+		//exec_check(&XAD, TEXT("Checking XAntiDebug "));
 		exec_check(&IsDebuggerPresentAPI, TEXT("Checking IsDebuggerPresent API "));
 		exec_check(&IsDebuggerPresentPEB, TEXT("Checking PEB.BeingDebugged "));
 		exec_check(&CheckRemoteDebuggerPresentAPI, TEXT("Checking CheckRemoteDebuggerPresent API "));
@@ -91,7 +91,7 @@ int main()
 		exec_check(&VirtualAlloc_WriteWatch_IsDebuggerPresent, TEXT("Checking VirtualAlloc write watch (IsDebuggerPresent) "));
 		exec_check(&VirtualAlloc_WriteWatch_CodeWrite, TEXT("Checking VirtualAlloc write watch (code write) "));
 		exec_check(&PageExceptionBreakpointCheck, TEXT("Checking for page exception breakpoints "));
-		exec_check(&ModuleBoundsHookCheck, TEXT("Checking for API hooks outside module bounds "));
+		//exec_check(&ModuleBoundsHookCheck, TEXT("Checking for API hooks outside module bounds "));
 	}
 
 	if (ENABLE_INJECTION_CHECKS) {

@@ -339,4 +339,16 @@ LONG (WINAPI* temp_UnhandledExceptionFilter)(_EXCEPTION_POINTERS* ExceptionInfo)
 LPTOP_LEVEL_EXCEPTION_FILTER (WINAPI* temp_SetUnhandledExceptionFilter)(
 	LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter) = nullptr;
 
-ULONG (WINAPI* temp_RemoveVectoredExceptionHandler)(PVOID Handle) = nullptr;
+ULONG(WINAPI* temp_RemoveVectoredExceptionHandler)(PVOID Handle) = nullptr;
+
+//int(WINAPI* temp_lstrcmpiW)(LPCWSTR lpString1,
+//	LPCWSTR lpString2) = nullptr;
+//
+//int(WINAPI* temp_WideCharToMultiByte)(UINT                               CodePage,
+//	DWORD                              dwFlags,
+//	_In_NLS_string_(cchWideChar)LPCWCH lpWideCharStr,
+//	int                                cchWideChar,
+//	LPSTR                              lpMultiByteStr,
+//	int                                cbMultiByte,
+//	LPCCH                              lpDefaultChar,
+//	LPBOOL                             lpUsedDefaultChar) = nullptr;

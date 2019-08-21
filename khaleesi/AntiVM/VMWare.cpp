@@ -171,7 +171,7 @@ VOID vmware_devices()
 		_stprintf_s(msg, sizeof(msg) / sizeof(TCHAR), _T("Checking device %s "), devices[i]);
 		
 		if (hFile != INVALID_HANDLE_VALUE) {
-			CloseHandle(hFile);
+			hash_CloseHandle(hFile);
 			print_results(TRUE, msg);
 		}
 		else

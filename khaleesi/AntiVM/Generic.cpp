@@ -34,7 +34,7 @@ VOID loaded_dlls()
 		_stprintf_s(msg, sizeof(msg) / sizeof(TCHAR), _T("Checking if process loaded modules contains: %s "), szDlls[i]);
 
 		/* Check if process loaded modules contains the blacklisted dll */
-		hDll = GetModuleHandle(szDlls[i]);
+		hDll = hash_GetModuleHandleW(szDlls[i]);
 		if (hDll == NULL)
 			print_results(FALSE, msg);
 		else
@@ -328,7 +328,7 @@ BOOL dizk_size_deviceiocontrol()
 			wnsprintf(driveRootPathBuffer, MAX_PATH, _T("\\\\.\\%C:"), _T('A') + driveNumber);
 
 			// open a handle to the volume
-			HANDLE hVolume = CreateFile(
+			HANDLE hVolume = hash_CreateFileW(
 				driveRootPathBuffer,
 				GENERIC_READ,
 				FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -342,7 +342,7 @@ BOOL dizk_size_deviceiocontrol()
 				DWORD extentSize = 8192; //256 VOLUME_DISK_EXTENTS entries
 				PVOLUME_DISK_EXTENTS diskExtents = NULL;
 
-				diskExtents = static_cast<PVOLUME_DISK_EXTENTS>(LocalAlloc(LPTR, extentSize));
+				diskExtents = static_cast<PVOLUME_DISK_EXTENTS>(hash_LocalAlloc(LPTR, extentSize));
 				if (diskExtents) {
 
 					DWORD dummy = 0;
@@ -359,7 +359,7 @@ BOOL dizk_size_deviceiocontrol()
 							if (wnsprintf(physicalPathBuffer, MAX_PATH, _T("\\\\.\\PhysicalDrive%u"), diskExtents->Extents[i].DiskNumber) > 0)
 							{
 								// open the physical disk
-								hDevice = CreateFile(
+								hDevice = hash_CreateFileW(
 									physicalPathBuffer,
 									GENERIC_READ,
 									FILE_SHARE_READ,
@@ -392,7 +392,7 @@ BOOL dizk_size_deviceiocontrol()
 										defaultToDrive0 = true;
 									}
 
-									CloseHandle(hDevice);
+									hash_CloseHandle(hDevice);
 
 									if (!bResult)
 										break;
@@ -413,10 +413,10 @@ BOOL dizk_size_deviceiocontrol()
 						}
 					}
 
-					LocalFree(diskExtents);
+					hash_LocalFree(diskExtents);
 				}
 
-				CloseHandle(hVolume);
+				hash_CloseHandle(hVolume);
 			}
 		}
 	}
@@ -425,7 +425,7 @@ BOOL dizk_size_deviceiocontrol()
 	// so we'll just check PhysicalDrive0 as a backup
 	if (defaultToDrive0)
 	{
-		hDevice = CreateFile(_T("\\\\.\\PhysicalDrive0"),
+		hDevice = hash_CreateFileW(_T("\\\\.\\PhysicalDrive0"),
 			GENERIC_READ,               // no access to the drive
 			FILE_SHARE_READ, 			// share mode
 			NULL,						// default security attributes
@@ -445,7 +445,7 @@ BOOL dizk_size_deviceiocontrol()
 			{
 				totalDiskSize.QuadPart = size.Length.QuadPart;
 			}
-			CloseHandle(hDevice);
+			hash_CloseHandle(hDevice);
 		}
 	}
 
@@ -487,12 +487,12 @@ BOOL setupdi_diskdrive()
 		while (!SetupDiGetDeviceRegistryProperty(hDevInfo, &DeviceInfoData, SPDRP_HARDWAREID,
 			&dwPropertyRegDataType, (PBYTE)buffer, dwSize, &dwSize))
 		{
-			if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+			if (hash_GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
 				// Change the buffer size.
-				if (buffer)LocalFree(buffer);
+				if (buffer)hash_LocalFree(buffer);
 				// Double the size to avoid problems on 
 				// W2k MBCS systems per KB 888609. 
-				buffer = (LPTSTR)LocalAlloc(LPTR, dwSize * 2);
+				buffer = (LPTSTR)hash_LocalAlloc(LPTR, dwSize * 2);
 				if (buffer == NULL)
 					break;
 			}
@@ -515,12 +515,12 @@ BOOL setupdi_diskdrive()
 	}
 
 	if (buffer)
-		LocalFree(buffer);
+		hash_LocalFree(buffer);
 
 	//  Cleanup
 	SetupDiDestroyDeviceInfoList(hDevInfo);
 
-	if (GetLastError() != NO_ERROR && GetLastError() != ERROR_NO_MORE_ITEMS)
+	if (hash_GetLastError() != NO_ERROR && hash_GetLastError() != ERROR_NO_MORE_ITEMS)
 		return FALSE;
 
 	return bFound;
@@ -539,7 +539,7 @@ BOOL mouse_movement() {
 	GetCursorPos(&positionA);
 
 	/* Wait a moment */
-	Sleep(5000);
+	hash_Sleep(5000);
 
 	/* Retrieve the poition gain */
 	GetCursorPos(&positionB);
@@ -600,13 +600,13 @@ BOOL accelerated_sleep()
 	DWORD dwMillisecondsToSleep = 60 * 1000;
 
 	/* Retrieves the number of milliseconds that have elapsed since the system was started */
-	dwStart = GetTickCount();
+	dwStart = hash_GetTickCount();
 
 	/* Let's sleep 1 minute so Sandbox is interested to patch that */
-	Sleep(dwMillisecondsToSleep);
+	hash_Sleep(dwMillisecondsToSleep);
 
 	/* Do it again */
-	dwEnd = GetTickCount();
+	dwEnd = hash_GetTickCount();
 
 	/* If the Sleep function was patched*/
 	dwDiff = dwEnd - dwStart;

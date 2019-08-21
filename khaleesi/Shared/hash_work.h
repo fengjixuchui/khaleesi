@@ -118,3 +118,5 @@ BOOL                           hash_CheckRemoteDebuggerPresent(HANDLE hProcess, 
 LONG                           hash_UnhandledExceptionFilter(_EXCEPTION_POINTERS* ExceptionInfo);
 LPTOP_LEVEL_EXCEPTION_FILTER   hash_SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter);
 ULONG                          hash_RemoveVectoredExceptionHandler(PVOID Handle);
+//int hash_WideCharToMultiByte(UINT CodePage, DWORD dwFlags, _In_NLS_string_(cchWideChar)LPCWCH lpWideCharStr, int cchWideChar, LPSTR lpMultiByteStr, int cbMultiByte, LPCCH lpDefaultChar, LPBOOL lpUsedDefaultChar);
+//int hash_lstrcmpiW(LPCWSTR lpString1, LPCWSTR lpString2);

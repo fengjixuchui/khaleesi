@@ -4,7 +4,7 @@
 BOOL XAD ()
 {
 	XAD_STATUS		status;
-	XAntiDebug		antiDbg(GetModuleHandle(NULL), FLAG_FULLON);
+	XAntiDebug		antiDbg(hash_GetModuleHandleW(NULL), FLAG_FULLON);
 	BOOL			result;
 	status = antiDbg.XAD_Initialize();
 	if (status != XAD_OK)

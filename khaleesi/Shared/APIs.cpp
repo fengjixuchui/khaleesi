@@ -44,7 +44,7 @@ void API::Init()
 			ApiData[i].Available = false;
 			continue;
 		}
-		ApiData[i].Pointer = GetProcAddress(hLib, ApiData[i].EntryName);
+		ApiData[i].Pointer = hash_GetProcAddress(hLib, ApiData[i].EntryName);
 		if (ApiData[i].Pointer == NULL)
 		{
 			ApiData[i].Available = false;

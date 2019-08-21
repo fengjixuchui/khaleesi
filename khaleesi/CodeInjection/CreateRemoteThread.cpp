@@ -28,14 +28,14 @@ BOOL CreateRemoteThread_Injection()
 		return FALSE;
 
 	/* Obtain a handle the process */
-	hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwProcessId);
+	hProcess = hash_OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwProcessId);
 	if (hProcess == NULL) {
 		print_last_error(_T("OpenProcess"));
 		goto Cleanup;
 	}
 
 	/* Obtain a handle to kernel32 */
-	hKernel32 = GetModuleHandle(_T("kernel32.dll"));
+	hKernel32 = hash_GetModuleHandleW(_T("kernel32.dll"));
 	if (hKernel32 == NULL) {
 		print_last_error(_T("GetModuleHandle"));
 		goto Cleanup;
@@ -43,7 +43,7 @@ BOOL CreateRemoteThread_Injection()
 
 	/* Get LoadLibrary address */
 	_tprintf(_T("\t[+] Looking for LoadLibrary in kernel32\n"));
-	LoadLibraryAddress = GetProcAddress(hKernel32, "LoadLibraryW");
+	LoadLibraryAddress = hash_GetProcAddress(hKernel32, "LoadLibraryW");
 	if (LoadLibraryAddress == NULL) {
 		print_last_error(_T("GetProcAddress"));
 		goto Cleanup;
@@ -59,7 +59,7 @@ BOOL CreateRemoteThread_Injection()
 
 	/* Allocate memory into the remote process */
 	_tprintf(_T("\t[+] Allocating space for the path of the DLL\n"));
-	lpBaseAddress = VirtualAllocEx(hProcess, NULL, dwSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+	lpBaseAddress = hash_VirtualAllocEx(hProcess, NULL, dwSize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	if (lpBaseAddress == NULL) {       
 		print_last_error(_T("VirtualAllocEx"));
 		goto Cleanup;
@@ -80,7 +80,7 @@ BOOL CreateRemoteThread_Injection()
 	else {
 		_tprintf(_T("Remote thread has been created successfully ...\n"));
 		WaitForSingleObject(hRemoteThread, INFINITE);
-		CloseHandle(hRemoteThread);
+		hash_CloseHandle(hRemoteThread);
 		
 		/* assign function success return result */
 		bStatus = TRUE;
@@ -89,9 +89,9 @@ BOOL CreateRemoteThread_Injection()
 Cleanup:
 	/* If lpBaseAddress initialized then hProcess is initialized too because of upper check. */
 	if (lpBaseAddress) {
-		VirtualFreeEx(hProcess, lpBaseAddress, 0, MEM_RELEASE);
+		hash_VirtualFreeEx(hProcess, lpBaseAddress, 0, MEM_RELEASE);
 	}
-	if (hProcess) CloseHandle(hProcess);
+	if (hProcess) hash_CloseHandle(hProcess);
 
 	return bStatus;
 }

@@ -2,6 +2,8 @@
 #include "MurmurHash2A.h"
 #include "hash_work.h"
 #include "export_work.h"
+#include "XorStr.h"
+#include <comdef.h>
 
 /*
 Для запуска функции LoadLibraryA из хеша, её выносить в модуль hash_work нестал, т.к. это нужно в этом модуле
@@ -53,7 +55,20 @@ static LPVOID parse_export_table(HMODULE module, DWORD api_hash, int len, unsign
 
 	return func_find;
 }
-
+int STRCMP_(const char *p1, const char *p2)
+{
+	const unsigned char *s1 = (const unsigned char *)p1;
+	const unsigned char *s2 = (const unsigned char *)p2;
+	unsigned char c1, c2;
+	do
+	{
+		c1 = (unsigned char)*s1++;
+		c2 = (unsigned char)*s2++;
+		if (c1 == '\0')
+			return c1 - c2;
+	} while (c1 == c2);
+	return c1 - c2;
+}
 LPVOID get_api(DWORD api_hash, LPCSTR module, int len, unsigned int seed)
 {
 	HMODULE krnl32, hDll;
@@ -84,7 +99,11 @@ LPVOID get_api(DWORD api_hash, LPCSTR module, int len, unsigned int seed)
 
 		if (mdl->base != nullptr)
 		{
-			if (!lstrcmpiW(mdl->dllname.Buffer, L"kernel32.dll")) //сравниваем имя библиотеки в буфере с необходимым
+			const WCHAR* wc = mdl->dllname.Buffer;
+			_bstr_t b(wc);
+			const char* c = b;
+			//if (!strcmp(c, "kernel32.dll") == 0)
+			if (STRCMP_(c, ("KERNEL32.DLL")) == 0)
 			{
 				break;
 			}

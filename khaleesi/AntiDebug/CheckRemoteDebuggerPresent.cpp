@@ -27,6 +27,6 @@ Return Value:
 --*/
 {
 	BOOL bIsDbgPresent = FALSE;
-	CheckRemoteDebuggerPresent(GetCurrentProcess(), &bIsDbgPresent);
+	CheckRemoteDebuggerPresent(hash_GetCurrentProcess(), &bIsDbgPresent);
 	return bIsDbgPresent;
 }
