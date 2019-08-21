@@ -23,7 +23,7 @@
     <ProjectGuid>{77AEFBC3-0ECE-46AD-A113-966AAAA838E1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>alkhaser</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
     <ProjectName>khaleesi</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -43,13 +43,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -234,14 +234,17 @@
     <ClInclude Include="Shared\CMemPtr.h" />
     <ClInclude Include="Shared\Common.h" />
     <ClInclude Include="Shared\crc32.h" />
+    <ClInclude Include="Shared\gh_syscall.h" />
     <ClInclude Include="Shared\Hash.h" />
     <ClInclude Include="Shared\Helpers.h" />
     <ClInclude Include="Shared\internal.h" />
     <ClInclude Include="Shared\ldasm.h" />
     <ClInclude Include="Shared\log.h" />
     <ClInclude Include="Shared\Native.h" />
+    <ClInclude Include="Shared\nt_defs.h" />
     <ClInclude Include="Shared\pch.h" />
     <ClInclude Include="Shared\ScyllaHideDetector.h" />
+    <ClInclude Include="Shared\syscall_defs.h" />
     <ClInclude Include="Shared\TitanHideDetect.h" />
     <ClInclude Include="Shared\Utils.h" />
     <ClInclude Include="Shared\VersionHelpers.h" />
@@ -317,6 +320,7 @@
     <ClCompile Include="Shared\ApiTypeDefs.cpp" />
     <ClCompile Include="Shared\Common.cpp" />
     <ClCompile Include="Shared\crc32.cpp" />
+    <ClCompile Include="Shared\gh_syscall.cpp" />
     <ClCompile Include="Shared\ldasm.cpp" />
     <ClCompile Include="Shared\log.cpp" />
     <ClCompile Include="Shared\ScyllaHideDetector.cpp" />

@@ -23,7 +23,7 @@ BOOL NtQueryObject_ObjectAllTypesInformation()
 	NTSTATUS Status;
 
 	// Get the size of the information needed
-	Status = NtQueryObject(NULL, 3, &size, sizeof(ULONG), &size);
+	Status = ScQueryObject(NULL, 3, &size, sizeof(ULONG), &size);
 
 	// Alocate memory for the list
 	pMemory = VirtualAlloc(NULL, size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
@@ -31,7 +31,7 @@ BOOL NtQueryObject_ObjectAllTypesInformation()
 		return FALSE;
 
 	// Now we can actually retrieve the list
-	Status = NtQueryObject((HANDLE)-1, 3, pMemory, size, NULL);
+	Status = ScQueryObject((HANDLE)-1, 3, pMemory, size, NULL);
 
 	// Status != STATUS_SUCCESS
 	if (Status != 0x00000000)

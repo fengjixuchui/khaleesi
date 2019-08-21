@@ -304,6 +304,15 @@
     <ClInclude Include="Shared\TitanHideDetect.h">
       <Filter>Shared\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Shared\gh_syscall.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\nt_defs.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\syscall_defs.h">
+      <Filter>Shared\Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -498,6 +507,9 @@
       <Filter>Shared\Source</Filter>
     </ClCompile>
     <ClCompile Include="Shared\TitanHideDetect.cpp" />
+    <ClCompile Include="Shared\gh_syscall.cpp">
+      <Filter>Shared\Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <MASM Include="AntiDebug\int2d_x86.asm">

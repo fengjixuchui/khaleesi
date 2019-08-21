@@ -25,7 +25,7 @@ BOOL NtYieldExecutionAPI()
 	{
 		Sleep(0xf);
 
-		if (NtYieldExecution() != STATUS_NO_YIELD_PERFORMED)
+		if (ScYieldExecution() != STATUS_NO_YIELD_PERFORMED)
 			iDebugged++;
 	}
 
