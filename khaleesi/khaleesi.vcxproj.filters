@@ -64,6 +64,12 @@
     <Filter Include="TimingAttacks\Header">
       <UniqueIdentifier>{bcf9eab0-7525-4627-843b-878d0ae1732f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shared\Source\winapi_obf">
+      <UniqueIdentifier>{0b2ee922-cd00-4e5f-855b-015764ac4047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shared\Header\winapi_obf">
+      <UniqueIdentifier>{6050b384-1388-482a-abfd-f572e18bbc7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h" />
@@ -313,6 +319,21 @@
     <ClInclude Include="Shared\syscall_defs.h">
       <Filter>Shared\Header</Filter>
     </ClInclude>
+    <ClInclude Include="Shared\export_work.h">
+      <Filter>Shared\Header\winapi_obf</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\hash_work.h">
+      <Filter>Shared\Header\winapi_obf</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\Helpers2.h">
+      <Filter>Shared\Header\winapi_obf</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\MurmurHash2A.h">
+      <Filter>Shared\Header\winapi_obf</Filter>
+    </ClInclude>
+    <ClInclude Include="Shared\PointerHashFunc.h">
+      <Filter>Shared\Header\winapi_obf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -509,6 +530,15 @@
     <ClCompile Include="Shared\TitanHideDetect.cpp" />
     <ClCompile Include="Shared\gh_syscall.cpp">
       <Filter>Shared\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Shared\hash_work.cpp">
+      <Filter>Shared\Source\winapi_obf</Filter>
+    </ClCompile>
+    <ClCompile Include="Shared\MurmurHash2A.cpp">
+      <Filter>Shared\Source\winapi_obf</Filter>
+    </ClCompile>
+    <ClCompile Include="Shared\export_work.cpp">
+      <Filter>Shared\Source\winapi_obf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -7,7 +7,7 @@
 int main()
 {
 	/* enable functions */
-	BOOL	ENABLE_SCYLLAHIDE_DETECTOR = FALSE;
+	BOOL	ENABLE_SCYLLAHIDE_DETECTOR = TRUE;
 	BOOL	ENABLE_TLS_CHECKS = FALSE;
 	BOOL	ENABLE_DEBUG_CHECKS = TRUE;
 	BOOL	ENABLE_INJECTION_CHECKS = FALSE;
@@ -54,7 +54,7 @@ int main()
 	/* Debugger Detection */
 	if (ENABLE_DEBUG_CHECKS) {
 		print_category(TEXT("Debugger Detection"));
-		//exec_check(&XAD, TEXT("Checking XAntiDebug "));
+		exec_check(&XAD, TEXT("Checking XAntiDebug "));
 		exec_check(&IsDebuggerPresentAPI, TEXT("Checking IsDebuggerPresent API "));
 		exec_check(&IsDebuggerPresentPEB, TEXT("Checking PEB.BeingDebugged "));
 		exec_check(&CheckRemoteDebuggerPresentAPI, TEXT("Checking CheckRemoteDebuggerPresent API "));

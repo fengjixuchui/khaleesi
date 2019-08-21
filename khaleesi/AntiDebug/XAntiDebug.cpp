@@ -215,12 +215,12 @@ XAntiDebug::XAntiDebug(HMODULE moduleHandle, DWORD flags)
 #ifndef _DEBUG
 		LONG status;
 
-		pfnNtSetInformationThread((HANDLE)-2, 0x11, NULL, NULL);
+		ScSetInformationThread((HANDLE)-2, 0x11, NULL, NULL);
 
 		//
 		// StrongOD 驱动处理不当
 		//
-		status = pfnNtSetInformationThread((HANDLE)-2, 0x11, (PVOID)sizeof(PVOID), sizeof(PVOID));
+		status = ScSetInformationThread((HANDLE)-2, 0x11, (PVOID)sizeof(PVOID), sizeof(PVOID));
 		if (status == 0)
 		{
 			_isLoadStrongOD = TRUE;
