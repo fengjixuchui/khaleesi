@@ -313,7 +313,7 @@ BOOL dizk_size_deviceiocontrol()
 	// get the Windows system directory
 	wchar_t winDirBuffer[MAX_PATH];
 	SecureZeroMemory(winDirBuffer, MAX_PATH);
-	UINT winDirLen = GetSystemWindowsDirectory(winDirBuffer, MAX_PATH);
+	UINT winDirLen = hash_GetSystemWindowsDirectoryW(winDirBuffer, MAX_PATH);
 
 	if (winDirLen)
 	{
@@ -563,7 +563,7 @@ BOOL memory_space()
 	MEMORYSTATUSEX statex = { 0 };
 
 	statex.dwLength = sizeof(statex);
-	GlobalMemoryStatusEx(&statex);
+	hash_GlobalMemoryStatusEx(&statex);
 
 	return (statex.ullTotalPhys < ullMinRam) ? TRUE : FALSE;
 }

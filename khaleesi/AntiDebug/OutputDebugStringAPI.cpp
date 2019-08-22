@@ -23,7 +23,7 @@ BOOL OutputDebugStringAPI()
 	if (IsWindowsXPOr2k())
 	{
 		hash_SetLastError(Val);
-		OutputDebugString(_T("random"));
+		hash_OutputDebugStringW(_T("random"));
 
 		if (hash_GetLastError() == Val)
 			IsDbgPresent = TRUE;

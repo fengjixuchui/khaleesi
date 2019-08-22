@@ -281,10 +281,10 @@ BOOL (WINAPI* temp_Thread32Next)(HANDLE hSnapshot,
                                  LPTHREADENTRY32 lpte) = nullptr;
 
 BOOL (WINAPI* temp_Process32FirstW)(HANDLE hSnapshot,
-                                    LPTHREADENTRY32 lpte) = nullptr;
+	LPPROCESSENTRY32W lpte) = nullptr;
 
 BOOL (WINAPI* temp_Process32NextW)(HANDLE hSnapshot,
-                                   LPTHREADENTRY32 lpte) = nullptr;
+	LPPROCESSENTRY32W lpte) = nullptr;
 
 DWORD (WINAPI* temp_GetCurrentThreadId)() = nullptr;
 
@@ -341,14 +341,35 @@ LPTOP_LEVEL_EXCEPTION_FILTER (WINAPI* temp_SetUnhandledExceptionFilter)(
 
 ULONG(WINAPI* temp_RemoveVectoredExceptionHandler)(PVOID Handle) = nullptr;
 
-//int(WINAPI* temp_lstrcmpiW)(LPCWSTR lpString1,
-//	LPCWSTR lpString2) = nullptr;
-//
-//int(WINAPI* temp_WideCharToMultiByte)(UINT                               CodePage,
-//	DWORD                              dwFlags,
-//	_In_NLS_string_(cchWideChar)LPCWCH lpWideCharStr,
-//	int                                cchWideChar,
-//	LPSTR                              lpMultiByteStr,
-//	int                                cbMultiByte,
-//	LPCCH                              lpDefaultChar,
-//	LPBOOL                             lpUsedDefaultChar) = nullptr;
+BOOL(WINAPI* temp_QueryInformationJobObject)(HANDLE             hJob,
+	JOBOBJECTINFOCLASS JobObjectInformationClass,
+	LPVOID             lpJobObjectInformation,
+	DWORD              cbJobObjectInformationLength,
+	LPDWORD            lpReturnLength) = nullptr;
+
+UINT(WINAPI* temp_GetWriteWatch)(DWORD     dwFlags,
+	PVOID     lpBaseAddress,
+	SIZE_T    dwRegionSize,
+	PVOID     *lpAddresses,
+	ULONG_PTR *lpdwCount,
+	LPDWORD   lpdwGranularity) = nullptr;
+
+UINT(WINAPI* temp_GlobalGetAtomNameW)(ATOM   nAtom,
+	LPWSTR lpBuffer,
+	int    nSize) = nullptr;
+
+UINT(WINAPI* temp_ResetWriteWatch)(LPVOID lpBaseAddress,
+	SIZE_T dwRegionSize) = nullptr;
+
+BOOL(WINAPI* temp_GetBinaryTypeW)(LPCWSTR lpApplicationName,
+	LPDWORD lpBinaryType) = nullptr;
+
+BOOL(WINAPI* temp_HeapQueryInformation)(HANDLE                 HeapHandle,
+	HEAP_INFORMATION_CLASS HeapInformationClass,
+	PVOID                  HeapInformation,
+	SIZE_T                 HeapInformationLength,
+	PSIZE_T                ReturnLength) = nullptr;
+
+HMODULE(WINAPI* temp_LoadLibraryA)(LPCSTR lpLibFileName) = nullptr;
+
+BOOL(WINAPI* temp_IsDebuggerPresent)() = nullptr;

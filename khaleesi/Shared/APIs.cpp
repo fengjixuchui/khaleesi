@@ -38,7 +38,7 @@ void API::Init()
 	{
 		ApiData[i].ExpectedAvailable = ShouldFunctionExistOnCurrentPlatform(ApiData[i].PlatformBits, ApiData[i].MinVersion, ApiData[i].RemovedInVersion);
 
-		HMODULE hLib = LoadLibraryA(ApiData[i].Library);
+		HMODULE hLib = hash_LoadLibraryA(ApiData[i].Library);
 		if (hLib == NULL)
 		{
 			ApiData[i].Available = false;

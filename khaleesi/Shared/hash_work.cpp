@@ -142,6 +142,15 @@ HMODULE hash_LoadLibraryW(LPCWSTR lpLibFileName)
 	return temp_LoadLibraryW(lpLibFileName);
 }
 
+HMODULE hash_LoadLibraryA(LPCSTR lpLibFileName)
+{
+	const auto _hash = MurmurHash2A("LoadLibraryA", 13, 13);
+
+	temp_LoadLibraryA = static_cast<HMODULE(WINAPI*)(LPCSTR)>(get_api(_hash, "kernel32.dll", 13, 13));
+
+	return temp_LoadLibraryA(lpLibFileName);
+}
+
 BOOL hash_GetModuleHandleExW(DWORD dwFlags,
                              LPCWSTR lpModuleName,
                              HMODULE* phModule)
@@ -1091,28 +1100,28 @@ BOOL hash_Thread32Next(HANDLE hSnapshot,
 	                         lpte);
 }
 
-BOOL hash_Process32FirstW(HANDLE hSnapshot,
-                          LPTHREADENTRY32 lpte)
+BOOL hash_Process32FirstW(HANDLE            hSnapshot,
+	LPPROCESSENTRY32W lppe)
 {
 	const auto lenSeed = 16;
 	const auto _hash = MurmurHash2A("Process32FirstW", lenSeed, lenSeed);
 
-	temp_Process32FirstW = static_cast<BOOL(WINAPI*)(HANDLE,
-	                                                 LPTHREADENTRY32)>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed)
+	temp_Process32FirstW = static_cast<BOOL(WINAPI*)(HANDLE            ,
+		LPPROCESSENTRY32W )>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed)
 	);
 
-	return temp_Process32FirstW(hSnapshot,
-	                            lpte);
+	return temp_Process32FirstW(            hSnapshot,
+		 lppe);
 }
 
 BOOL hash_Process32NextW(HANDLE hSnapshot,
-                         LPTHREADENTRY32 lpte)
+	LPPROCESSENTRY32W lpte)
 {
 	const auto lenSeed = 15;
 	const auto _hash = MurmurHash2A("Process32NextW", lenSeed, lenSeed);
 
 	temp_Process32NextW = static_cast<BOOL(WINAPI*)(HANDLE,
-	                                                LPTHREADENTRY32)>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+		LPPROCESSENTRY32W)>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
 
 	return temp_Process32NextW(hSnapshot,
 	                           lpte);
@@ -1331,48 +1340,123 @@ ULONG hash_RemoveVectoredExceptionHandler(PVOID Handle)
 
 	return temp_RemoveVectoredExceptionHandler(Handle);
 }
-//
-//int hash_lstrcmpiW(LPCWSTR lpString1, LPCWSTR lpString2)
-//{
-//	const auto lenSeed = 10;
-//	const auto _hash = MurmurHash2A("lstrcmpiW", lenSeed, lenSeed);
-//
-//	temp_lstrcmpiW = static_cast<int(WINAPI*)(LPCWSTR,
-//		LPCWSTR)>(get_api(
-//		_hash, "kernel32.dll", lenSeed, lenSeed));
-//
-//	return temp_lstrcmpiW(lpString1,
-//		lpString2);
-//}
+BOOL hash_QueryInformationJobObject(HANDLE             hJob,
+	JOBOBJECTINFOCLASS JobObjectInformationClass,
+	LPVOID             lpJobObjectInformation,
+	DWORD              cbJobObjectInformationLength,
+	LPDWORD            lpReturnLength)
+{
+	const auto lenSeed = 26;
+	const auto _hash = MurmurHash2A("QueryInformationJobObject", lenSeed, lenSeed);
 
-//int hash_WideCharToMultiByte(UINT                               CodePage,
-//	DWORD                              dwFlags,
-//	_In_NLS_string_(cchWideChar)LPCWCH lpWideCharStr,
-//	int                                cchWideChar,
-//	LPSTR                              lpMultiByteStr,
-//	int                                cbMultiByte,
-//	LPCCH                              lpDefaultChar,
-//	LPBOOL                             lpUsedDefaultChar)
-//{
-//	const auto lenSeed = 20;
-//	const auto _hash = MurmurHash2A("WideCharToMultiByte", lenSeed, lenSeed);
-//
-//	temp_WideCharToMultiByte = static_cast<int(WINAPI*)(UINT                              ,
-//		DWORD                              ,
-//		_In_NLS_string_(cchWideChar)LPCWCH ,
-//		int                                ,
-//		LPSTR                              ,
-//		int                                ,
-//		LPCCH                              ,
-//		LPBOOL                             )>(get_api(
-//		_hash, "kernel32.dll", lenSeed, lenSeed));
-//
-//	return temp_WideCharToMultiByte(                               CodePage,
-//		                              dwFlags,
-//		 lpWideCharStr,
-//		                                cchWideChar,
-//		                              lpMultiByteStr,
-//		                                cbMultiByte,
-//		                              lpDefaultChar,
-//		                             lpUsedDefaultChar);
-//}
+	temp_QueryInformationJobObject = static_cast<BOOL(WINAPI*)(HANDLE             ,
+		JOBOBJECTINFOCLASS ,
+		LPVOID             ,
+		DWORD              ,
+		LPDWORD            )>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+
+	return temp_QueryInformationJobObject(             hJob,
+		 JobObjectInformationClass,
+		             lpJobObjectInformation,
+		              cbJobObjectInformationLength,
+		            lpReturnLength);
+}
+
+UINT hash_GetWriteWatch(DWORD     dwFlags,
+	PVOID     lpBaseAddress,
+	SIZE_T    dwRegionSize,
+	PVOID     *lpAddresses,
+	ULONG_PTR *lpdwCount,
+	LPDWORD   lpdwGranularity)
+{
+	const auto lenSeed = 14;
+	const auto _hash = MurmurHash2A("GetWriteWatch", lenSeed, lenSeed);
+
+	temp_GetWriteWatch = static_cast<UINT(WINAPI*)(DWORD     ,
+		PVOID     ,
+		SIZE_T    ,
+		PVOID     *,
+		ULONG_PTR *,
+		LPDWORD   )>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+
+	return temp_GetWriteWatch(     dwFlags,
+		     lpBaseAddress,
+		    dwRegionSize,
+		lpAddresses,
+		lpdwCount,
+		   lpdwGranularity);
+}
+
+UINT hash_GlobalGetAtomNameW(ATOM   nAtom,
+	LPWSTR lpBuffer,
+	int    nSize)
+{
+	const auto lenSeed = 19;
+	const auto _hash = MurmurHash2A("GlobalGetAtomNameW", lenSeed, lenSeed);
+
+	temp_GlobalGetAtomNameW = static_cast<UINT(WINAPI*)(ATOM   ,
+		LPWSTR ,
+		int    )>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+
+	return temp_GlobalGetAtomNameW(   nAtom,
+		 lpBuffer,
+		    nSize);
+}
+
+BOOL	hash_GetBinaryTypeW(LPCWSTR lpApplicationName,
+	LPDWORD lpBinaryType)
+{
+	const auto lenSeed = 15;
+	const auto _hash = MurmurHash2A("GetBinaryTypeW", lenSeed, lenSeed);
+
+	temp_GetBinaryTypeW = static_cast<BOOL(WINAPI*)(LPCWSTR ,
+		LPDWORD )>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+
+	return temp_GetBinaryTypeW( lpApplicationName,
+		 lpBinaryType);
+}
+BOOL	hash_HeapQueryInformation(HANDLE                 HeapHandle,
+	HEAP_INFORMATION_CLASS HeapInformationClass,
+	PVOID                  HeapInformation,
+	SIZE_T                 HeapInformationLength,
+	PSIZE_T                ReturnLength)
+{
+	const auto lenSeed = 21;
+	const auto _hash = MurmurHash2A("HeapQueryInformation", lenSeed, lenSeed);
+
+	temp_HeapQueryInformation = static_cast<BOOL(WINAPI*)(HANDLE                 ,
+		HEAP_INFORMATION_CLASS ,
+		PVOID                  ,
+		SIZE_T                 ,
+		PSIZE_T                )>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+
+	return temp_HeapQueryInformation(                 HeapHandle,
+		 HeapInformationClass,
+		                  HeapInformation,
+		                 HeapInformationLength,
+		                ReturnLength);
+}	
+
+UINT hash_ResetWriteWatch(LPVOID lpBaseAddress,
+	SIZE_T dwRegionSize)
+{
+	const auto lenSeed = 16;
+	const auto _hash = MurmurHash2A("ResetWriteWatch", lenSeed, lenSeed);
+
+	temp_ResetWriteWatch = static_cast<UINT(WINAPI*)(LPVOID ,
+		SIZE_T )>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+
+	return temp_ResetWriteWatch(lpBaseAddress,
+		 dwRegionSize);
+}
+
+
+BOOL hash_IsDebuggerPresent()
+{
+	const auto lenSeed = 18;
+	const auto _hash = MurmurHash2A("IsDebuggerPresent", lenSeed, lenSeed);
+
+	temp_IsDebuggerPresent = static_cast<BOOL(WINAPI*)()>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+
+	return temp_IsDebuggerPresent();
+}

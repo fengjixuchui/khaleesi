@@ -673,14 +673,14 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 	if (_flags & FLAG_DETECT_DEBUGGER)
 	{
 
-		if (IsDebuggerPresent())
+		if (hash_IsDebuggerPresent())
 		{
 			return TRUE;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		BOOL	debuging = FALSE;
-		CheckRemoteDebuggerPresent(hash_GetCurrentProcess(), &debuging);
+		hash_CheckRemoteDebuggerPresent(hash_GetCurrentProcess(), &debuging);
 		if (debuging)
 		{
 			return TRUE;

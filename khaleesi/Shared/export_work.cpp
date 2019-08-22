@@ -9,11 +9,11 @@
 Для запуска функции LoadLibraryA из хеша, её выносить в модуль hash_work нестал, т.к. это нужно в этом модуле
 */
 
-static HMODULE (WINAPI* temp_LoadLibraryA)(__in LPCSTR file_name) = nullptr;
+static HMODULE (WINAPI* temp_LoadLibraryA_static)(__in LPCSTR file_name) = nullptr;
 
-static HMODULE hash_LoadLibraryA(__in LPCSTR file_name)
+static HMODULE hash_LoadLibraryA_static(__in LPCSTR file_name)
 {
-	return temp_LoadLibraryA(file_name);
+	return temp_LoadLibraryA_static(file_name);
 }
 
 static LPVOID parse_export_table(HMODULE module, DWORD api_hash, int len, unsigned int seed)
@@ -119,8 +119,8 @@ LPVOID get_api(DWORD api_hash, LPCSTR module, int len, unsigned int seed)
 
 	//Получаем адрес функции LoadLibraryA
 	const int api_hash_LoadLibraryA = MurmurHash2A("LoadLibraryA", 12, 10);
-	temp_LoadLibraryA = static_cast<HMODULE(WINAPI*)(LPCSTR)>(parse_export_table(krnl32, api_hash_LoadLibraryA, 12, 10));
-	hDll = hash_LoadLibraryA(module);
+	temp_LoadLibraryA_static = static_cast<HMODULE(WINAPI*)(LPCSTR)>(parse_export_table(krnl32, api_hash_LoadLibraryA, 12, 10));
+	hDll = hash_LoadLibraryA_static(module);
 
 	api_func = static_cast<LPVOID>(parse_export_table(hDll, api_hash, len, seed));
 	return api_func;

@@ -37,7 +37,7 @@ BOOL VirtualAlloc_WriteWatch_BufferOnly()
 	buffer[0] = 1234;
 	
 	hitCount = 4096;
-	if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
+	if (hash_GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
 	{
 		printf("GetWriteWatch failed. Last error: %u\n", hash_GetLastError());
 		result = FALSE;
@@ -76,7 +76,7 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 	// make a bunch of calls where buffer *can* be written to, but isn't actually touched due to invalid parameters.
 	// this can catch out API hooks whose return-by-parameter behaviour is different to that of regular APIs
 
-	if (GlobalGetAtomName(INVALID_ATOM, (LPTSTR)buffer, 1) != FALSE)
+	if (hash_GlobalGetAtomNameW(INVALID_ATOM, (LPTSTR)buffer, 1) != FALSE)
 	{
 		printf("GlobalGetAtomName succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
@@ -88,13 +88,13 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 		result = FALSE;
 		error = TRUE;
 	}
-	if (GetBinaryType(L"%ThisIsAnInvalidFileName?[]<>@\\;*!-{}#:/~%", (LPDWORD)buffer) != FALSE)
+	if (hash_GetBinaryTypeW(L"%ThisIsAnInvalidFileName?[]<>@\\;*!-{}#:/~%", (LPDWORD)buffer) != FALSE)
 	{
 		printf("GetBinaryType succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
 		error = TRUE;
 	}
-	if (HeapQueryInformation(0, (HEAP_INFORMATION_CLASS)69, buffer, 4096, NULL) != FALSE)
+	if (hash_HeapQueryInformation(0, (HEAP_INFORMATION_CLASS)69, buffer, 4096, NULL) != FALSE)
 	{
 		printf("HeapQueryInformation succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
@@ -112,7 +112,7 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 		result = FALSE;
 		error = TRUE;
 	}
-	if (GetWriteWatch(0, &VirtualAlloc_WriteWatch_APICalls, 0, NULL, NULL, (PULONG)buffer) == 0)
+	if (hash_GetWriteWatch(0, &VirtualAlloc_WriteWatch_APICalls, 0, NULL, NULL, (PULONG)buffer) == 0)
 	{
 		printf("GetWriteWatch succeeded when it should've failed... not sure what happened!\n");
 		result = FALSE;
@@ -124,7 +124,7 @@ BOOL VirtualAlloc_WriteWatch_APICalls()
 		// APIs failed as they should have! :)
 
 		hitCount = 4096;
-		if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
+		if (hash_GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
 		{
 			printf("GetWriteWatch failed. Last error: %u\n", hash_GetLastError());
 			result = FALSE;
@@ -166,10 +166,10 @@ BOOL VirtualAlloc_WriteWatch_IsDebuggerPresent()
 		return result;
 	}
 
-	buffer[0] = IsDebuggerPresent();
+	buffer[0] = hash_IsDebuggerPresent();
 
 	hitCount = 4096;
-	if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
+	if (hash_GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
 	{
 		printf("GetWriteWatch failed. Last error: %u\n", hash_GetLastError());
 		result = FALSE;
@@ -206,7 +206,7 @@ BOOL VirtualAlloc_WriteWatch_CodeWrite()
 	}
 	
 	// construct a call to isDebuggerPresent in assembly
-	ULONG_PTR isDebuggerPresentAddr = (ULONG_PTR)&IsDebuggerPresent;
+	ULONG_PTR isDebuggerPresentAddr = (ULONG_PTR)&hash_IsDebuggerPresent;
 
 #ifndef _WIN32
 #ifndef _WIN64
@@ -266,7 +266,7 @@ BOOL VirtualAlloc_WriteWatch_CodeWrite()
 
 #endif
 
-	ResetWriteWatch(buffer, 4096 * 4096);
+	hash_ResetWriteWatch(buffer, 4096 * 4096);
 
 	// cool, now exec the code
 	BOOL(*foo)(VOID) = (BOOL(*)(VOID))buffer;
@@ -278,7 +278,7 @@ BOOL VirtualAlloc_WriteWatch_CodeWrite()
 	if (result == FALSE)
 	{
 		hitCount = 4096;
-		if (GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
+		if (hash_GetWriteWatch(0, buffer, 4096, addresses, &hitCount, &granularity) != 0)
 		{
 			printf("GetWriteWatch failed. Last error: %u\n", hash_GetLastError());
 			result = FALSE;

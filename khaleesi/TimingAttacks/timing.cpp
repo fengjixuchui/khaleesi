@@ -300,7 +300,7 @@ BOOL timing_CreateTimerQueueTimer(UINT delayInMillis)
 	if (g_hEventCTQT == NULL)
 		return FALSE;
 
-	hTimerQueue = CreateTimerQueue();
+	hTimerQueue = hash_CreateTimerQueue();
 	if (hTimerQueue == NULL)
 	{
 		return TRUE;

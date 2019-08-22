@@ -20,6 +20,7 @@ DWORD                          hash_QueryDosDeviceW(LPCWSTR lpDeviceName, LPWSTR
 BOOL                           hash_GetDiskFreeSpaceExW(LPCWSTR lpDirectoryName, PULARGE_INTEGER lpFreeBytesAvailableToCaller,
                               PULARGE_INTEGER lpTotalNumberOfBytes, PULARGE_INTEGER lpTotalNumberOfFreeBytes);
 HMODULE                        hash_LoadLibraryW(LPCWSTR lpLibFileName);
+HMODULE hash_LoadLibraryA(LPCSTR lpLibFileName);
 BOOL                           hash_GetModuleHandleExW(DWORD dwFlags, LPCWSTR lpModuleName, HMODULE* phModule);
 DWORD                          hash_GetModuleFileNameW(HMODULE hModule, LPWSTR lpFilename, DWORD nSize);
 HMODULE                        hash_GetModuleHandleA(LPCSTR lpModuleName);
@@ -90,7 +91,7 @@ void                           hash_Sleep(DWORD dwMilliseconds);
 DWORD                          hash_GetCurrentProcessId();
 HANDLE                         hash_OpenProcess(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwProcessId);
 DWORD                          hash_GetEnvironmentVariableW(LPCWSTR lpName, LPWSTR lpBuffer, DWORD nSize);
-HMODULE                        hash_LoadLibraryA(__in LPCSTR file_name);
+HMODULE                        hash_LoadLibraryA_static(__in LPCSTR file_name);
 HANDLE                         hash_CreateToolhelp32Snapshot(DWORD dwFlags, DWORD th32ProcessID);
 BOOL                           hash_Module32FirstW(HANDLE hSnapshot, LPMODULEENTRY32W lpme);
 BOOL                           hash_Module32NextW(HANDLE hSnapshot, LPMODULEENTRY32W lpme);
@@ -102,8 +103,8 @@ HANDLE                         hash_CreateRemoteThread(HANDLE hProcess, LPSECURI
 BOOL                           hash_Thread32First(HANDLE hSnapshot, LPTHREADENTRY32 lpte);
 HANDLE                         hash_OpenThread(DWORD dwDesiredAccess, BOOL bInheritHandle, DWORD dwThreadId);
 BOOL                           hash_Thread32Next(HANDLE hSnapshot, LPTHREADENTRY32 lpte);
-BOOL                           hash_Process32FirstW(HANDLE hSnapshot, LPTHREADENTRY32 lpte);
-BOOL                           hash_Process32NextW(HANDLE hSnapshot, LPTHREADENTRY32 lpte);
+BOOL hash_Process32FirstW(HANDLE hSnapshot, LPPROCESSENTRY32W lppe);
+BOOL hash_Process32NextW(HANDLE hSnapshot, LPPROCESSENTRY32W lpte);
 DWORD                          hash_GetCurrentThreadId();
 BOOL                           hash_TerminateProcess(HANDLE hProcess, UINT uExitCode);
 BOOL                           hash_CloseHandle(HANDLE hObject);
@@ -120,5 +121,13 @@ BOOL                           hash_CheckRemoteDebuggerPresent(HANDLE hProcess, 
 LONG                           hash_UnhandledExceptionFilter(_EXCEPTION_POINTERS* ExceptionInfo);
 LPTOP_LEVEL_EXCEPTION_FILTER   hash_SetUnhandledExceptionFilter(LPTOP_LEVEL_EXCEPTION_FILTER lpTopLevelExceptionFilter);
 ULONG                          hash_RemoveVectoredExceptionHandler(PVOID Handle);
+BOOL hash_QueryInformationJobObject(HANDLE hJob, JOBOBJECTINFOCLASS JobObjectInformationClass, LPVOID lpJobObjectInformation, DWORD cbJobObjectInformationLength, LPDWORD lpReturnLength);
+UINT hash_GetWriteWatch(DWORD dwFlags, PVOID lpBaseAddress, SIZE_T dwRegionSize, PVOID *lpAddresses, ULONG_PTR *lpdwCount, LPDWORD lpdwGranularity);
+UINT hash_GlobalGetAtomNameW(ATOM nAtom, LPWSTR lpBuffer, int nSize);
+BOOL hash_GetBinaryTypeW(LPCWSTR lpApplicationName, LPDWORD lpBinaryType);
+BOOL hash_HeapQueryInformation(HANDLE HeapHandle, HEAP_INFORMATION_CLASS HeapInformationClass, PVOID HeapInformation, SIZE_T HeapInformationLength, PSIZE_T ReturnLength);
+UINT hash_ResetWriteWatch(LPVOID lpBaseAddress, SIZE_T dwRegionSize);
+BOOL hash_IsDebuggerPresent();
+HANDLE hash_CreateTimerQueue();
 //int hash_WideCharToMultiByte(UINT CodePage, DWORD dwFlags, _In_NLS_string_(cchWideChar)LPCWCH lpWideCharStr, int cchWideChar, LPSTR lpMultiByteStr, int cbMultiByte, LPCCH lpDefaultChar, LPBOOL lpUsedDefaultChar);
 //int hash_lstrcmpiW(LPCWSTR lpString1, LPCWSTR lpString2);

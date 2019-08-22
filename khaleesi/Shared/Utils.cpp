@@ -341,7 +341,7 @@ DWORD GetProcessIdFromName(LPCTSTR szProcessName)
 	// otherwise the following functions will fail
 	pe32.dwSize = sizeof(PROCESSENTRY32);
 
-	if (Process32First(hSnapshot, &pe32) == FALSE)
+	if (hash_Process32FirstW(hSnapshot, &pe32) == FALSE)
 	{
 		// Cleanup the mess
 		print_last_error(_T("Process32First"));
@@ -360,7 +360,7 @@ DWORD GetProcessIdFromName(LPCTSTR szProcessName)
 	// Most likely it won't match on the first try so 
 	// we loop through the rest of the entries until
 	// we find the matching entry or not one at all
-	while (Process32Next(hSnapshot, &pe32))
+	while (hash_Process32NextW(hSnapshot, &pe32))
 	{
 		if (StrCmpI(pe32.szExeFile, szProcessName) == 0)
 		{

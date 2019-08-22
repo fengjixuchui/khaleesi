@@ -28,7 +28,7 @@ BOOL SetWindowsHooksEx_Injection()
 	_tprintf(_T("\t[+] Full DLL Path: %s\n"), lpDllPath);
 
 	/* Obtain a handle to our injected dll */
-	hOurDll = LoadLibrary(lpDllPath);
+	hOurDll = hash_LoadLibraryW(lpDllPath);
 	if (hOurDll == NULL) {
 		print_last_error(_T("LoadLibrary"));
 		return FALSE;

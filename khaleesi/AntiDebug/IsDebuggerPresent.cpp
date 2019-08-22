@@ -24,5 +24,5 @@ Return Value:
 	FALSE - otherwise
 --*/
 {
-	return IsDebuggerPresent();
+	return hash_IsDebuggerPresent();
 }
