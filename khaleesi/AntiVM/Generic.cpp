@@ -346,7 +346,7 @@ BOOL dizk_size_deviceiocontrol()
 				if (diskExtents) {
 
 					DWORD dummy = 0;
-					BOOL extentsIoctlOK = DeviceIoControl(hVolume, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, NULL, 0, diskExtents, extentSize, &dummy, NULL);
+					BOOL extentsIoctlOK = hash_DeviceIoControl(hVolume, IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, NULL, 0, diskExtents, extentSize, &dummy, NULL);
 
 					if (extentsIoctlOK && diskExtents->NumberOfDiskExtents > 0)
 					{
@@ -371,7 +371,7 @@ BOOL dizk_size_deviceiocontrol()
 								if (hDevice != INVALID_HANDLE_VALUE)
 								{
 									// fetch the size info
-									bResult = DeviceIoControl(
+									bResult = hash_DeviceIoControl(
 										hDevice,					// device to be queried
 										IOCTL_DISK_GET_LENGTH_INFO, // operation to perform
 										NULL, 0,					// no input buffer
@@ -435,7 +435,7 @@ BOOL dizk_size_deviceiocontrol()
 
 		if (hDevice != INVALID_HANDLE_VALUE) {
 
-			if (DeviceIoControl(
+			if (hash_DeviceIoControl(
 				hDevice,					// device to be queried
 				IOCTL_DISK_GET_LENGTH_INFO, // operation to perform
 				NULL, 0,					// no input buffer
@@ -582,7 +582,7 @@ BOOL disk_size_getdiskfreespace()
 	ULARGE_INTEGER totalNumberOfBytes;
 
 	// If the function succeeds, the return value is nonzero. If the function fails, the return value is 0 (zero).
-	bStatus = GetDiskFreeSpaceEx(pszDrive, NULL, &totalNumberOfBytes, NULL);
+	bStatus = hash_GetDiskFreeSpaceExW(pszDrive, NULL, &totalNumberOfBytes, NULL);
 	if (bStatus) {
 		if (totalNumberOfBytes.QuadPart < minHardDiskSize)  // 80GB
 			return TRUE;

@@ -51,7 +51,7 @@ BOOL CreateRemoteThread_Injection()
 	_tprintf(_T("\t[+] Found at 0x%p\n"), LoadLibraryAddress);
 
 	/* Get the full path of the dll */
-	GetFullPathName(lpDllName, MAX_PATH, lpDllPath, NULL);
+	hash_GetFullPathNameW(lpDllName, MAX_PATH, lpDllPath, NULL);
 	_tprintf(_T("\t[+] Full DLL Path: %s\n"), lpDllPath);
 
 	/* Calculate the number of bytes needed for the DLL's pathname */
@@ -67,19 +67,19 @@ BOOL CreateRemoteThread_Injection()
 
 	/* Write to the remote process */
 	printf("\t[+] Writing into the current process space at 0x%p\n", lpBaseAddress);
-	if (!WriteProcessMemory(hProcess, lpBaseAddress, lpDllPath, dwSize, NULL)) {
+	if (!hash_WriteProcessMemory(hProcess, lpBaseAddress, lpDllPath, dwSize, NULL)) {
 		print_last_error(_T("WriteProcessMemory"));
 		goto Cleanup;
 	}
 
 	/* Create the more thread */
-	hRemoteThread = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)LoadLibraryAddress, lpBaseAddress, NULL, 0);
+	hRemoteThread = hash_CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)LoadLibraryAddress, lpBaseAddress, NULL, 0);
 	if (hRemoteThread == NULL) {
 		print_last_error(_T("CreateRemoteThread"));
 	}
 	else {
 		_tprintf(_T("Remote thread has been created successfully ...\n"));
-		WaitForSingleObject(hRemoteThread, INFINITE);
+		hash_WaitForSingleObject(hRemoteThread, INFINITE);
 		hash_CloseHandle(hRemoteThread);
 		
 		/* assign function success return result */

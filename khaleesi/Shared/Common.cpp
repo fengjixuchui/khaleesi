@@ -102,7 +102,7 @@ VOID print_last_error(LPCTSTR lpszFunction)
 	LPVOID lpDisplayBuf;
 	DWORD dw = hash_GetLastError();
 
-	if (FormatMessage(
+	if (hash_FormatMessageW(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -124,7 +124,7 @@ VOID print_last_error(LPCTSTR lpszFunction)
 	if (lpDisplayBuf) {
 
 		StringCchPrintf((LPTSTR)lpDisplayBuf,
-			LocalSize(lpDisplayBuf) / sizeof(TCHAR),
+			hash_LocalSize(lpDisplayBuf) / sizeof(TCHAR),
 			TEXT("%s failed with error %u: %s"),
 			lpszFunction, dw, lpMsgBuf);
 

@@ -724,21 +724,19 @@ void hash_GetSystemTimeAsFileTime(LPFILETIME lpSystemTimeAsFileTime)
 	return temp_GetSystemTimeAsFileTime(lpSystemTimeAsFileTime);
 }
 
-//SIZE_T hash_VirtualQuery(LPCVOID lpAddress,
-//                         PMEMORY_BASIC_INFORMATION lpBuffer,
-//                         SIZE_T dwLength)
-//{
-//	const auto lenSeed = 13;
-//	const auto _hash = MurmurHash2A("VirtualQuery", lenSeed, lenSeed);
-//
-//	temp_VirtualQuery = static_cast<SIZE_T(WINAPI*)(LPCVOID,
-//	                                                PMEMORY_BASIC_INFORMATION,
-//	                                                SIZE_T)>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
-//
-//	return temp_VirtualQuery(lpAddress,
-//	                         lpBuffer,
-//	                         dwLength);
-//}
+SIZE_T hash_VirtualQuery(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength)
+{
+	const auto lenSeed = 13;
+	const auto _hash = MurmurHash2A("VirtualQuery", lenSeed, lenSeed);
+
+	temp_VirtualQuery = static_cast<SIZE_T(WINAPI*)(LPCVOID,
+		PMEMORY_BASIC_INFORMATION,
+		SIZE_T)>(get_api(_hash, "kernel32.dll", lenSeed, lenSeed));
+
+	return temp_VirtualQuery(lpAddress,
+		lpBuffer,
+		dwLength);
+}
 
 BOOL hash_ReadProcessQMemory(HANDLE hProcess,
                              LPCVOID lpBaseAddress,

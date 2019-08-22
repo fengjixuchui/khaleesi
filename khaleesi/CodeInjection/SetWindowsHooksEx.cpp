@@ -24,7 +24,7 @@ BOOL SetWindowsHooksEx_Injection()
 	_tprintf(_T("\t[+] Getting main thread id of proc id: %u\n"), dwThreadId);
 
 	/* Get the full path of the dll to be injected */
-	GetFullPathName(lpDllName, MAX_PATH, lpDllPath, NULL);
+	hash_GetFullPathNameW(lpDllName, MAX_PATH, lpDllPath, NULL);
 	_tprintf(_T("\t[+] Full DLL Path: %s\n"), lpDllPath);
 
 	/* Obtain a handle to our injected dll */

@@ -34,7 +34,7 @@ BOOL ProcessJob()
 				ULONG_PTR processId = jobProcessIdList->ProcessIdList[i];
 
 				// is this the current process? if so that's ok
-				if (processId == (ULONG_PTR)GetCurrentProcessId())
+				if (processId == (ULONG_PTR)hash_GetCurrentProcessId())
 				{
 					ok_processes++;
 				}

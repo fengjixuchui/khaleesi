@@ -9,12 +9,12 @@ BOOL SetHandleInformation_ProtectedHandle()
 	HANDLE hMutex;
 
 	/* Create a mutex so we can get a handle */
-	hMutex = CreateMutex(NULL, FALSE, _T("Random name"));
+	hMutex = hash_CreateMutexW(NULL, FALSE, _T("2349823489"));
 
 	if (hMutex) {
 
 		/* Protect our handle */
-		SetHandleInformation(hMutex, HANDLE_FLAG_PROTECT_FROM_CLOSE, HANDLE_FLAG_PROTECT_FROM_CLOSE);
+		hash_SetHandleInformation(hMutex, HANDLE_FLAG_PROTECT_FROM_CLOSE, HANDLE_FLAG_PROTECT_FROM_CLOSE);
 
 
 		__try {

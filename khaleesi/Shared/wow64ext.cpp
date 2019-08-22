@@ -61,7 +61,7 @@ BOOL InitWow64Ext()
 {
 
 	IsWow64Process(hash_GetCurrentProcess(), &g_isWow64);
-	g_heap = GetProcessHeap();
+	g_heap = hash_GetProcessHeap();
 
 	return TRUE;
 }

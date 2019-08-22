@@ -137,8 +137,8 @@ LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 //////////////////////////////////////////////////////////////////////////
 
 #ifdef _WIN64
-#define GetProcAddress64         GetProcAddress
-#define GetModuleHandle64        GetModuleHandleW
+#define GetProcAddress64         hash_GetProcAddress
+#define GetModuleHandle64        hash_GetModuleHandleW
 #define getMem64(dest,src,size)  memcpy(dest,src,size)
 #endif
 
@@ -461,7 +461,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		DWORD readd;
 		TCHAR sysDir[MAX_PATH] = { 0 };
 		HANDLE hFile;
-		GetSystemDirectory(sysDir, MAX_PATH);
+		hash_GetSystemDirectoryW(sysDir, MAX_PATH);
 		_tcscat_s(sysDir, _T("\\ntdll.dll"));
 
 #ifndef _WIN64

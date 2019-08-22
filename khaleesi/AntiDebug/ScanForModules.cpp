@@ -19,7 +19,7 @@ static HRESULT NormalizeNTPathOld(wchar_t* pszPath, size_t nMax)
 	{
 		szDrive[0] = cDrive;
 		szNTPath[0] = 0;
-		if (0 != QueryDosDevice(szDrive, szNTPath, NUMCHARS(szNTPath)) &&
+		if (0 != hash_QueryDosDeviceW(szDrive, szNTPath, NUMCHARS(szNTPath)) &&
 			0 == _wcsicmp(szNTPath, pszPath))
 		{
 			// Match
@@ -50,7 +50,7 @@ static HRESULT NormalizeNTPath(TCHAR* pszPath, size_t nMax)
 	{
 		szDrive[0] = cDrive;
 		szNTPath[0] = 0;
-		if (0 != QueryDosDevice(szDrive, szNTPath, NUMCHARS(szNTPath)) &&
+		if (0 != hash_QueryDosDeviceW(szDrive, szNTPath, NUMCHARS(szNTPath)) &&
 			0 == StrCmpI(szNTPath, pszPath))
 		{
 			// Match
@@ -95,7 +95,7 @@ bool IsBadLibrary(TCHAR* filename, DWORD filenameLength)
 		filenameLength = (DWORD)filenameActualLength;
 	}
 
-	GetSystemDirectory(systemRootPath, MAX_PATH);
+	hash_GetSystemDirectoryW(systemRootPath, MAX_PATH);
 
 #ifdef _X86_
 	TCHAR syswow64Path[MAX_PATH];
@@ -253,14 +253,14 @@ BOOL ScanForModules_MemoryWalk_GMI()
 		while(addr < regionEnd)
 		{
 			bool skippedForward = false;
-			if (VirtualQuery(addr, &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) >= sizeof(MEMORY_BASIC_INFORMATION))
+			if (hash_VirtualQuery(addr, &memInfo, sizeof(MEMORY_BASIC_INFORMATION)) >= sizeof(MEMORY_BASIC_INFORMATION))
 			{
 				if (memInfo.State != MEM_FREE)
 				{
-					if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (TCHAR*)addr, &moduleHandle))
+					if (hash_GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (TCHAR*)addr, &moduleHandle))
 					{
 						SecureZeroMemory(moduleName, MAX_PATH * sizeof(TCHAR));
-						DWORD len = GetModuleFileName(moduleHandle, moduleName, MAX_PATH);
+						DWORD len = hash_GetModuleFileNameW(moduleHandle, moduleName, MAX_PATH);
 						//printf(" [!] %p: %S\n", addr, moduleName);
 						bool isBad = IsBadLibrary(moduleName, len);
 						if (isBad)
@@ -319,7 +319,7 @@ BOOL ScanForModules_MemoryWalk_Hidden()
 		{
 			bool skippedForward = false;
 			
-			if (GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (TCHAR*)addr, &moduleHandle) == FALSE)
+			if (hash_GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, (TCHAR*)addr, &moduleHandle) == FALSE)
 			{
 				// not a known module
 				if ((region->Protect & PAGE_EXECUTE) == PAGE_EXECUTE ||
@@ -571,7 +571,7 @@ BOOL ScanForModules_ToolHelp32()
 {
 	bool anyBadLibs = false;
 
-	HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, GetCurrentProcessId());
+	HANDLE snapshot = hash_CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, hash_GetCurrentProcessId());
 	//printf("Snapshot: %p\n", snapshot);
 	if (snapshot == INVALID_HANDLE_VALUE)
 	{
@@ -581,7 +581,7 @@ BOOL ScanForModules_ToolHelp32()
 	{
 		MODULEENTRY32 module = { 0 };
 		module.dwSize = sizeof(MODULEENTRY32);
-		if (Module32First(snapshot, &module) != FALSE)
+		if (hash_Module32FirstW(snapshot, &module) != FALSE)
 		{
 			do
 			{
@@ -591,7 +591,7 @@ BOOL ScanForModules_ToolHelp32()
 				anyBadLibs |= isBad;
 				//printf(" [!] %S\n", module.szModule);
 
-			} while (Module32Next(snapshot, &module) != FALSE);
+			} while (hash_Module32NextW(snapshot, &module) != FALSE);
 		}
 		else
 		{

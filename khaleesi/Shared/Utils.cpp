@@ -73,13 +73,13 @@ BOOL Is_RegKeyExists(HKEY hKey, const TCHAR* lpSubKey)
 
 BOOL is_FileExists(TCHAR* szPath)
 {
-	DWORD dwAttrib = GetFileAttributes(szPath);
+	DWORD dwAttrib = hash_GetFileAttributesW(szPath);
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES) && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
 BOOL is_DirectoryExists(TCHAR* szPath)
 {
-	DWORD dwAttrib = GetFileAttributes(szPath);
+	DWORD dwAttrib = hash_GetFileAttributesW(szPath);
 	return (dwAttrib != INVALID_FILE_ATTRIBUTES) && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
@@ -327,7 +327,7 @@ DWORD GetProcessIdFromName(LPCTSTR szProcessName)
 	SecureZeroMemory(&pe32, sizeof(PROCESSENTRY32));
 
 	// We want a snapshot of processes
-	hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	hSnapshot = hash_CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
 	// Check for a valid handle, in this case we need to check for
 	// INVALID_HANDLE_VALUE instead of NULL
@@ -380,17 +380,17 @@ DWORD GetProcessIdFromName(LPCTSTR szProcessName)
 DWORD GetMainThreadId(DWORD pid)
 {
 	/* Get main thread id from process id */
-	HANDLE h = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+	HANDLE h = hash_CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 	if (h != INVALID_HANDLE_VALUE) {
 		THREADENTRY32 te;
 		te.dwSize = sizeof(te);
-		if (Thread32First(h, &te))
+		if (hash_Thread32First(h, &te))
 		{
 			do
 			{
 				if (te.dwSize >= FIELD_OFFSET(THREADENTRY32, th32OwnerProcessID) + sizeof(te.th32OwnerProcessID)) {
 					if (te.th32OwnerProcessID == pid) {
-						HANDLE hThread = OpenThread(READ_CONTROL, FALSE, te.th32ThreadID);
+						HANDLE hThread = hash_OpenThread(READ_CONTROL, FALSE, te.th32ThreadID);
 						if (!hThread)
 							print_last_error(_T("OpenThread"));
 						else {
@@ -401,7 +401,7 @@ DWORD GetMainThreadId(DWORD pid)
 					}
 				}
 
-			} while (Thread32Next(h, &te));
+			} while (hash_Thread32Next(h, &te));
 		}
 		hash_CloseHandle(h);
 	}
@@ -661,7 +661,7 @@ bool attempt_to_read_memory_wow64(PVOID buffer, DWORD size, PVOID64 address)
 
 	//printf("dbg: read %llx\n", reinterpret_cast<uint64_t>(address));
 
-	HANDLE hProcess = hash_OpenProcess(PROCESS_ALL_ACCESS, FALSE, GetCurrentProcessId());
+	HANDLE hProcess = hash_OpenProcess(PROCESS_ALL_ACCESS, FALSE, hash_GetCurrentProcessId());
 
 	if (hProcess != NULL)
 	{
@@ -697,7 +697,7 @@ std::vector<PMEMORY_BASIC_INFORMATION>* enumerate_memory()
 	while (addr < MaxAddress)
 	{
 		auto mbi = new MEMORY_BASIC_INFORMATION();
-		if (VirtualQuery(addr, mbi, sizeof(MEMORY_BASIC_INFORMATION)) <= 0)
+		if (hash_VirtualQuery(addr, mbi, sizeof(MEMORY_BASIC_INFORMATION)) <= 0)
 			break;
 		
 		regions->push_back(mbi);

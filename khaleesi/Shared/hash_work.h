@@ -69,7 +69,9 @@ HANDLE                         hash_CreateFileW(LPCWSTR lpFileName, DWORD dwDesi
 DWORD                          hash_GetFullPathNameW(LPCWSTR lpFileName, DWORD nBufferLength, LPWSTR lpBuffer, LPWSTR* lpFilePart);
 DWORD                          hash_GetFileAttributesW(LPCWSTR lpFileName);
 void                           hash_GetSystemTimeAsFileTime(LPFILETIME lpSystemTimeAsFileTime);
-//void                           hash_VirtualQuery(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength);
+
+SIZE_T hash_VirtualQuery(LPCVOID lpAddress, PMEMORY_BASIC_INFORMATION lpBuffer, SIZE_T dwLength);
+
 BOOL                           hash_ReadProcessQMemory(HANDLE hProcess, LPCVOID lpBaseAddress, LPVOID lpBuffer, SIZE_T nSize,
                              SIZE_T* lpNumberOfBytesRead);
 HLOCAL                         hash_LocalAlloc(UINT uFlags, SIZE_T uBytes);

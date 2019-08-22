@@ -14,22 +14,22 @@ VOID WINAPI tls_callback(PVOID hModule, DWORD dwReason, PVOID pContext)
 	if (!has_run)
 	{
 		has_run = true;
-		tls_callback_thread_event = CreateEvent(NULL, FALSE, FALSE, NULL);
-		tls_callback_process_event = CreateEvent(NULL, FALSE, FALSE, NULL);
+		tls_callback_thread_event = hash_CreateEventW(NULL, FALSE, FALSE, NULL);
+		tls_callback_process_event = hash_CreateEventW(NULL, FALSE, FALSE, NULL);
 	}
 
 	if (dwReason == DLL_THREAD_ATTACH)
 	{
 		OutputDebugString(L"TLS callback: thread attach");
 		tls_callback_thread_data = 0xDEADBEEF;
-		SetEvent(tls_callback_thread_event);
+		hash_SetEvent(tls_callback_thread_event);
 	}
 
 	if (dwReason == DLL_PROCESS_ATTACH)
 	{
 		OutputDebugString(L"TLS callback: process attach");
 		tls_callback_process_data = 0xDEADBEEF;
-		SetEvent(tls_callback_process_event);
+		hash_SetEvent(tls_callback_process_event);
 	}
 }
 
@@ -45,20 +45,20 @@ BOOL TLSCallbackThread()
 {
 	const int BLOWN = 1000;
 
-	if (CreateThread(NULL, 0, &TLSCallbackDummyThread, NULL, 0, NULL) == NULL)
+	if (hash_CreateThread(NULL, 0, &TLSCallbackDummyThread, NULL, 0, NULL) == NULL)
 	{
 		OutputDebugString(L"TLS callback: couldn't start dummy thread");
 	}
 
 	int fuse = 0;
-	while (tls_callback_thread_event == NULL && ++fuse != BLOWN) { SwitchToThread(); }
+	while (tls_callback_thread_event == NULL && ++fuse != BLOWN) { hash_SwitchToThread(); }
 	if (fuse >= BLOWN)
 	{
 		OutputDebugString(L"TLSCallbackThread timeout on event creation.");
 		return TRUE;
 	}
 
-	DWORD waitStatus = WaitForSingleObject(tls_callback_thread_event, 5000);
+	DWORD waitStatus = hash_WaitForSingleObject(tls_callback_thread_event, 5000);
 	if (waitStatus != WAIT_OBJECT_0)
 	{
 		if (waitStatus == WAIT_FAILED)
@@ -83,14 +83,14 @@ BOOL TLSCallbackProcess()
 	const int BLOWN = 1000;
 
 	int fuse = 0;
-	while (tls_callback_process_event == NULL && ++fuse != BLOWN) { SwitchToThread(); }
+	while (tls_callback_process_event == NULL && ++fuse != BLOWN) { hash_SwitchToThread(); }
 	if (fuse >= BLOWN)
 	{
 		OutputDebugString(L"TLSCallbackProcess timeout on event creation.");
 		return TRUE;
 	}
 
-	DWORD waitStatus = WaitForSingleObject(tls_callback_process_event, 5000);
+	DWORD waitStatus = hash_WaitForSingleObject(tls_callback_process_event, 5000);
 	if (waitStatus != WAIT_OBJECT_0)
 	{
 		if (waitStatus == WAIT_FAILED)

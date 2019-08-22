@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "gh_syscall.h"
 
 inline void log()
 {
@@ -128,10 +129,10 @@ NTSTATUS RemapNtModule(PVOID* BaseAddress) noexcept
 
 	if (sectionHandle)
 	{
-		status = NtClose(sectionHandle);
+		status = ScClose(sectionHandle);
 		if (!NT_SUCCESS(status))
 		{
-			print("NtClose failed: %llx", status);
+			print("NtClose syscall failed: %llx", status);
 			return status;
 		}
 	}

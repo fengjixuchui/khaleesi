@@ -92,7 +92,7 @@ VOID vbox_files()
 	WORD dwlength = sizeof(szPaths) / sizeof(szPaths[0]);
 	TCHAR szWinDir[MAX_PATH] = _T("");
 	TCHAR szPath[MAX_PATH] = _T("");
-	GetWindowsDirectory(szWinDir, MAX_PATH);
+	hash_GetWindowsDirectoryW(szWinDir, MAX_PATH);
 
 	/* Check one by one */
 	for (int i = 0; i < dwlength; i++)
@@ -118,7 +118,7 @@ BOOL vbox_dir()
 	TCHAR szTarget[MAX_PATH] = _T("oracle\\virtualbox guest additions\\");
 
 	if (IsWoW64())
-		ExpandEnvironmentStrings(_T("%ProgramW6432%"), szProgramFile, ARRAYSIZE(szProgramFile));
+		hash_ExpandEnvironmentStringsW(_T("%ProgramW6432%"), szProgramFile, ARRAYSIZE(szProgramFile));
 	else
 		SHGetSpecialFolderPath(NULL, szProgramFile, CSIDL_PROGRAM_FILES, FALSE);
 
@@ -153,7 +153,7 @@ VOID vbox_devices()
 	WORD iLength = sizeof(devices) / sizeof(devices[0]);
 	for (int i = 0; i < iLength; i++)
 	{
-		HANDLE hFile = CreateFile(devices[i], GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		HANDLE hFile = hash_CreateFileW(devices[i], GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		TCHAR msg[256] = _T("");
 		_stprintf_s(msg, sizeof(msg) / sizeof(TCHAR), _T("Checking device %s "), devices[i]);
 		if (hFile != INVALID_HANDLE_VALUE) {

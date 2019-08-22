@@ -102,7 +102,7 @@ BOOL timing_WaitForSingleObject(UINT delayInMillis)
 	HANDLE hEvent;
 
 	// Create a nonsignaled event
-	hEvent = CreateEvent(NULL, TRUE, FALSE, NULL);
+	hEvent = hash_CreateEventW(NULL, TRUE, FALSE, NULL);
 	if (hEvent == NULL)
 	{
 		print_last_error(_T("CreateEvent"));
@@ -110,7 +110,7 @@ BOOL timing_WaitForSingleObject(UINT delayInMillis)
 	}
 
 	// Wait until timeout 
-	DWORD x = WaitForSingleObject(hEvent, delayInMillis);
+	DWORD x = hash_WaitForSingleObject(hEvent, delayInMillis);
 
 	// Malicious code goes here
 
@@ -161,7 +161,7 @@ BOOL rdtsc_diff_locky()
 		tsc1 = __rdtsc();
 
 		// Waste some cycles - should be faster than CloseHandle on bare metal
-		GetProcessHeap();
+		hash_GetProcessHeap();
 
 		tsc2 = __rdtsc();
 
@@ -262,25 +262,25 @@ BOOL timing_CreateWaitableTimer(UINT delayInMillis)
 
 	dueTime.QuadPart = delayInMillis * -10000LL;
 	
-	hTimer = CreateWaitableTimer(NULL, TRUE, NULL);
+	hTimer = hash_CreateWaitableTimerW(NULL, TRUE, NULL);
 	
 	if (hTimer == NULL)
 	{
 		return TRUE;
 	}
 
-	if (SetWaitableTimer(hTimer, &dueTime, 0, NULL, NULL, FALSE) == FALSE)
+	if (hash_SetWaitableTimer(hTimer, &dueTime, 0, NULL, NULL, FALSE) == FALSE)
 	{
 		bResult = TRUE;
 	}
 	else {
-		if (WaitForSingleObject(hTimer, INFINITE) != WAIT_OBJECT_0)
+		if (hash_WaitForSingleObject(hTimer, INFINITE) != WAIT_OBJECT_0)
 		{
 			bResult = TRUE;
 		}
 	}
 
-	CancelWaitableTimer(hTimer);
+	hash_CancelWaitableTimer(hTimer);
 	hash_CloseHandle(hTimer);
 	return bResult;
 }
@@ -296,7 +296,7 @@ BOOL timing_CreateTimerQueueTimer(UINT delayInMillis)
 	HANDLE hTimerQueueTimer = NULL;
 	BOOL bResult = FALSE;
 
-	g_hEventCTQT = CreateEvent(NULL, FALSE, FALSE, NULL);
+	g_hEventCTQT = hash_CreateEventW(NULL, FALSE, FALSE, NULL);
 	if (g_hEventCTQT == NULL)
 		return FALSE;
 
@@ -306,7 +306,7 @@ BOOL timing_CreateTimerQueueTimer(UINT delayInMillis)
 		return TRUE;
 	}
 
-	if (CreateTimerQueueTimer(
+	if (hash_CreateTimerQueueTimer(
 		&hTimerQueueTimer,
 		hTimerQueue,
 		&CallbackCTQT,
@@ -321,7 +321,7 @@ BOOL timing_CreateTimerQueueTimer(UINT delayInMillis)
 
 		// idea here is to wait only 10x the expected delay time
 		// if the wait expires before the timer comes back, we fail the test
-		if (WaitForSingleObject(g_hEventCTQT, delayInMillis * 10) != WAIT_OBJECT_0)
+		if (hash_WaitForSingleObject(g_hEventCTQT, delayInMillis * 10) != WAIT_OBJECT_0)
 		{
 			bResult = FALSE;
 		}
@@ -329,7 +329,7 @@ BOOL timing_CreateTimerQueueTimer(UINT delayInMillis)
 	}
 
 	// Delete all timers in the timer queue.
-	DeleteTimerQueueEx(hTimerQueue, NULL);
+	hash_DeleteTimerQueueEx(hTimerQueue, NULL);
 
 	hash_CloseHandle(g_hEventCTQT);
 
@@ -340,6 +340,6 @@ VOID CALLBACK CallbackCTQT(PVOID lParam, BOOLEAN TimerOrWaitFired)
 {
 	if (TimerOrWaitFired == TRUE && lParam == reinterpret_cast<PVOID>(0xDEADBEEFULL))
 	{
-		SetEvent(g_hEventCTQT);
+		hash_SetEvent(g_hEventCTQT);
 	}
 }
