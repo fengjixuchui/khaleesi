@@ -8,10 +8,7 @@ int main()
 {
 	/* enable functions */
 	BOOL	ENABLE_SCYLLAHIDE_DETECTOR = TRUE;
-	BOOL	ENABLE_TLS_CHECKS = FALSE;
 	BOOL	ENABLE_DEBUG_CHECKS = TRUE;
-	BOOL	ENABLE_INJECTION_CHECKS = FALSE;
-	BOOL	ENABLE_CODE_INJECTIONS = FALSE;
 	BOOL	ENABLE_ANALYSIS_TOOLS_CHECK = FALSE;
 
 	API::Init();
@@ -33,13 +30,6 @@ int main()
 	}
 
 	if (ENABLE_DEBUG_CHECKS) PageExceptionInitialEnum();
-
-	/* TLS checks */
-	if (ENABLE_TLS_CHECKS) {
-		print_category(TEXT("TLS Callbacks"));
-		exec_check(&TLSCallbackProcess, TEXT("TLS process attach callback "));
-		exec_check(&TLSCallbackThread, TEXT("TLS thread attach callback "));
-	}
 
 	/* Debugger Detection */
 	if (ENABLE_DEBUG_CHECKS) {
@@ -81,29 +71,7 @@ int main()
 		exec_check(&VirtualAlloc_WriteWatch_IsDebuggerPresent, TEXT("Checking VirtualAlloc write watch (IsDebuggerPresent) "));
 		exec_check(&VirtualAlloc_WriteWatch_CodeWrite, TEXT("Checking VirtualAlloc write watch (code write) "));
 		exec_check(&PageExceptionBreakpointCheck, TEXT("Checking for page exception breakpoints "));
-		//exec_check(&ModuleBoundsHookCheck, TEXT("Checking for API hooks outside module bounds "));
-	}
-
-	if (ENABLE_INJECTION_CHECKS) {
-		print_category(TEXT("DLL Injection Detection"));
-		exec_check(&ScanForModules_EnumProcessModulesEx_32bit, TEXT("Enumerating modules with EnumProcessModulesEx [32-bit] "));
-		exec_check(&ScanForModules_EnumProcessModulesEx_64bit, TEXT("Enumerating modules with EnumProcessModulesEx [64-bit] "));
-		exec_check(&ScanForModules_EnumProcessModulesEx_All, TEXT("Enumerating modules with EnumProcessModulesEx [ALL] "));
-		exec_check(&ScanForModules_ToolHelp32, TEXT("Enumerating modules with ToolHelp32 "));
-		exec_check(&ScanForModules_LdrEnumerateLoadedModules, TEXT("Enumerating the process LDR via LdrEnumerateLoadedModules "));
-		exec_check(&ScanForModules_LDR_Direct, TEXT("Enumerating the process LDR directly "));
-		exec_check(&ScanForModules_MemoryWalk_GMI, TEXT("Walking process memory with GetModuleInformation "));
-		exec_check(&ScanForModules_MemoryWalk_Hidden, TEXT("Walking process memory for hidden modules "));
-	}
-
-	/* Code injections techniques */
-	if (ENABLE_CODE_INJECTIONS) {
-		CreateRemoteThread_Injection();
-		SetWindowsHooksEx_Injection();
-		NtCreateThreadEx_Injection();
-		RtlCreateUserThread_Injection();
-		QueueUserAPC_Injection();
-		GetSetThreadContext_Injection();
+		exec_check(&ModuleBoundsHookCheck, TEXT("Checking for API hooks outside module bounds "));
 	}
 
 	/* Malware analysis tools */

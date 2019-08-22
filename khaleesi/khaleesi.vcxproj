@@ -208,13 +208,6 @@
     <ClInclude Include="AntiDebug\WUDF_IsDebuggerPresent.h" />
     <ClInclude Include="AntiDebug\XAD.h" />
     <ClInclude Include="AntiDebug\XAntiDebug.h" />
-    <ClInclude Include="CodeInjection\CreateRemoteThread.h" />
-    <ClInclude Include="CodeInjection\GetSetThreadContext.h" />
-    <ClInclude Include="CodeInjection\NtCreateThreadEx.h" />
-    <ClInclude Include="CodeInjection\pch.h" />
-    <ClInclude Include="CodeInjection\QueueUserAPC.h" />
-    <ClInclude Include="CodeInjection\RtlCreateUserThread.h" />
-    <ClInclude Include="CodeInjection\SetWindowsHooksEx.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Shared\APIs.h" />
     <ClInclude Include="Shared\ApiTypeDefs.h" />
@@ -283,12 +276,6 @@
     <ClCompile Include="AntiDebug\UnhandledExceptionFilter_Handler.cpp" />
     <ClCompile Include="AntiDebug\WriteWatch.cpp" />
     <ClCompile Include="AntiDebug\WUDF_IsDebuggerPresent.cpp" />
-    <ClCompile Include="CodeInjection\CreateRemoteThread.cpp" />
-    <ClCompile Include="CodeInjection\GetSetThreadContext.cpp" />
-    <ClCompile Include="CodeInjection\NtCreateThreadEx.cpp" />
-    <ClCompile Include="CodeInjection\QueueUserAPC.cpp" />
-    <ClCompile Include="CodeInjection\RtlCreateUserThread.cpp" />
-    <ClCompile Include="CodeInjection\SetWindowsHooksEx.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

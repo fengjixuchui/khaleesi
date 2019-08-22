@@ -22,15 +22,6 @@
     <Filter Include="Shared\Header">
       <UniqueIdentifier>{0abe0968-9567-474e-8ee3-02ce966590e2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CodeInjection">
-      <UniqueIdentifier>{7c1ba53c-7a4c-43a5-9c70-55888d8554b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CodeInjection\Source">
-      <UniqueIdentifier>{d8bae499-5da2-4540-b525-4de33b7b7719}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="CodeInjection\Header">
-      <UniqueIdentifier>{807d0507-ce74-4b62-ab79-8fbd34904fe7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="AntiAnalysis\Source">
       <UniqueIdentifier>{cf06cc61-c616-45d1-ae2f-7577948bc3e0}</UniqueIdentifier>
     </Filter>
@@ -168,27 +159,6 @@
     </ClInclude>
     <ClInclude Include="Shared\pch.h">
       <Filter>Shared\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CodeInjection\CreateRemoteThread.h">
-      <Filter>CodeInjection\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CodeInjection\GetSetThreadContext.h">
-      <Filter>CodeInjection\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CodeInjection\NtCreateThreadEx.h">
-      <Filter>CodeInjection\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CodeInjection\pch.h">
-      <Filter>CodeInjection\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CodeInjection\QueueUserAPC.h">
-      <Filter>CodeInjection\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CodeInjection\RtlCreateUserThread.h">
-      <Filter>CodeInjection\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CodeInjection\SetWindowsHooksEx.h">
-      <Filter>CodeInjection\Header</Filter>
     </ClInclude>
     <ClInclude Include="AntiAnalysis\pch.h">
       <Filter>AntiAnalysis\Header</Filter>
@@ -375,24 +345,6 @@
     </ClCompile>
     <ClCompile Include="Shared\Utils.cpp">
       <Filter>Shared\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CodeInjection\CreateRemoteThread.cpp">
-      <Filter>CodeInjection\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CodeInjection\GetSetThreadContext.cpp">
-      <Filter>CodeInjection\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CodeInjection\NtCreateThreadEx.cpp">
-      <Filter>CodeInjection\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CodeInjection\QueueUserAPC.cpp">
-      <Filter>CodeInjection\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CodeInjection\RtlCreateUserThread.cpp">
-      <Filter>CodeInjection\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="CodeInjection\SetWindowsHooksEx.cpp">
-      <Filter>CodeInjection\Source</Filter>
     </ClCompile>
     <ClCompile Include="AntiAnalysis\process.cpp">
       <Filter>AntiAnalysis\Source</Filter>
