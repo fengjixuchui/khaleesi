@@ -13,15 +13,6 @@
     <Filter Include="AntiAnalysis">
       <UniqueIdentifier>{666c0b5a-f811-4eb2-b4c9-a2e91c1ea6a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="AntiVM">
-      <UniqueIdentifier>{33fc6fa5-2c5b-43c3-ba25-d67335382f71}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AntiDump">
-      <UniqueIdentifier>{41e90f25-fc84-4cdd-ace6-cca5db49fbb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TimingAttacks">
-      <UniqueIdentifier>{c260c597-7ad7-4fc7-b84d-fa69d45c4b99}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shared">
       <UniqueIdentifier>{5d11ce3d-06d9-4e4c-b7f1-aef4153ac76b}</UniqueIdentifier>
     </Filter>
@@ -45,24 +36,6 @@
     </Filter>
     <Filter Include="AntiAnalysis\Header">
       <UniqueIdentifier>{f9672dc2-2eb4-4fdb-87ea-763a7a86872e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AntiDump\Source">
-      <UniqueIdentifier>{1bbf6302-26d8-43f4-a4d3-befc9b58d300}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AntiDump\Header">
-      <UniqueIdentifier>{21cdc14d-e1ad-40cd-aa30-6e2635ef68cc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AntiVM\Source">
-      <UniqueIdentifier>{a1ad376c-c1f2-45b7-9ae6-e9829edad1e2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="AntiVM\Header">
-      <UniqueIdentifier>{7ac2da9c-be04-4cfd-8687-20a6ac63a45a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TimingAttacks\Source">
-      <UniqueIdentifier>{6e37020f-ba4e-4b6f-82ed-0e4f5e5ec872}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TimingAttacks\Header">
-      <UniqueIdentifier>{bcf9eab0-7525-4627-843b-878d0ae1732f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Shared\Source\winapi_obf">
       <UniqueIdentifier>{0b2ee922-cd00-4e5f-855b-015764ac4047}</UniqueIdentifier>
@@ -222,51 +195,6 @@
     </ClInclude>
     <ClInclude Include="AntiAnalysis\process.h">
       <Filter>AntiAnalysis\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiDump\ErasePEHeaderFromMemory.h">
-      <Filter>AntiDump\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiDump\pch.h">
-      <Filter>AntiDump\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiDump\SizeOfImage.h">
-      <Filter>AntiDump\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\Generic.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\Parallels.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\pch.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\Qemu.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\Services.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\VirtualBox.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\VirtualPC.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\VMWare.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\Wine.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="AntiVM\Xen.h">
-      <Filter>AntiVM\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TimingAttacks\pch.h">
-      <Filter>TimingAttacks\Header</Filter>
-    </ClInclude>
-    <ClInclude Include="TimingAttacks\timing.h">
-      <Filter>TimingAttacks\Header</Filter>
     </ClInclude>
     <ClInclude Include="AntiDebug\CheckRemoteDebuggerPresent.h">
       <Filter>AntiDebug\Header</Filter>
@@ -468,42 +396,6 @@
     </ClCompile>
     <ClCompile Include="AntiAnalysis\process.cpp">
       <Filter>AntiAnalysis\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiDump\ErasePEHeaderFromMemory.cpp">
-      <Filter>AntiDump\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiDump\SizeOfImage.cpp">
-      <Filter>AntiDump\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\Generic.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\Parallels.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\Qemu.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\Services.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\VirtualBox.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\VirtualPC.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\VMWare.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\Wine.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiVM\Xen.cpp">
-      <Filter>AntiVM\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="TimingAttacks\timing.cpp">
-      <Filter>TimingAttacks\Source</Filter>
     </ClCompile>
     <ClCompile Include="AntiDebug\CheckRemoteDebuggerPresent.cpp">
       <Filter>AntiDebug\Source</Filter>

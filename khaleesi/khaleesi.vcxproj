@@ -208,19 +208,6 @@
     <ClInclude Include="AntiDebug\WUDF_IsDebuggerPresent.h" />
     <ClInclude Include="AntiDebug\XAD.h" />
     <ClInclude Include="AntiDebug\XAntiDebug.h" />
-    <ClInclude Include="AntiDump\ErasePEHeaderFromMemory.h" />
-    <ClInclude Include="AntiDump\pch.h" />
-    <ClInclude Include="AntiDump\SizeOfImage.h" />
-    <ClInclude Include="AntiVM\Generic.h" />
-    <ClInclude Include="AntiVM\Parallels.h" />
-    <ClInclude Include="AntiVM\pch.h" />
-    <ClInclude Include="AntiVM\Qemu.h" />
-    <ClInclude Include="AntiVM\Services.h" />
-    <ClInclude Include="AntiVM\VirtualBox.h" />
-    <ClInclude Include="AntiVM\VirtualPC.h" />
-    <ClInclude Include="AntiVM\VMWare.h" />
-    <ClInclude Include="AntiVM\Wine.h" />
-    <ClInclude Include="AntiVM\Xen.h" />
     <ClInclude Include="CodeInjection\CreateRemoteThread.h" />
     <ClInclude Include="CodeInjection\GetSetThreadContext.h" />
     <ClInclude Include="CodeInjection\NtCreateThreadEx.h" />
@@ -257,8 +244,6 @@
     <ClInclude Include="Shared\WinStructs.h" />
     <ClInclude Include="Shared\wow64ext.h" />
     <ClInclude Include="Shared\XorStr.h" />
-    <ClInclude Include="TimingAttacks\pch.h" />
-    <ClInclude Include="TimingAttacks\timing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AntiDebug\XAD.cpp" />
@@ -298,17 +283,6 @@
     <ClCompile Include="AntiDebug\UnhandledExceptionFilter_Handler.cpp" />
     <ClCompile Include="AntiDebug\WriteWatch.cpp" />
     <ClCompile Include="AntiDebug\WUDF_IsDebuggerPresent.cpp" />
-    <ClCompile Include="AntiDump\ErasePEHeaderFromMemory.cpp" />
-    <ClCompile Include="AntiDump\SizeOfImage.cpp" />
-    <ClCompile Include="AntiVM\Generic.cpp" />
-    <ClCompile Include="AntiVM\Parallels.cpp" />
-    <ClCompile Include="AntiVM\Qemu.cpp" />
-    <ClCompile Include="AntiVM\Services.cpp" />
-    <ClCompile Include="AntiVM\VirtualBox.cpp" />
-    <ClCompile Include="AntiVM\VirtualPC.cpp" />
-    <ClCompile Include="AntiVM\VMWare.cpp" />
-    <ClCompile Include="AntiVM\Wine.cpp" />
-    <ClCompile Include="AntiVM\Xen.cpp" />
     <ClCompile Include="CodeInjection\CreateRemoteThread.cpp" />
     <ClCompile Include="CodeInjection\GetSetThreadContext.cpp" />
     <ClCompile Include="CodeInjection\NtCreateThreadEx.cpp" />
@@ -335,7 +309,6 @@
     <ClCompile Include="Shared\TitanHideDetect.cpp" />
     <ClCompile Include="Shared\Utils.cpp" />
     <ClCompile Include="Shared\wow64ext.cpp" />
-    <ClCompile Include="TimingAttacks\timing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <MASM Include="AntiDebug\int2d_x64.asm">
