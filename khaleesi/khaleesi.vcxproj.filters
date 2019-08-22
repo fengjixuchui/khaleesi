@@ -103,9 +103,6 @@
     <ClInclude Include="AntiDebug\ProcessJob.h">
       <Filter>AntiDebug\Header</Filter>
     </ClInclude>
-    <ClInclude Include="AntiDebug\ScanForModules.h">
-      <Filter>AntiDebug\Header</Filter>
-    </ClInclude>
     <ClInclude Include="AntiDebug\SeDebugPrivilege.h">
       <Filter>AntiDebug\Header</Filter>
     </ClInclude>
@@ -302,9 +299,6 @@
       <Filter>AntiDebug\Source</Filter>
     </ClCompile>
     <ClCompile Include="AntiDebug\ProcessJob.cpp">
-      <Filter>AntiDebug\Source</Filter>
-    </ClCompile>
-    <ClCompile Include="AntiDebug\ScanForModules.cpp">
       <Filter>AntiDebug\Source</Filter>
     </ClCompile>
     <ClCompile Include="AntiDebug\SeDebugPrivilege.cpp">

@@ -1,0 +1,21 @@
+[2019-08-22 19:27:31] [info] Start Program:
+Path:"C:\Users\RELAX\Documents\GitHub\khaleesi\x64\Release\khaleesi.exe"
+Arguments:
+Working directory: "C:\Users\RELAX\Documents\GitHub\khaleesi\khaleesi\"
+Modules: Selected: C:\Users\RELAX\Documents\GitHub\khaleesi\x64\Release\khaleesi.exe Excluded: 
+Sources: Selected: C:\Users\RELAX\Documents\GitHub\khaleesi\khaleesi Excluded: 
+Log Level: Normal
+Cover Children: 0
+Aggregate by file: 1
+Continue after C++ exception: 0
+Optimized build support: 0
+Export: Binary C:\Users\RELAX\AppData\Local\Temp\2m0ttynm.qcz 
+Input coverage: 
+Unified diff: 
+Excluded line regular expressions: 
+Substitute pdb source paths: 
+
+[2019-08-22 19:27:31] [info] Module: C:\Users\RELAX\Documents\GitHub\khaleesi\x64\Release\khaleesi.exe is selected because it matches selected pattern: C:\Users\RELAX\Documents\GitHub\khaleesi\x64\Release\khaleesi.exe
+[2019-08-22 19:27:40] [info] ----------------------------------------------------
+[2019-08-22 19:27:40] [info] Coverage binary generated in file: C:\Users\RELAX\AppData\Local\Temp\2m0ttynm.qcz
+[2019-08-22 19:27:40] [info] ----------------------------------------------------

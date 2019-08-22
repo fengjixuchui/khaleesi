@@ -197,7 +197,6 @@
     <ClInclude Include="AntiDebug\ProcessHeap_Flags.h" />
     <ClInclude Include="AntiDebug\ProcessHeap_ForceFlags.h" />
     <ClInclude Include="AntiDebug\ProcessJob.h" />
-    <ClInclude Include="AntiDebug\ScanForModules.h" />
     <ClInclude Include="AntiDebug\SeDebugPrivilege.h" />
     <ClInclude Include="AntiDebug\SetHandleInformation_API.h" />
     <ClInclude Include="AntiDebug\SharedUserData_KernelDebugger.h" />
@@ -267,7 +266,6 @@
     <ClCompile Include="AntiDebug\ProcessHeap_Flags.cpp" />
     <ClCompile Include="AntiDebug\ProcessHeap_ForceFlags.cpp" />
     <ClCompile Include="AntiDebug\ProcessJob.cpp" />
-    <ClCompile Include="AntiDebug\ScanForModules.cpp" />
     <ClCompile Include="AntiDebug\SeDebugPrivilege.cpp" />
     <ClCompile Include="AntiDebug\SetHandleInformation_API.cpp" />
     <ClCompile Include="AntiDebug\SharedUserData_KernelDebugger.cpp" />

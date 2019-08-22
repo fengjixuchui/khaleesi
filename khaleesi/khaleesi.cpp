@@ -1,8 +1,4 @@
-// al-khaser.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include "pch.h"
-
 
 int main()
 {
@@ -34,7 +30,7 @@ int main()
 	/* Debugger Detection */
 	if (ENABLE_DEBUG_CHECKS) {
 		print_category(TEXT("Debugger Detection"));
-		//exec_check(&XAD, TEXT("Checking XAntiDebug "));
+		exec_check(&XAD, TEXT("Checking XAntiDebug "));
 		exec_check(&IsDebuggerPresentAPI, TEXT("Checking IsDebuggerPresent API "));
 		exec_check(&IsDebuggerPresentPEB, TEXT("Checking PEB.BeingDebugged "));
 		exec_check(&CheckRemoteDebuggerPresentAPI, TEXT("Checking CheckRemoteDebuggerPresent API "));
@@ -50,9 +46,10 @@ int main()
 		exec_check(&NtSetInformationThread_ThreadHideFromDebugger, TEXT("Checking NtSetInformationThread with ThreadHideFromDebugger "));
 		exec_check(&CloseHandle_InvalideHandle, TEXT("Checking CloseHandle with an invalide handle "));
 		exec_check(&NtClose_InvalideHandle, TEXT("Checking NtClose with an invalide handle "));
-		exec_check(&UnhandledExcepFilterTest, TEXT("Checking UnhandledExcepFilterTest "));
+		//exec_check(&UnhandledExcepFilterTest, TEXT("Checking UnhandledExcepFilterTest "));
 		exec_check(&OutputDebugStringAPI, TEXT("Checking OutputDebugString "));
 		exec_check(&HardwareBreakpoints, TEXT("Checking Hardware Breakpoints "));
+		// false positive
 		//exec_check(&SoftwareBreakpoints, TEXT("Checking Software Breakpoints "));
 		exec_check(&Interrupt_0x2d, TEXT("Checking Interupt 0x2d "));
 		exec_check(&Interrupt_3, TEXT("Checking Interupt 1 "));
