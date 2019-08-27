@@ -38,13 +38,13 @@ void API::Init()
 	{
 		ApiData[i].ExpectedAvailable = ShouldFunctionExistOnCurrentPlatform(ApiData[i].PlatformBits, ApiData[i].MinVersion, ApiData[i].RemovedInVersion);
 
-		HMODULE hLib = LoadLibraryA(ApiData[i].Library);
+		HMODULE hLib = hash_LoadLibraryA(ApiData[i].Library);
 		if (hLib == NULL)
 		{
 			ApiData[i].Available = false;
 			continue;
 		}
-		ApiData[i].Pointer = GetProcAddress(hLib, ApiData[i].EntryName);
+		ApiData[i].Pointer = hash_GetProcAddress(hLib, ApiData[i].EntryName);
 		if (ApiData[i].Pointer == NULL)
 		{
 			ApiData[i].Available = false;

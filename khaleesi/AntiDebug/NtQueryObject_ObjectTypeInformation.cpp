@@ -25,14 +25,14 @@ BOOL NtQueryObject_ObjectTypeInformation()
 	POBJECT_TYPE_INFORMATION ObjectInformation = (POBJECT_TYPE_INFORMATION)memory;
 	NTSTATUS Status;
 
-	NtCreateDebugObject(&DebugObjectHandle, DEBUG_ALL_ACCESS, &ObjectAttributes, FALSE);
+	ScCreateDebugObject(&DebugObjectHandle, DEBUG_ALL_ACCESS, &ObjectAttributes, FALSE);
 
 	if (API::IsAvailable(API_IDENTIFIER::API_NtQueryObject))
 	{
-		Status = NtQueryObject(DebugObjectHandle, ObjectTypeInformation, ObjectInformation, sizeof(memory), 0);
+		Status = ScQueryObject(DebugObjectHandle, ObjectTypeInformation, ObjectInformation, sizeof(memory), 0);
 
 		// Make sure to not screw up later checks
-		CloseHandle(DebugObjectHandle);
+		hash_CloseHandle(DebugObjectHandle);
 
 
 		if (Status >= 0)

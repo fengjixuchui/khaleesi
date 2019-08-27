@@ -26,7 +26,7 @@ BOOL ProcessJob()
 
 		jobProcessIdList->NumberOfProcessIdsInList = 1024;
 
-		if (QueryInformationJobObject(NULL, JobObjectBasicProcessIdList, jobProcessIdList, jobProcessStructSize, NULL))
+		if (hash_QueryInformationJobObject(NULL, JobObjectBasicProcessIdList, jobProcessIdList, jobProcessStructSize, NULL))
 		{
 			int ok_processes = 0;
 			for (DWORD i = 0; i < jobProcessIdList->NumberOfAssignedProcesses; i++)
@@ -34,7 +34,7 @@ BOOL ProcessJob()
 				ULONG_PTR processId = jobProcessIdList->ProcessIdList[i];
 
 				// is this the current process? if so that's ok
-				if (processId == (ULONG_PTR)GetCurrentProcessId())
+				if (processId == (ULONG_PTR)hash_GetCurrentProcessId())
 				{
 					ok_processes++;
 				}
@@ -42,7 +42,7 @@ BOOL ProcessJob()
 				{
 
 					// find the process name for this job process
-					HANDLE hJobProcess = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, (DWORD)processId);
+					HANDLE hJobProcess = hash_OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, (DWORD)processId);
 					if (hJobProcess != NULL)
 					{
 						const int processNameBufferSize = 4096;
@@ -63,7 +63,7 @@ BOOL ProcessJob()
 
 							free(processName);
 						}
-						CloseHandle(hJobProcess);
+						hash_CloseHandle(hJobProcess);
 					}
 				}
 			}

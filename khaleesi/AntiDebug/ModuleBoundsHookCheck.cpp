@@ -65,7 +65,7 @@ char apis_user32[] = "ActivateKeyboardLayout AddClipboardFormatListener AdjustWi
 bool ModuleBoundsHookCheckSingle(HMODULE dll, char* apiList)
 {
 	MODULEINFO moduleInfo;
-	if (GetModuleInformation(GetCurrentProcess(), dll, &moduleInfo, sizeof(MODULEINFO)) == FALSE)
+	if (GetModuleInformation(hash_GetCurrentProcess(), dll, &moduleInfo, sizeof(MODULEINFO)) == FALSE)
 	{
 		// todo: error condition
 		return FALSE;
@@ -82,7 +82,7 @@ bool ModuleBoundsHookCheckSingle(HMODULE dll, char* apiList)
 
 	while (currentAPI != NULL)
 	{
-		PVOID procAddr = GetProcAddress(dll, currentAPI);
+		PVOID procAddr = hash_GetProcAddress(dll, currentAPI);
 		if (procAddr != NULL)
 		{
 			if (procAddr < moduleBottom || procAddr >= moduleTop)
@@ -100,9 +100,9 @@ bool ModuleBoundsHookCheckSingle(HMODULE dll, char* apiList)
 
 BOOL ModuleBoundsHookCheck()
 {
-	bool foundHook = ModuleBoundsHookCheckSingle(LoadLibrary(_T("kernel32.dll")), apis_kernel32) &&
-		ModuleBoundsHookCheckSingle(LoadLibrary(_T("ntdll.dll")), apis_ntdll) &&
-		ModuleBoundsHookCheckSingle(LoadLibrary(_T("user32.dll")), apis_user32);
+	bool foundHook = ModuleBoundsHookCheckSingle(hash_LoadLibraryW(_T("kernel32.dll")), apis_kernel32) &&
+		ModuleBoundsHookCheckSingle(hash_LoadLibraryW(_T("ntdll.dll")), apis_ntdll) &&
+		ModuleBoundsHookCheckSingle(hash_LoadLibraryW(_T("user32.dll")), apis_user32);
 
 	return foundHook ? TRUE : FALSE;
 }

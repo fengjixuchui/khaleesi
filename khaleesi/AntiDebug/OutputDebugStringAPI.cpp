@@ -22,10 +22,10 @@ BOOL OutputDebugStringAPI()
 	// This is working only in Windows XP/2000
 	if (IsWindowsXPOr2k())
 	{
-		SetLastError(Val);
-		OutputDebugString(_T("random"));
+		hash_SetLastError(Val);
+		hash_OutputDebugStringW(_T("random"));
 
-		if (GetLastError() == Val)
+		if (hash_GetLastError() == Val)
 			IsDbgPresent = TRUE;
 	}
 

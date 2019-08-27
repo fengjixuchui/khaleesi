@@ -28,7 +28,7 @@ BOOL CloseHandle_InvalideHandle()
 {
 	// Let's try first with user mode API: CloseHandle
 	__try {
-		CloseHandle(reinterpret_cast<HANDLE>(0x99999999ULL));
+		hash_CloseHandle(reinterpret_cast<HANDLE>(0x99999999ULL));
 	}
 	__except (EXCEPTION_EXECUTE_HANDLER) {
 		return TRUE;

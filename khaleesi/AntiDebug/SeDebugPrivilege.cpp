@@ -25,10 +25,10 @@ DWORD GetCsrssProcessId()
 
 BOOL CanOpenCsrss()
 {
-	 HANDLE hCsrss = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, GetCsrssProcessId());
+	 HANDLE hCsrss = hash_OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, GetCsrssProcessId());
 	 if (hCsrss != NULL)
 	{
-		CloseHandle(hCsrss);
+		hash_CloseHandle(hCsrss);
 		return TRUE;
 	}
 	else

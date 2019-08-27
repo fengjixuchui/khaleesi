@@ -7,10 +7,10 @@
 
 #define SystemCodeIntegrityInformation 0x67
 
-typedef struct _SYSTEM_CODEINTEGRITY_INFORMATION {
-	ULONG Length;
-	ULONG CodeIntegrityOptions;
-} SYSTEM_CODEINTEGRITY_INFORMATION;
+//typedef struct _SYSTEM_CODEINTEGRITY_INFORMATION {
+//	ULONG Length;
+//	ULONG CodeIntegrityOptions;
+//} SYSTEM_CODEINTEGRITY_INFORMATION;
 
 typedef NTSTATUS(__stdcall* t_NtQuerySystemInformation)(
 	IN ULONG,

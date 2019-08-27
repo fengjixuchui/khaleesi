@@ -10,7 +10,7 @@ BOOL safeWow64DisableDirectory(PVOID& arg)
 {
 	typedef BOOL WINAPI fntype_Wow64DisableWow64FsRedirection(PVOID * OldValue);
 	auto pfnWow64DisableWow64FsRedirection = (fntype_Wow64DisableWow64FsRedirection*)\
-		GetProcAddress(GetModuleHandleA("kernel32.dll"), "Wow64DisableWow64FsRedirection");
+		hash_GetProcAddress(hash_GetModuleHandleA("kernel32.dll"), "Wow64DisableWow64FsRedirection");
 
 	if (pfnWow64DisableWow64FsRedirection) {
 
@@ -29,7 +29,7 @@ BOOL safeWow64ReverDirectory(PVOID& arg)
 {
 	typedef BOOL WINAPI fntype_Wow64RevertWow64FsRedirection(PVOID * OldValue);
 	auto pfnWow64RevertWow64FsRedirection = (fntype_Wow64RevertWow64FsRedirection*) \
-		GetProcAddress(GetModuleHandleA("kernel32.dll"), "Wow64RevertWow64FsRedirection");
+		hash_GetProcAddress(hash_GetModuleHandleA("kernel32.dll"), "Wow64RevertWow64FsRedirection");
 
 	if (pfnWow64RevertWow64FsRedirection) {
 
@@ -49,7 +49,7 @@ VOID SafeGetNativeSystemInfo(__out LPSYSTEM_INFO lpSystemInfo)
 	if (NULL == lpSystemInfo)    return;
 	typedef VOID(WINAPI * LPFN_GetNativeSystemInfo)(LPSYSTEM_INFO lpSystemInfo);
 	LPFN_GetNativeSystemInfo fnGetNativeSystemInfo = \
-		(LPFN_GetNativeSystemInfo)GetProcAddress(GetModuleHandleA("kernel32"), "GetNativeSystemInfo");
+		(LPFN_GetNativeSystemInfo)hash_GetProcAddress(hash_GetModuleHandleA("kernel32"), "GetNativeSystemInfo");
 
 	if (NULL != fnGetNativeSystemInfo)
 	{
@@ -57,7 +57,7 @@ VOID SafeGetNativeSystemInfo(__out LPSYSTEM_INFO lpSystemInfo)
 	}
 	else
 	{
-		GetSystemInfo(lpSystemInfo);
+		hash_GetSystemInfo(lpSystemInfo);
 	}
 }
 
@@ -137,8 +137,8 @@ LONG WINAPI VectoredExceptionHandler(PEXCEPTION_POINTERS pExceptionInfo)
 //////////////////////////////////////////////////////////////////////////
 
 #ifdef _WIN64
-#define GetProcAddress64         GetProcAddress
-#define GetModuleHandle64        GetModuleHandleW
+#define GetProcAddress64         hash_GetProcAddress
+#define GetModuleHandle64        hash_GetModuleHandleW
 #define getMem64(dest,src,size)  memcpy(dest,src,size)
 #endif
 
@@ -179,7 +179,7 @@ XAntiDebug::XAntiDebug(HMODULE moduleHandle, DWORD flags)
 	}
 
 	typedef LONG(__stdcall * fnRtlGetVersion)(PRTL_OSVERSIONINFOW lpVersionInformation);
-	fnRtlGetVersion pRtlGetVersion = (fnRtlGetVersion)GetProcAddress(GetModuleHandle(TEXT("ntdll")), "RtlGetVersion");
+	fnRtlGetVersion pRtlGetVersion = (fnRtlGetVersion)hash_GetProcAddress(hash_GetModuleHandleW(TEXT("ntdll")), "RtlGetVersion");
 
 	if (pRtlGetVersion)
 	{
@@ -209,18 +209,18 @@ XAntiDebug::XAntiDebug(HMODULE moduleHandle, DWORD flags)
 		);
 
 	fnNtSetInformationThread pfnNtSetInformationThread = \
-		(fnNtSetInformationThread)GetProcAddress(GetModuleHandleW(XAD_NTDLL), "NtSetInformationThread");
+		(fnNtSetInformationThread)hash_GetProcAddress(hash_GetModuleHandleW(XAD_NTDLL), "NtSetInformationThread");
 	if (pfnNtSetInformationThread)
 	{
 #ifndef _DEBUG
 		LONG status;
 
-		pfnNtSetInformationThread((HANDLE)-2, 0x11, NULL, NULL);
+		ScSetInformationThread((HANDLE)-2, 0x11, NULL, NULL);
 
 		//
 		// StrongOD 驱动处理不当
 		//
-		status = pfnNtSetInformationThread((HANDLE)-2, 0x11, (PVOID)sizeof(PVOID), sizeof(PVOID));
+		status = ScSetInformationThread((HANDLE)-2, 0x11, (PVOID)sizeof(PVOID), sizeof(PVOID));
 		if (status == 0)
 		{
 			_isLoadStrongOD = TRUE;
@@ -236,7 +236,7 @@ XAntiDebug::~XAntiDebug()
 {
 	if (_pagePtr)
 	{
-		VirtualFreeEx((HANDLE)-1, reinterpret_cast<LPVOID>(_pagePtr), 0, MEM_RELEASE);
+		hash_VirtualFreeEx((HANDLE)-1, reinterpret_cast<LPVOID>(_pagePtr), 0, MEM_RELEASE);
 	}
 }
 
@@ -277,7 +277,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 
 		GetSystemDirectoryA(sysDir, MAX_PATH);
 		pfnZwQuerySystemInformation = \
-			(fnZwQuerySystemInformation)GetProcAddress(GetModuleHandleW(XAD_NTDLL), "ZwQuerySystemInformation");
+			(fnZwQuerySystemInformation)hash_GetProcAddress(hash_GetModuleHandleW(XAD_NTDLL), "ZwQuerySystemInformation");
 		if (!pfnZwQuerySystemInformation)
 		{
 			return XAD_ERROR_OPENNTOS;
@@ -381,12 +381,12 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		else
 		{
 #ifndef _WIN64
-			_MyQueryInfomationProcess = (DWORD)GetProcAddress(GetModuleHandleW(XAD_NTDLL), "ZwQueryInformationProcess");
+			_MyQueryInfomationProcess = (DWORD)hash_GetProcAddress(hash_GetModuleHandleW(XAD_NTDLL), "ZwQueryInformationProcess");
 			if (_MyQueryInfomationProcess == NULL)
 			{
 				return XAD_ERROR_NTAPI;
 			}
-			_MyQueryInfomationProcess -= (DWORD)GetModuleHandleW(XAD_NTDLL);
+			_MyQueryInfomationProcess -= (DWORD)hash_GetModuleHandleW(XAD_NTDLL);
 #else
 			__debugbreak();
 #endif
@@ -425,7 +425,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		}
 		else
 		{
-			PIMAGE_DOS_HEADER	pDosHead = (PIMAGE_DOS_HEADER)GetModuleHandleW(XAD_NTDLL);
+			PIMAGE_DOS_HEADER	pDosHead = (PIMAGE_DOS_HEADER)hash_GetModuleHandleW(XAD_NTDLL);
 			if (pDosHead->e_magic != IMAGE_DOS_SIGNATURE)
 				return XAD_ERROR_FILEOFFSET;
 
@@ -461,7 +461,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		DWORD readd;
 		TCHAR sysDir[MAX_PATH] = { 0 };
 		HANDLE hFile;
-		GetSystemDirectory(sysDir, MAX_PATH);
+		hash_GetSystemDirectoryW(sysDir, MAX_PATH);
 		_tcscat_s(sysDir, _T("\\ntdll.dll"));
 
 #ifndef _WIN64
@@ -469,14 +469,14 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 			safeWow64DisableDirectory(_wow64FsReDirectory);
 #endif 
 
-		hFile = CreateFile(sysDir, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+		hFile = hash_CreateFileW(sysDir, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 		if (hFile == INVALID_HANDLE_VALUE)
 		{
 			return XAD_ERROR_OPENNTDLL;
 		}
 		SetFilePointer(hFile, fileOffset, NULL, FILE_CURRENT);
 		ReadFile(hFile, opcode, XAD_MAXOPCODE, &readd, NULL);
-		CloseHandle(hFile);
+		hash_CloseHandle(hFile);
 
 		ldasm_data ld;
 		unsigned char* pEip = opcode;
@@ -516,7 +516,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 			0x0F, 0x05,                 // syscall
 			0xC3                        // retn
 		};
-		_pagePtr = VirtualAllocEx((HANDLE)-1, 0, _pageSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+		_pagePtr = hash_VirtualAllocEx((HANDLE)-1, 0, _pageSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
 		if (_pagePtr == NULL)
 		{
 			return XAD_ERROR_ALLOCMEM;
@@ -525,7 +525,7 @@ XAD_STATUS XAntiDebug::XAD_Initialize()
 		size_t random;
 		ULONG_PTR pSysCall;
 
-		srand(GetTickCount());
+		srand(hash_GetTickCount());
 		unsigned char* pRandChar = (unsigned char*)_pagePtr;
 		for (size_t i = 0; i < _pageSize; i++)
 		{
@@ -673,14 +673,14 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 	if (_flags & FLAG_DETECT_DEBUGGER)
 	{
 
-		if (IsDebuggerPresent())
+		if (hash_IsDebuggerPresent())
 		{
 			return TRUE;
 		}
 
 		//////////////////////////////////////////////////////////////////////////
 		BOOL	debuging = FALSE;
-		CheckRemoteDebuggerPresent(GetCurrentProcess(), &debuging);
+		hash_CheckRemoteDebuggerPresent(hash_GetCurrentProcess(), &debuging);
 		if (debuging)
 		{
 			return TRUE;
@@ -688,7 +688,7 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 
 		//////////////////////////////////////////////////////////////////////////
 		__try {
-			CloseHandle(ULongToHandle(0xDEADC0DE));
+			hash_CloseHandle(ULongToHandle(0xDEADC0DE));
 		}
 		__except (EXCEPTION_EXECUTE_HANDLER) {
 			return TRUE;
@@ -722,13 +722,13 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 
 		HANDLE processHandle1, processHandle2;
 		fnNtSetInformationObject pfnNtSetInformationObject = \
-			(fnNtSetInformationObject)GetProcAddress(GetModuleHandleW(XAD_NTDLL), "ZwSetInformationObject");
+			(fnNtSetInformationObject)hash_GetProcAddress(hash_GetModuleHandleW(XAD_NTDLL), "ZwSetInformationObject");
 		MYOBJECT_HANDLE_FLAG_INFORMATION objInfo = { 0 };
 		objInfo.Inherit = false;
 		objInfo.ProtectFromClose = true;
 
 		__try {
-			processHandle1 = GetCurrentProcess();
+			processHandle1 = hash_GetCurrentProcess();
 			DuplicateHandle(processHandle1, processHandle1, processHandle1, &processHandle2, 0, FALSE, 0);
 			pfnNtSetInformationObject(processHandle2, ObjectHandleFlagInformation, &objInfo, sizeof(objInfo));
 			DuplicateHandle(processHandle1, processHandle2, processHandle1, &processHandle2, 0, FALSE, DUPLICATE_CLOSE_SOURCE);
@@ -860,7 +860,7 @@ BOOL XAntiDebug::XAD_ExecuteDetect()
 		//
 		CONTEXT	ctx = { 0 };
 		ctx.ContextFlags = CONTEXT_DEBUG_REGISTERS;
-		if (GetThreadContext((HANDLE)-2, &ctx))
+		if (hash_GetThreadContext((HANDLE)-2, &ctx))
 		{
 			if (ctx.Dr0 != 0 || ctx.Dr1 != 0 || ctx.Dr2 != 0 || ctx.Dr3 != 0)
 			{

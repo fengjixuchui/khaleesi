@@ -3,9 +3,9 @@
 
 bool TitanHideCheck()
 {
-	HMODULE ntdll = GetModuleHandleA("ntdll.dll");
+	HMODULE ntdll = hash_GetModuleHandleA("ntdll.dll");
 
-	auto NtQuerySystemInformation = (t_NtQuerySystemInformation)GetProcAddress(ntdll, "NtQuerySystemInformation");
+	auto NtQuerySystemInformation = (t_NtQuerySystemInformation)hash_GetProcAddress(ntdll, "NtQuerySystemInformation");
 
 	SYSTEM_CODEINTEGRITY_INFORMATION cInfo;
 	cInfo.Length = sizeof(cInfo);

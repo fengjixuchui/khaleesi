@@ -4,49 +4,49 @@
 VOID print_detected()
 {
 	/* Get handle to standard output */
-	HANDLE nStdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	HANDLE nStdHandle = hash_GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO ConsoleScreenBufferInfo;
 	SecureZeroMemory(&ConsoleScreenBufferInfo, sizeof(CONSOLE_SCREEN_BUFFER_INFO));
 
 	/* Save the original console color */
-	GetConsoleScreenBufferInfo(nStdHandle, &ConsoleScreenBufferInfo);
+	hash_GetConsoleScreenBufferInfo(nStdHandle, &ConsoleScreenBufferInfo);
 	WORD OriginalColors = *(&ConsoleScreenBufferInfo.wAttributes);
 
-	SetConsoleTextAttribute(nStdHandle, 12);
+	hash_SetConsoleTextAttribute(nStdHandle, 12);
 	_tprintf(TEXT("[ BAD  ]\n"));
-	SetConsoleTextAttribute(nStdHandle, OriginalColors);
+	hash_SetConsoleTextAttribute(nStdHandle, OriginalColors);
 }
 
 VOID print_not_detected()
 {
 	/* Get handle to standard output */
-	HANDLE nStdHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	HANDLE nStdHandle = hash_GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO ConsoleScreenBufferInfo;
 	SecureZeroMemory(&ConsoleScreenBufferInfo, sizeof(CONSOLE_SCREEN_BUFFER_INFO));
 
 	/* Save the original console color */
-	GetConsoleScreenBufferInfo(nStdHandle, &ConsoleScreenBufferInfo);
+	hash_GetConsoleScreenBufferInfo(nStdHandle, &ConsoleScreenBufferInfo);
 	WORD OriginalColors = *(&ConsoleScreenBufferInfo.wAttributes);
 
-	SetConsoleTextAttribute(nStdHandle, 10);
+	hash_SetConsoleTextAttribute(nStdHandle, 10);
 	_tprintf(TEXT("[ GOOD ]\n"));
-	SetConsoleTextAttribute(nStdHandle, OriginalColors);
+	hash_SetConsoleTextAttribute(nStdHandle, OriginalColors);
 }
 
 VOID print_category(const TCHAR* text)
 {
 	/* Get handle to standard output */
-	HANDLE nStdHandle = GetStdHandle(STD_OUTPUT_HANDLE);  
+	HANDLE nStdHandle = hash_GetStdHandle(STD_OUTPUT_HANDLE);  
 	CONSOLE_SCREEN_BUFFER_INFO ConsoleScreenBufferInfo;
 	SecureZeroMemory(&ConsoleScreenBufferInfo, sizeof(CONSOLE_SCREEN_BUFFER_INFO));
 
 	/* Save the original console color */
-	GetConsoleScreenBufferInfo(nStdHandle, &ConsoleScreenBufferInfo);
+	hash_GetConsoleScreenBufferInfo(nStdHandle, &ConsoleScreenBufferInfo);
 	WORD OriginalColors = *(&ConsoleScreenBufferInfo.wAttributes);
 
-	SetConsoleTextAttribute(nStdHandle, 13);
+	hash_SetConsoleTextAttribute(nStdHandle, 13);
 	_tprintf(TEXT("\n-------------------------[%s]-------------------------\n"), text);
-	SetConsoleTextAttribute(nStdHandle, OriginalColors);
+	hash_SetConsoleTextAttribute(nStdHandle, OriginalColors);
 }
 
 VOID _print_check_text(const TCHAR* szMsg)
@@ -100,9 +100,9 @@ VOID print_last_error(LPCTSTR lpszFunction)
 
 	LPVOID lpMsgBuf;
 	LPVOID lpDisplayBuf;
-	DWORD dw = GetLastError();
+	DWORD dw = hash_GetLastError();
 
-	if (FormatMessage(
+	if (hash_FormatMessageW(
 		FORMAT_MESSAGE_ALLOCATE_BUFFER |
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
@@ -118,28 +118,28 @@ VOID print_last_error(LPCTSTR lpszFunction)
 
 	// Display the error message and exit the process
 
-	lpDisplayBuf = (LPVOID)LocalAlloc(LMEM_ZEROINIT,
+	lpDisplayBuf = (LPVOID)hash_LocalAlloc(LMEM_ZEROINIT,
 		(lstrlen((LPCTSTR)lpMsgBuf) + lstrlen((LPCTSTR)lpszFunction) + 40) * sizeof(TCHAR));
 
 	if (lpDisplayBuf) {
 
 		StringCchPrintf((LPTSTR)lpDisplayBuf,
-			LocalSize(lpDisplayBuf) / sizeof(TCHAR),
+			hash_LocalSize(lpDisplayBuf) / sizeof(TCHAR),
 			TEXT("%s failed with error %u: %s"),
 			lpszFunction, dw, lpMsgBuf);
 
 		_tprintf((LPCTSTR)lpDisplayBuf);
 
-		LocalFree(lpDisplayBuf);
+		hash_LocalFree(lpDisplayBuf);
 	}
-	LocalFree(lpMsgBuf);
+	hash_LocalFree(lpMsgBuf);
 }
 
 WCHAR* ascii_to_wide_str(CHAR* lpMultiByteStr)
 {
 
 	/* Get the required size */
-	INT iNumChars = MultiByteToWideChar(CP_ACP, 0, lpMultiByteStr, -1, NULL, 0);
+	INT iNumChars = hash_MultiByteToWideChar(CP_ACP, 0, lpMultiByteStr, -1, NULL, 0);
 
 	/* Allocate new wide string */
 
@@ -150,7 +150,7 @@ WCHAR* ascii_to_wide_str(CHAR* lpMultiByteStr)
 	if (lpWideCharStr) {
 		SecureZeroMemory(lpWideCharStr, Size);
 		/* Do the conversion */
-		iNumChars = MultiByteToWideChar(CP_ACP, 0, lpMultiByteStr, -1, lpWideCharStr, iNumChars);
+		iNumChars = hash_MultiByteToWideChar(CP_ACP, 0, lpMultiByteStr, -1, lpWideCharStr, iNumChars);
 	}
 	return lpWideCharStr;
 }

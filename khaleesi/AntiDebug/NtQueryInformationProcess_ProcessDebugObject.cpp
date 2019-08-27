@@ -28,7 +28,7 @@ BOOL NtQueryInformationProcess_ProcessDebugObject()
 	DWORD32 IsRemotePresent = 0;
 #endif
 
-	Status = NtQueryInfoProcess(GetCurrentProcess(), ProcessDebugObjectHandle, &hDebugObject, dProcessInformationLength, NULL);
+	Status = NtQueryInfoProcess(hash_GetCurrentProcess(), ProcessDebugObjectHandle, &hDebugObject, dProcessInformationLength, NULL);
     
 	if (Status == 0x00000000 && hDebugObject)
         return TRUE;
